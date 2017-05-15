@@ -1,3 +1,10 @@
 languageCode = "en-us"
 title = "EngineBlock Docs"
-baseURL = "http://docs.engineblock.io/
+baseURL = "http://docs.engineblock.io/"
+theme = "hugo-material-docs"
+
+[[menu.main]]
+  name   = "Concepts"
+  url    = "/concepts"
+  weight = 0
+  pre    = ""

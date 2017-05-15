@@ -1,0 +1,4 @@
+#!/bin/bash
+DOCSPID=$(cat .hugo.pid)
+kill -9 $DOCSPID
+rm .hugo.pid
