@@ -23,7 +23,7 @@ git submodule update --init
 git submodule sync
 
 rm -rf docsrc/public
-hugo --source docsrc -d docs --config docsrc/config_docsite.toml --canonifyURLs
+hugo --source docsrc -d docs --config docsrc/config.toml --canonifyURLs
 
 echo "docs.engineblock.io" > docs/CNAME
 
