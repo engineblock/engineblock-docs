@@ -1,5 +1,13 @@
-Command-Line Scripting
-======================
+---
+date: 2017-05-19T22:09:53
+title: CLI Scripting
+weight: 32
+menu:
+  main:
+    parent: User Guide
+    identifier: CLI Scripting
+    weight: 12
+---
 
 Sometimes you want to to run a set of workloads in a particular order, or call other specific test setup logic in between phases or workloads. While the full scripting environment allows you to do this and more, it is not necessary to write javascript for every scenario.
 
@@ -17,30 +25,30 @@ Newlines are not allowed when building scripts from the command line. As long as
 
 All activities that run during a scenario run under the control of, but independently from the scenario script. This means that you can have a number of activities running while the scenario script is doing its own thing. The scenario only completes when both the scenario script and the activities are finished.
 
-## start type=&lt;activity type&gt; alias=&lt;alias&gt; ...
+### start type=&lt;activity type&gt; alias=&lt;alias&gt; ...
 
 You can start an activity with this command. At the time this command is evaluated, the activity is started, and the script continues without blocking. This is an asynchronous start of an activity. If you start multiple activities in this way, they will run concurrently.
 
 The type argument is required to identify the activity type to run. The alias parameter is not strictly required, unless you want to be able to interact with the started activity later. In any case, it is a good idea to name all your activities with a meaningful alias.
 
-## stop &lt;alias&gt;
+### stop &lt;alias&gt;
 
 Stop an activity with the given alias. This is synchronous, and causes the scenario to pause until the activity is stopped. This means that all threads for the activity have completed and signalled that they're in a stopped state.
 
-## await &lt;alias&gt;
+### await &lt;alias&gt;
 
 Await the normal completion of an activity with the given alias. This causes the scenario script to pause while it waits for the named activity to finish. This does not tell the activity to stop. It simply puts the scenario script into a paused state until the named activity is complete.
 
-## run type=&lt;activity type&gt; alias=&lt;alias&gt; ...
+### run type=&lt;activity type&gt; alias=&lt;alias&gt; ...
 
 Run an activity to completion, waiting until it is complete before continuing with the scenario script.
 It is effectively the same as **start type=&lt;activity type&gt; ... alias&lt;alias&gt; await &lt;alias&gt;**
 
-## waitmillis &lt;milliseconds&gt;
+### waitmillis &lt;milliseconds&gt;
 
 Pause the scenario script for this many milliseconds. This is useful for controlling workload run duration, etc.
 
-## script &lt;script file&gt;
+### script &lt;script file&gt;
 
 Add the contents of the named file to the script buffer.
 

@@ -1,9 +1,13 @@
 ---
 date: 2017-05-19T22:09:53
 title: Command Line
-weight: 32
+weight: 13
+menu:
+  main:
+    parent: User Guide
+    identifier: Command Line
+    weight: 12
 ---
-# EngineBlock Command Line
 
 To get built-in help on the available command line options, run
 

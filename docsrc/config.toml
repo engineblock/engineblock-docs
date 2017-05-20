@@ -25,12 +25,19 @@ canonifyurls = true
     primary = "grey"
     accent  = "teal"
 
-#[params.font]
-#    text = "Ubuntu"
-#    code = "Ubuntu Mono"
+[params.font]
+    text = "Roboto"
+    code = "Roboto Mono"
 
 [social]
 	github  = "engineblock/engineblock"
+
+[blackfriday]
+	smartypants	= true
+	fractions = true
+	smartDashes = true
+	plainIDAnchors = true
+
 
 [[menu.main]]
 	name   = "EngineBlock"
@@ -41,26 +48,16 @@ canonifyurls = true
 	url    = "quickstart/"
 	weight = 20
 [[menu.main]]
-	name   = "User's Guide"
+	name   = "User Guide"
 	url    = "users-guide/"
 	weight = 30
 [[menu.main]]
-    name   = "Developer's Guide"
+    name   = "Dev Guide"
     url    = "developers/"
     weight = 100
+[[menu.main]]
+    name   = "Design Sketches"
+    url    = "designsketches/"
+    weight = 200
 
-
-
-
-#[[menu.main]]
-#  name = "Quick Start"
-#  url = "quick-start/"
-#  weight = 10
-#
-
-[blackfriday]
-	smartypants	= true
-	fractions = true
-	smartDashes = true
-	plainIDAnchors = true
 

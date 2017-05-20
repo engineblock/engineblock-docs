@@ -1,0 +1,35 @@
+#!/bin/bash
+
+if (( $(git status --porcelain 2>/dev/null| wc -l) > 0 ))
+then
+ printf "Unchanged files are present. Please clean up your working tree first.\n"
+ git status
+ exit 2
+fi
+
+if [ ! -x /usr/bin/hugo ]
+then
+ HUGO_VERSION=0.20.7
+ #HUGO_VERSION=0.19
+ DL_SUFFIX=Linux-64bit
+ INNER_SUFFIX=linux_amd64
+ wget -P /tmp/ https://github.com/spf13/hugo/releases/download/v${HUGO_VERSION}/hugo_${HUGO_VERSION}_${DL_SUFFIX}.tar.gz
+ tar -xvf /tmp/hugo_${HUGO_VERSION}_${DL_SUFFIX}.tar.gz -C /tmp
+ sudo mv /tmp/hugo /usr/bin/hugo
+ sudo chmod +x /usr/bin/hugo
+fi
+
+git submodule update --init
+git submodule sync
+
+rm -rf docsrc/public
+hugo --source docsrc -d docs --config docsrc/config_docsite.toml --canonifyURLs
+
+echo "docs.engineblock.io" > docs/CNAME
+
+git add docs
+git commit -m'publishing docs'
+git push
+
+#rsync -av -e ssh --delete --progress workshops-book/public/ powertools-user@workshops-staging.datastax.com:/datastax/www/workshops-staging.datastax.com/ $*
+

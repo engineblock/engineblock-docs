@@ -1,6 +1,6 @@
 ---
 date: 2017-05-19T22:00:36
-title: User's Guide
+title: User Guide
 weight: 20
 ---
 

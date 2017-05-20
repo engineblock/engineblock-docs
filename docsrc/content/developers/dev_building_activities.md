@@ -1,4 +1,14 @@
-# Developing with Engine Block
+---
+date: 2017-05-19T22:09:53
+title: Building ActivityTypes    
+weight: 32
+menu:
+  main:
+    parent: Dev Guide
+    identifier: Building ActivityTypes
+    weight: 12
+---
+
 
 ## Requirements
 
@@ -25,7 +35,8 @@
 
 ## Working directly on engineblock
 
-You can download and locally build EngineBlock. Do this if you want contribute or otherwise experiment with the EngineBlock code base.
+You can download and locally build EngineBlock. Do this if you want contribute
+or otherwise experiment with the EngineBlock code base.
 
 1. Get the source:
 ~~~
@@ -43,6 +54,9 @@ This will install the engineblock artifacts to your local _~/.m2/repository_.
 
 ## Using ActivityTypes
 
-There are a couple ways you can use your new ActivityTypes with the EB runtime. You can mix and match these as needed. The most common way to integrate your ActivityTypes with the engineblock core is with Maven, but the details on thi will vary by environment.
+There are a couple ways you can use your new ActivityTypes  with the EB runtime.
+You can mix and match these as needed. The most common way to integrate your
+ActivityTypes with the engineblock core is with Maven, but the details on thi
+will vary by environment.
 
 

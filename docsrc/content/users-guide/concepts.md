@@ -2,6 +2,11 @@
 date: 2017-05-19T21:52:57
 title: Concepts
 weight: 11
+menu:
+  main:
+    parent: User Guide
+    identifier: concepts
+    weight: 10
 ---
 
 EngineBlock (EB) is a machine pattern for load test design and

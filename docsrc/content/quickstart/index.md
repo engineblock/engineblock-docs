@@ -88,7 +88,7 @@ run alias=test2 type=diag threads=1 interval=10
 
 The *run* command is synchronous. It waits for the activity named 'test1' to complete before starting 'test2'.
 
-## CLI Scripting
+## Command Scripting
 
 Any time you invoke engineblock, you are asking it to run a scenario. Scenarios are Nashorn scripts, always.
 If you wanted to see the script that resulted from a particular command line, you can always ask, with the

@@ -1,10 +1,20 @@
-## EngineBlock Metrics
+---
+date: 2017-05-19T21:52:57
+title: Metrics
+weight: 11
+menu:
+  main:
+    parent: User Guide
+    identifier: metrics
+    weight: 22
+---
 
-### Metrics Units of Measure
+## Unit of Measure
 
 All metrics collected from activities are recorded in nanoseconds and ops per second. All histograms are recorded with 4 digits of precision using HDR histograms.
 
-### Reporting metrics to a collector
+## Collecting Metrics
+
 If you like to have all of your testing data in one place, then you may be interested in reporting your measurements to a monitoring system. For this, EB includes a [Metrics Library](https://github.com/dropwizard/metrics). Graphite reporting is baked in as the default reporter.
 
 In order to enable graphite reporting, use one of these options formats:
@@ -13,11 +23,11 @@ In order to enable graphite reporting, use one of these options formats:
     --report-graphite-to <host>:<port>
 ~~~
 
-### Scripting with Metrics
+## Metrics & Scripting
 
 There are enhancements to the metrics bundled with EngineBlock to support advanced scripting. See the [Advanced Metrics for Scripting](scripting.md#enhanced-metrics-for-scripting) in the scripting guide for more details.
 
-### Metric Naming
+## Metric Naming
 
 #### Prefix
 Core metrics use the prefix _engineblock_ by default. You can override this with the --metrics-prefix option:
@@ -32,8 +42,9 @@ Metrics associated with a specific activity will have the activity alias in thei
 java -jar eb.jar --show-metrics alias=test type=diag
 ~~~
 
-### 
 This initializes an activity as if to run it, but never starts cycling it. 
+
+## HDR Histograms
 
 ### Recording HDR Histogram Logs
 You can record details of histograms from any compatible metric (histograms and timers) with an option like this:
@@ -77,6 +88,3 @@ Tag=diag1.cycles,0.501,0.499,498,1024,2047,2047,4095,4095,4095,4095,4095,4095,40
 
 Notice that the format used is similar to that of the HDR logging.
 
-## LICENSE
-
-This is licensed under the Apache Public License 2.0

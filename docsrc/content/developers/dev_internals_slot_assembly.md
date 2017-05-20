@@ -1,3 +1,14 @@
+---
+date: 2017-05-19T22:09:53
+title: Slot Assembly    
+weight: 32
+menu:
+  main:
+    parent: Dev Guide
+    identifier: Slot Assembly
+    weight: 12
+---
+
 # This is superceded with recent changes and needs to be rewritten
 ## It is currently inaccurate and will be rewritten shortly
 
