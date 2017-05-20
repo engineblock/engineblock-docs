@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+  
+  
+  
+  
+   <html class="no-js"> 
+
+  <head lang="en-us">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,maximum-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=10" />
+    <title>Activity Internals - EngineBlock</title>
+    <meta name="generator" content="Hugo 0.20.7" />
+
+    
+    <meta name="description" content="EngineBlock Docs">
+    
+    <link rel="canonical" href="http://docs.engineblock.io/developers/activity_internals/">
+    
+
+    <meta property="og:url" content="http://docs.engineblock.io/developers/activity_internals/">
+    <meta property="og:title" content="EngineBlock">
+    <meta property="og:image" content="http://docs.engineblock.io/images/engineblock_128.png">
+    <meta name="apple-mobile-web-app-title" content="EngineBlock">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <link rel="shortcut icon" type="image/x-icon" href="http://docs.engineblock.io/images/engineblock_32.png">
+    <link rel="icon" type="image/x-icon" href="http://docs.engineblock.io/images/engineblock_32.png">
+
+    <style>
+      @font-face {
+        font-family: 'Icon';
+        src: url('http://docs.engineblock.io/fonts/icon.eot');
+        src: url('http://docs.engineblock.io/fonts/icon.eot')
+               format('embedded-opentype'),
+             url('http://docs.engineblock.io/fonts/icon.woff')
+               format('woff'),
+             url('http://docs.engineblock.io/fonts/icon.ttf')
+               format('truetype'),
+             url('http://docs.engineblock.io/fonts/icon.svg')
+               format('svg');
+        font-weight: normal;
+        font-style: normal;
+      }
+    </style>
+
+    <link rel="stylesheet" href="http://docs.engineblock.io/stylesheets/application.css">
+    <link rel="stylesheet" href="http://docs.engineblock.io/stylesheets/temporary.css">
+    <link rel="stylesheet" href="http://docs.engineblock.io/stylesheets/palettes.css">
+    <link rel="stylesheet" href="http://docs.engineblock.io/stylesheets/highlight/highlight.css">
+
+    
+    
+    
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:400,700|Roboto&#43;Mono">
+    <style>
+      body, input {
+        font-family: 'Roboto', Helvetica, Arial, sans-serif;
+      }
+      pre, code {
+        font-family: 'Roboto Mono', 'Courier New', 'Courier', monospace;
+      }
+    </style>
+
+    
+    <script src="http://docs.engineblock.io/javascripts/modernizr.js"></script>
+
+    
+
+  </head>
+  <body class="palette-primary-grey palette-accent-teal">
+
+
+
+
+<div class="backdrop">
+	<div class="backdrop-paper"></div>
+</div>
+
+<input class="toggle" type="checkbox" id="toggle-drawer">
+<input class="toggle" type="checkbox" id="toggle-search">
+<label class="toggle-button overlay" for="toggle-drawer"></label>
+
+<header class="header">
+	<nav aria-label="Header">
+  <div class="bar default">
+    <div class="button button-menu" role="button" aria-label="Menu">
+      <label class="toggle-button icon icon-menu" for="toggle-drawer">
+        <span></span>
+      </label>
+    </div>
+    <div class="stretch">
+      <div class="title">
+        Activity Internals
+      </div>
+    </div>
+
+    
+
+    
+    <div class="button button-github" role="button" aria-label="GitHub">
+      <a href="https://github.com/engineblock/engineblock" title="@engineblock/engineblock on GitHub" target="_blank" class="toggle-button icon icon-github"></a>
+    </div>
+    
+    
+        
+  </div>
+  <div class="bar search">
+    <div class="button button-close" role="button" aria-label="Close">
+      <label class="toggle-button icon icon-back" for="toggle-search"></label>
+    </div>
+    <div class="stretch">
+      <div class="field">
+        <input class="query" type="text" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck>
+      </div>
+    </div>
+    <div class="button button-reset" role="button" aria-label="Search">
+      <button class="toggle-button icon icon-close" id="reset-search"></button>
+    </div>
+  </div>
+</nav>
+</header>
+
+<main class="main">
+	<div class="drawer">
+		<nav aria-label="Navigation">
+  <a href="http://docs.engineblock.io/" class="project">
+    <div class="banner">
+      
+        <div class="logo">
+          <img src="http://docs.engineblock.io/images/engineblock_128.png">
+        </div>
+      
+      <div class="name">
+        <strong>EngineBlock </strong>
+        
+      </div>
+    </div>
+  </a>
+
+  <div class="scrollable">
+    <div class="wrapper">
+      
+
+      <div class="toc">
+        
+        <ul>
+          
+
+
+
+
+<li>
+  
+    
+
+
+
+<a  title="EngineBlock" href="http://docs.engineblock.io/">
+	
+	EngineBlock
+</a>
+
+
+
+  
+</li>
+
+
+
+<li>
+  
+    
+
+
+
+<a  title="Quickstart" href="http://docs.engineblock.io/quickstart/">
+	
+	Quickstart
+</a>
+
+
+
+  
+</li>
+
+
+
+<li>
+  
+    <span class="section">User Guide</span>
+    <ul>
+      
+        
+        
+
+
+
+<a  title="Concepts" href="http://docs.engineblock.io/users-guide/concepts/">
+	
+	Concepts
+</a>
+
+
+
+      
+        
+        
+
+
+
+<a  title="CLI Scripting" href="http://docs.engineblock.io/users-guide/cli_scripting/">
+	
+	CLI Scripting
+</a>
+
+
+
+      
+        
+        
+
+
+
+<a  title="Command Line" href="http://docs.engineblock.io/users-guide/command_line/">
+	
+	Command Line
+</a>
+
+
+
+      
+        
+        
+
+
+
+<a  title="Metrics" href="http://docs.engineblock.io/users-guide/metrics/">
+	
+	Metrics
+</a>
+
+
+
+      
+        
+        
+
+
+
+<a  title="Scenario Scripting" href="http://docs.engineblock.io/users-guide/scripting/">
+	
+	Scenario Scripting
+</a>
+
+
+
+      
+    </ul>
+  
+</li>
+
+
+
+<li>
+  
+    <span class="section">Dev Guide</span>
+    <ul>
+      
+        
+        
+
+
+
+<a class="current" title="Activity Internals" href="http://docs.engineblock.io/developers/activity_internals/">
+	
+	Activity Internals
+</a>
+
+
+<ul id="scrollspy">
+</ul>
+
+
+      
+        
+        
+
+
+
+<a  title="Building ActivityTypes" href="http://docs.engineblock.io/developers/dev_building_activities/">
+	
+	Building ActivityTypes
+</a>
+
+
+
+      
+        
+        
+
+
+
+<a  title="Contributing" href="http://docs.engineblock.io/developers/dev_contributing/">
+	
+	Contributing
+</a>
+
+
+
+      
+        
+        
+
+
+
+<a  title="Diag ActivityType" href="http://docs.engineblock.io/developers/dev_annotated_diag/">
+	
+	Diag ActivityType
+</a>
+
+
+
+      
+        
+        
+
+
+
+<a  title="Project Structure" href="http://docs.engineblock.io/developers/project_structure/">
+	
+	Project Structure
+</a>
+
+
+
+      
+        
+        
+
+
+
+<a  title="Scripting Extensions" href="http://docs.engineblock.io/developers/dev_scripting_extensions/">
+	
+	Scripting Extensions
+</a>
+
+
+
+      
+        
+        
+
+
+
+<a  title="Slot Assembly" href="http://docs.engineblock.io/developers/dev_internals_slot_assembly/">
+	
+	Slot Assembly
+</a>
+
+
+
+      
+    </ul>
+  
+</li>
+
+
+
+<li>
+  
+    <span class="section">Design Sketches</span>
+    <ul>
+      
+        
+        
+
+
+
+<a  title="Scripting Histograms" href="http://docs.engineblock.io/designsketches/scripting_histograms/">
+	
+	Scripting Histograms
+</a>
+
+
+
+      
+    </ul>
+  
+</li>
+
+
+        </ul>
+        
+
+        
+      </div>
+    </div>
+  </div>
+</nav>
+
+	</div>
+
+	<article class="article">
+		<div class="wrapper">
+			<h1>Activity Internals </h1>
+
+			
+
+<p>Activities are a generalization of some type of client work that needs to occur
+to generate work against a test target. However, a purely abstract interface for
+activities would be so open-ended that it would provide no common scaffolding.
+On the contrary, we do want some sense of isomorphism between activity types in
+terms of how they are implemented and reasoned about. After reading this
+document, you should now what it means to implement an activity properly&ndash;
+building on the core machinery while adding in activity-type behavior
+appropriately. That is what an Activity Type is for &ndash; filling in the difference
+between what the core machinery provides and what is needed to simulate a
+particular kind of application workload.</p>
+
+<h3 id="activitytypes">ActivityTypes</h3>
+
+<p>Each activity that runs in EngineBlock is provided by an instance of an
+ActivityType. The first activity type that you will become familiar with is
+called <code>diag</code>. An ActivityType is responsible for providing the
+application-like functionality that can be used in template form by activity
+instances. When you are ready, there is a section all about the basics of
+actually <a href="dev_building_activities.md">implementing an activity
+type</a>.</p>
+
+<h3 id="activity-parameters">Activity Parameters</h3>
+
+<p>All activities are controlled at runtime with a <em>ParameterMap</em>. This is simply
+an observable thread-safe map of configuration values in string-string form,
+with type-specific getters. It also provides basic parsing and type checking for
+common parameters.</p>
+
+<p>On the command line, you can specify parameters for an activity in the form:</p>
+
+<pre><code>type=cql alias=activity1 yaml=inserts_cql.yaml cycles=0..1000 threads=10
+</code></pre>
+
+<p>Other convenient forms are available when needed &ndash; a JSON map for example.</p>
+
+<h3 id="thread-controls">Thread Controls</h3>
+
+<p>At runtime, an activity is driven by a dedicated thread pool harness &ndash; the
+ActivityExecutor. This harness knows how to adjust the running threads down or
+up, as needed by changes to the related <em>threads</em> parameter. This is meaningful
+for a couple of reasons:</p>
+
+<ol>
+<li>The client behavior can emulate typical threading dynamics of real
+applications more accurately than a task-and-queue-only abstraction.</li>
+<li>The synthetic thread ID can be borrowed and used to directly
+map some measure of concurrency of data flow.</li>
+<li>It is a familiar concurrency primitive that is used in many other testing tools.</li>
+</ol>
+
+<h3 id="from-activitytypes-to-threads">From ActivityTypes to Threads</h3>
+
+<p>There are a few lifetime scopes to keep in mind when a scenario is running. They
+are:</p>
+
+<pre><code>  scenario (control script)
+    activity
+      motor thread
+      motor thread
+      ...
+    activity
+      motor thread
+      ...
+    ...
+</code></pre>
+
+<p>These scopes nest strictly from outside to inside. Activity-specific threads,
+labeled <code>motor threads</code> above, run within the activity. Their executors run in
+their own thread per-activity, and so forth. The term <code>motor thread</code> is used
+here, but when working with EngineBlock you can generally think of them
+interchangeably, as all <strong>Runnable</strong> threads within a running activity are
+implemented via the Motor API. It is the Motor and other interfaces which allows
+the EngineBlock runtime to easily drive the workloads for an activity in a
+modular way.</p>
+
+<p>The ActivityType interface, part of the core EngineBlock API, allows you to
+control how threads are created for activity instances, and how activity
+instances are created for an activity. This means that the API has two levels of
+instantiation and initialization, so some care has been taken to keep it as
+simple as possible, nonetheless. Here are the scoping layers above with some
+additional detail:</p>
+
+<ul>
+<li>A Scenario has ActivityType instances.
+
+<ul>
+<li>An ActivityType can create:</li>
+<li>Activity instances</li>
+<li>MotorDispenser instances</li>
+<li>InputDispenser instances</li>
+<li>ActionDispenser instances</li>
+</ul></li>
+</ul>
+
+<p>When an activity is initialized, it is created from the ActivityType. As well, a
+dispenser for the three other types above is created from the ActivityType and
+these are installed into the activity.</p>
+
+<p>From this point forward, when a new thread needs to be created for an activity,
+the <strong>Runnable</strong> is dispensed by the MotorDispenser on that activity. The Input
+and Action instances for that thread are also dispensed from the InputDispenser
+and ActionDispenser on that activity, respectively.</p>
+
+<p>In practice, you don&rsquo;t have to think about the API at this level of detail. Most
+new ActivityType implementations will simply implement the API just enough to
+provide an Action implementation and nothing more. A basic annotated example is
+shown under <a href="dev_annotated_diag.md">dev_annotated_diag.md</a>.</p>
+
+<h3 id="why-motors">Why Motors?</h3>
+
+<p>Each ActivityExecutor uses the <em>Motor</em> API to manage activity threads. A Motor
+is nothing new. The reason for the Motor abstraction to exists is to provide a
+more definite boundary between the machinery and the pluggable workloads. It
+provides a control boundary that is tangible to both the scripting runtime and
+the new concurrent programmer. For this reason, seasoned Java programmers will
+find nothing new or novel in the Motor abstraction. It&rsquo;s simply there to do the
+obvious things:</p>
+
+<ol>
+<li>Enable (desired and actual) state signaling between executor and thread.</li>
+<li>Represent the per-thread flow and execution of inputs and actions.</li>
+<li>Instrument said inputs and actions for metrics.</li>
+<li>Control the per-thread unit of work around longer-running, tighter iterations</li>
+</ol>
+
+<p>Motors lifetimes are not per-cycle. Motors can hang around in an activity
+executor, be stopped, started, etc. They keep the same input and action
+assignments that they were assembled with initially. You can think of motors as
+event pumps which are meant to keep running while there is data available. They
+aren&rsquo;t meant to cycle once for a lightweight task.</p>
+
+<p>While it is possible to implement your own Motors, this will almost never be necessary.</p>
+
+<h3 id="slots-aka-threads">Slots, AKA Threads</h3>
+
+<p>To support multiple signal routing topologies within an activity, the concept of
+a slot is used. A slot is nothing more than an indexed position for a thread in
+a thread pool.</p>
+
+<p>When a thread is being started for an activity, a motor instance is created for
+the slot, as well as an input and action instance. However, the ActivityType
+implementation has control of how these are created. If the ActivityType
+implementation chooses, it may return a unique input for each slot, or a single
+cached instance for all slots. This is controlled simply by the slot index,
+which is passed into the factory methods for motors, inputs and threads.</p>
+
+<h3 id="activity-alias">Activity Alias</h3>
+
+<p>The only way to address a running activity for dynamic control is through its
+<em>alias</em>. An alias is simply the name that the ScenarioController knows as the
+activity&rsquo;s name at runtime. If an alias is not provided, the runtime may accept
+a new activity, but it will be forced to generate an internal name for it.</p>
+
+<h3 id="activitytype-name">ActivityType Name</h3>
+
+<p>ActivityTypes are discovered by the runtime via the Java ServiceLoader API. In
+addition to the basic Java type, an ActivityType instance has a name. For the
+built-in diagnostic activity type, it is &lsquo;diag&rsquo;. Each activity type name must be
+unique at runtime, or an error is thrown.</p>
+
+<p>With an activity alias and the activity type name, you have enough information
+to tell EngineBlock how to start an activity. The variable names for these are
+<strong>alias</strong> and <strong>type</strong>.</p>
+
+<h2 id="iterating-a-cycle">Iterating a Cycle</h2>
+
+<p>While an activity is running, each of its slots has a running motor which does
+the following continuously.</p>
+
+<ol>
+<li>Verify Motor control state, stop if signalled (a stop was requested)</li>
+<li>Read the next input value (a long) from the Input, stop if exhausted</li>
+<li>Apply the value to the Action.</li>
+</ol>
+
+<p>The motor acts as a data pump, pulling in new test values to the application
+workload and turning the crank on the workload machinery. The consumer interface
+for an Action is very basic. This is intentional, and allows the maximum amount
+of flexibility in workload (AKA ActivityType) design. The motor control state is
+simply an atomically-visible breaker that is controlled by the ActivityExecutor.</p>
+
+<p>The default implementation of an activity input is a sequence generator. This is
+what most activities will need. However, rate controls and other decorators may
+be desired, so the API makes it easy to wrap the default input.</p>
+
+<h3 id="activitytype-packaging-discovery">ActivityType Packaging &amp; Discovery</h3>
+
+<p><em>ActivityType</em> implementations are discovered by the runtime using the
+<a href="https://docs.oracle.com/javase/8/docs/api/java/util/ServiceLoader.html">ServiceLoader API</a> ,
+with the service name <strong>io.engineblock.activityapi.ActivityType.</strong> That means
+simply that you must add the fully-qualified class name of your ActivityType
+implementations to the META-INF/services/io.engineblock.activityapi.ActivityType
+file of your built jar. A maven plugin automates this during build, and is
+explained in further detail in the dev guides.</p>
+
+
+			<aside class="copyright" role="note">
+				
+				&copy; 2017 APL 2.0 &ndash;
+				
+				Documentation built with
+				<a href="https://www.gohugo.io" target="_blank">Hugo</a>
+				using the
+				<a href="http://github.com/digitalcraftsman/hugo-material-docs" target="_blank">Material</a> theme.
+			</aside>
+
+			<footer class="footer">
+				
+
+<nav class="pagination" aria-label="Footer">
+  <div class="previous">
+  
+      <a href="http://docs.engineblock.io/users-guide/" title="User Guide">
+        <span class="direction">
+          Previous
+        </span>
+        <div class="page">
+          <div class="button button-previous" role="button" aria-label="Previous">
+            <i class="icon icon-back"></i>
+          </div>
+          <div class="stretch">
+            <div class="title">
+              User Guide
+            </div>
+          </div>
+        </div>
+      </a>
+  
+  </div>
+
+  <div class="next">
+  
+      <a href="http://docs.engineblock.io/developers/dev_building_activities/" title="Building ActivityTypes">
+        <span class="direction">
+          Next
+        </span>
+        <div class="page">
+          <div class="stretch">
+            <div class="title">
+              Building ActivityTypes
+            </div>
+          </div>
+          <div class="button button-next" role="button" aria-label="Next">
+            <i class="icon icon-forward"></i>
+          </div>
+        </div>
+      </a>
+  
+  </div>
+</nav>
+
+
+
+
+
+			</footer>
+		</div>
+	</article>
+
+	<div class="results" role="status" aria-live="polite">
+		<div class="scrollable">
+			<div class="wrapper">
+				<div class="meta"></div>
+				<div class="list"></div>
+			</div>
+		</div>
+	</div>
+</main>
+
+    <script>
+    
+      var base_url = '';
+      var repo_id  = '';
+    
+    </script>
+
+    <script src="http://docs.engineblock.io/javascripts/application.js"></script>
+    
+
+    <script>
+      /* Add headers to scrollspy */
+      var headers   = document.getElementsByTagName("h2");
+      var scrollspy = document.getElementById('scrollspy');
+
+      if(scrollspy) {
+        if(headers.length > 0) {
+          for(var i = 0; i < headers.length; i++) {
+            var li = document.createElement("li");
+            li.setAttribute("class", "anchor");
+
+            var a  = document.createElement("a");
+            a.setAttribute("href", "#" + headers[i].id);
+            a.setAttribute("title", headers[i].innerHTML);
+            a.innerHTML = headers[i].innerHTML;
+
+            li.appendChild(a)
+            scrollspy.appendChild(li);
+          }
+        } else {
+          scrollspy.parentElement.removeChild(scrollspy)
+        }
+
+
+        /* Add permanent link next to the headers */
+        var headers = document.querySelectorAll("h1, h2, h3, h4, h5, h6");
+
+        for(var i = 0; i < headers.length; i++) {
+            var a = document.createElement("a");
+            a.setAttribute("class", "headerlink");
+            a.setAttribute("href", "#" + headers[i].id);
+            a.setAttribute("title", "Permanent link")
+            a.innerHTML = "¶";
+            headers[i].appendChild(a);
+        }
+      }
+    </script>
+
+    
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+  </body>
+</html>
+

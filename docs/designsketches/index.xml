@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Designsketches on EngineBlock</title>
+    <link>http://docs.engineblock.io/designsketches/</link>
+    <description>Recent content in Designsketches on EngineBlock</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>APL 2.0</copyright>
+    <lastBuildDate>Fri, 19 May 2017 22:09:53 +0000</lastBuildDate>
+    
+	<atom:link href="http://docs.engineblock.io/designsketches/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Scripting Histograms</title>
+      <link>http://docs.engineblock.io/designsketches/scripting_histograms/</link>
+      <pubDate>Fri, 19 May 2017 22:09:53 +0000</pubDate>
+      
+      <guid>http://docs.engineblock.io/designsketches/scripting_histograms/</guid>
+      <description>Histogram-based analysis is one of the most effective methods for performance characterization. However, there is not enough flexibility in how the existing tools work to support the scripting needs in EngineBlock. This document outlines the problems with the existing tool in the context of advanced scripting and a design for how to collect and use histogram data effectively.
+The Accuracy Challenge When making analysis decisions from histogram data, you need full delta snapshots between measurement times.</description>
+    </item>
+    
+    <item>
+      <title>Design Sketches</title>
+      <link>http://docs.engineblock.io/designsketches/</link>
+      <pubDate>Fri, 19 May 2017 21:51:26 +0000</pubDate>
+      
+      <guid>http://docs.engineblock.io/designsketches/</guid>
+      <description>This section holds design sketches of some of the more esoteric design elements of EngineBlock.</description>
+    </item>
+    
+  </channel>
+</rss>

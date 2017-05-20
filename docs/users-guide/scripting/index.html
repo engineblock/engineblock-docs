@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+  
+  
+  
+  
+   <html class="no-js"> 
+
+  <head lang="en-us">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,maximum-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=10" />
+    <title>Scenario Scripting - EngineBlock</title>
+    <meta name="generator" content="Hugo 0.20.7" />
+
+    
+    <meta name="description" content="EngineBlock Docs">
+    
+    <link rel="canonical" href="http://docs.engineblock.io/users-guide/scripting/">
+    
+
+    <meta property="og:url" content="http://docs.engineblock.io/users-guide/scripting/">
+    <meta property="og:title" content="EngineBlock">
+    <meta property="og:image" content="http://docs.engineblock.io/images/engineblock_128.png">
+    <meta name="apple-mobile-web-app-title" content="EngineBlock">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <link rel="shortcut icon" type="image/x-icon" href="http://docs.engineblock.io/images/engineblock_32.png">
+    <link rel="icon" type="image/x-icon" href="http://docs.engineblock.io/images/engineblock_32.png">
+
+    <style>
+      @font-face {
+        font-family: 'Icon';
+        src: url('http://docs.engineblock.io/fonts/icon.eot');
+        src: url('http://docs.engineblock.io/fonts/icon.eot')
+               format('embedded-opentype'),
+             url('http://docs.engineblock.io/fonts/icon.woff')
+               format('woff'),
+             url('http://docs.engineblock.io/fonts/icon.ttf')
+               format('truetype'),
+             url('http://docs.engineblock.io/fonts/icon.svg')
+               format('svg');
+        font-weight: normal;
+        font-style: normal;
+      }
+    </style>
+
+    <link rel="stylesheet" href="http://docs.engineblock.io/stylesheets/application.css">
+    <link rel="stylesheet" href="http://docs.engineblock.io/stylesheets/temporary.css">
+    <link rel="stylesheet" href="http://docs.engineblock.io/stylesheets/palettes.css">
+    <link rel="stylesheet" href="http://docs.engineblock.io/stylesheets/highlight/highlight.css">
+
+    
+    
+    
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:400,700|Roboto&#43;Mono">
+    <style>
+      body, input {
+        font-family: 'Roboto', Helvetica, Arial, sans-serif;
+      }
+      pre, code {
+        font-family: 'Roboto Mono', 'Courier New', 'Courier', monospace;
+      }
+    </style>
+
+    
+    <script src="http://docs.engineblock.io/javascripts/modernizr.js"></script>
+
+    
+
+  </head>
+  <body class="palette-primary-grey palette-accent-teal">
+
+
+
+
+<div class="backdrop">
+	<div class="backdrop-paper"></div>
+</div>
+
+<input class="toggle" type="checkbox" id="toggle-drawer">
+<input class="toggle" type="checkbox" id="toggle-search">
+<label class="toggle-button overlay" for="toggle-drawer"></label>
+
+<header class="header">
+	<nav aria-label="Header">
+  <div class="bar default">
+    <div class="button button-menu" role="button" aria-label="Menu">
+      <label class="toggle-button icon icon-menu" for="toggle-drawer">
+        <span></span>
+      </label>
+    </div>
+    <div class="stretch">
+      <div class="title">
+        Scenario Scripting
+      </div>
+    </div>
+
+    
+
+    
+    <div class="button button-github" role="button" aria-label="GitHub">
+      <a href="https://github.com/engineblock/engineblock" title="@engineblock/engineblock on GitHub" target="_blank" class="toggle-button icon icon-github"></a>
+    </div>
+    
+    
+        
+  </div>
+  <div class="bar search">
+    <div class="button button-close" role="button" aria-label="Close">
+      <label class="toggle-button icon icon-back" for="toggle-search"></label>
+    </div>
+    <div class="stretch">
+      <div class="field">
+        <input class="query" type="text" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck>
+      </div>
+    </div>
+    <div class="button button-reset" role="button" aria-label="Search">
+      <button class="toggle-button icon icon-close" id="reset-search"></button>
+    </div>
+  </div>
+</nav>
+</header>
+
+<main class="main">
+	<div class="drawer">
+		<nav aria-label="Navigation">
+  <a href="http://docs.engineblock.io/" class="project">
+    <div class="banner">
+      
+        <div class="logo">
+          <img src="http://docs.engineblock.io/images/engineblock_128.png">
+        </div>
+      
+      <div class="name">
+        <strong>EngineBlock </strong>
+        
+      </div>
+    </div>
+  </a>
+
+  <div class="scrollable">
+    <div class="wrapper">
+      
+
+      <div class="toc">
+        
+        <ul>
+          
+
+
+
+
+<li>
+  
+    
+
+
+
+<a  title="EngineBlock" href="http://docs.engineblock.io/">
+	
+	EngineBlock
+</a>
+
+
+
+  
+</li>
+
+
+
+<li>
+  
+    
+
+
+
+<a  title="Quickstart" href="http://docs.engineblock.io/quickstart/">
+	
+	Quickstart
+</a>
+
+
+
+  
+</li>
+
+
+
+<li>
+  
+    <span class="section">User Guide</span>
+    <ul>
+      
+        
+        
+
+
+
+<a  title="Concepts" href="http://docs.engineblock.io/users-guide/concepts/">
+	
+	Concepts
+</a>
+
+
+
+      
+        
+        
+
+
+
+<a  title="CLI Scripting" href="http://docs.engineblock.io/users-guide/cli_scripting/">
+	
+	CLI Scripting
+</a>
+
+
+
+      
+        
+        
+
+
+
+<a  title="Command Line" href="http://docs.engineblock.io/users-guide/command_line/">
+	
+	Command Line
+</a>
+
+
+
+      
+        
+        
+
+
+
+<a  title="Metrics" href="http://docs.engineblock.io/users-guide/metrics/">
+	
+	Metrics
+</a>
+
+
+
+      
+        
+        
+
+
+
+<a class="current" title="Scenario Scripting" href="http://docs.engineblock.io/users-guide/scripting/">
+	
+	Scenario Scripting
+</a>
+
+
+<ul id="scrollspy">
+</ul>
+
+
+      
+    </ul>
+  
+</li>
+
+
+
+<li>
+  
+    <span class="section">Dev Guide</span>
+    <ul>
+      
+        
+        
+
+
+
+<a  title="Activity Internals" href="http://docs.engineblock.io/developers/activity_internals/">
+	
+	Activity Internals
+</a>
+
+
+
+      
+        
+        
+
+
+
+<a  title="Building ActivityTypes" href="http://docs.engineblock.io/developers/dev_building_activities/">
+	
+	Building ActivityTypes
+</a>
+
+
+
+      
+        
+        
+
+
+
+<a  title="Contributing" href="http://docs.engineblock.io/developers/dev_contributing/">
+	
+	Contributing
+</a>
+
+
+
+      
+        
+        
+
+
+
+<a  title="Diag ActivityType" href="http://docs.engineblock.io/developers/dev_annotated_diag/">
+	
+	Diag ActivityType
+</a>
+
+
+
+      
+        
+        
+
+
+
+<a  title="Project Structure" href="http://docs.engineblock.io/developers/project_structure/">
+	
+	Project Structure
+</a>
+
+
+
+      
+        
+        
+
+
+
+<a  title="Scripting Extensions" href="http://docs.engineblock.io/developers/dev_scripting_extensions/">
+	
+	Scripting Extensions
+</a>
+
+
+
+      
+        
+        
+
+
+
+<a  title="Slot Assembly" href="http://docs.engineblock.io/developers/dev_internals_slot_assembly/">
+	
+	Slot Assembly
+</a>
+
+
+
+      
+    </ul>
+  
+</li>
+
+
+
+<li>
+  
+    <span class="section">Design Sketches</span>
+    <ul>
+      
+        
+        
+
+
+
+<a  title="Scripting Histograms" href="http://docs.engineblock.io/designsketches/scripting_histograms/">
+	
+	Scripting Histograms
+</a>
+
+
+
+      
+    </ul>
+  
+</li>
+
+
+        </ul>
+        
+
+        
+      </div>
+    </div>
+  </div>
+</nav>
+
+	</div>
+
+	<article class="article">
+		<div class="wrapper">
+			<h1>Scenario Scripting </h1>
+
+			
+
+<h2 id="motive">Motive</h2>
+
+<p>The EB runtime is a combination of a scripting sandbox and a workload execution
+machine. This is not accidental. With this particular arrangement, it should be
+possible to build sophisticated tests across a variety of scenarios. In
+particular, logic which can observe and react to the system under test can be
+powerful. With this approach, it becomes possible to break away from the
+conventional run-interpret-adjust cycle which is all too often done by human
+hands.</p>
+
+<h2 id="machinery-controls-instruments">Machinery, Controls &amp; Instruments</h2>
+
+<p>All of the heavy lifting is left to Java and the core EngineBlock runtime. This
+includes the iterative workloads that are meant to test the target system. This
+is combined with a control layer which is provided by Nashorn in Java 8. This
+division of responsibility allows the high-level test logic to be &ldquo;script&rdquo; and
+the low-level activity logic to be &ldquo;machinery&rdquo;.  While the scenario script has
+the most control, it also is the least busy relative to activity workloads. The
+net effect is that you have the efficiency of the iterative test loads in
+conjunction with the expressivity of an open-ended scripting sandbox.</p>
+
+<p>Essentially, the ActivityType drivers are meant to handle the workload-specific
+machinery. They also provide dynamic control points and parameters which special
+to that activity type. This exposes a full feedback loop between a running
+scenario script and the activities that it runs. The scenario is free to read
+the performance metrics from a running activity and make changes to it on the
+fly.</p>
+
+<p>Here is a view of what is below the line, separate from the scripting sandbox,
+and what is hoisted up into the scripting sandbox.</p>
+
+<p><img src="../../original/diagrams/artandmachinery.png" alt="ScriptingEngine" /></p>
+
+<h2 id="scripting-environment">Scripting Environment</h2>
+
+<p>The EngineBlock scripting environment is provided by Nashorn, with slight
+modifications meant to streamline understanding and usage.</p>
+
+<p>The modification are:</p>
+
+<ul>
+<li>Active Bindings, control variables which, when assigned to, cause an immediate
+change in the behavior of the runtime. Each of the variables
+below is pre-wired into each script environment.
+
+<ul>
+<li><strong>scenario</strong> - (read+write) - This is the <strong>Scenario Controller</strong> object
+which manages the activity executors in the runtime.</li>
+<li><strong>activities.&lt;activity alias&gt;.&lt;paramname&gt;</strong> -
+(read+write) - Every parameter which is assigned to in this map will
+cause a synchronous notification to the execution runtime, including
+the respective activity (identified by &lt;activity alias&gt;) if it has
+been implemented to react.</li>
+<li><strong>metrics</strong>.&lt;activity alias&gt;.&lt;metric name&gt; - (read-only) - Each
+activity exposes its metrics to the scenario scripting sandbox. In order to
+see these, use the command line option that dumps metrics names.</li>
+</ul></li>
+</ul>
+
+<p>Interaction with the EB runtime and the activities therein is made easy by the
+above variables and objects. When an assignment is made to any of these
+variables, the changes are propagated to internal listeners. For changes to
+<em>threads</em>, the thread pool responsible for the affected activity adjusts the
+number of active threads (AKA slots). Other changes are further propagated
+directly to the thread harness (motor) and to each interested input and action.
+Assignment to the <em>type</em> and <em>alias</em> activity parameters has no special effect.</p>
+
+<p>You can make use of more extensive Java or Javascript libraries as needed,
+mixing then with the runtime controls provided above.</p>
+
+<h2 id="enhanced-metrics-for-scripting">Enhanced Metrics for Scripting</h2>
+
+<p>The metrics available in engineblock are slightly different than the standard
+kit with dropwizard metrics. The key differences are:</p>
+
+<h3 id="hdr-histograms">HDR Histograms</h3>
+
+<p>All histograms use HDR histograms with <em>four</em> significant digits.</p>
+
+<p>All histograms reset on snapshot, automatically keeping all data until you
+report the snapshot or access the snapshot via scripting. (see below).</p>
+
+<p>The metric types that use histograms have been replaced with nicer version for
+scripting. You dont&rsquo; have to do anything differently in your reporter config to
+use them. However, if you need to use the enhanced versions in your local
+scripting, you can. This means that Timer and Histogram types are enchanced. If
+you do not use the scripting extensions, then you will automatically get the
+standard behavior that you are used to, only with higher-resolution HDR and full
+snapshots for each report to your downstream metrics systems.</p>
+
+<h3 id="scripting-with-delta-snapshots">Scripting with Delta Snapshots</h3>
+
+<p>For both the timer and the histogram types, you can call getDeltaReader(), or
+access it simply as &lt;metric&gt;.deltaReader. When you do this, the delta
+snapshotting behavior is maintained until you use the deltaReader to access it.
+You can get a snapshot from the deltaReader by calling getDeltaSnapshot(10000),
+which causes the snapshot to be reset for collection, but retains a cache of the
+snapshot for any other consumer of getSnapshot() for that duration in
+milliseconds. If, for example, metrics reporters access the snapshot in the next
+10 seconds, the reported snapshot will be exactly what was used in the script.</p>
+
+<p>This is important for using local scripting methods and calculations with
+aggregate views downstream. It means that the histograms will match up between
+your local script output and your downstream dashboards, as they will both be
+using the same frame of data, when done properly.</p>
+
+<h3 id="histogram-convenience-methods">Histogram Convenience Methods</h3>
+
+<p>All histogram snapshots have additional convenience methods for accessing every
+percentile in (P50, P75, P90, P95, P98, P99, P999, P9999) and every time unit in
+(s, ms, us, ns). For example, getP99ms() is supported, as is getP50ns(), and
+every other possible combination. This means that you can access the 99th
+percentile metric value in your scripts for activity <em>foo</em> as
+<em>metrics.foo.cycles.snapshot.p99ms</em>.</p>
+
+<h2 id="control-flow">Control Flow</h2>
+
+<p>When a script is run, it has absolute control over the scenario runtime while it
+is active. Once the script reaches its end, however, it will only exit if all
+activities have completed. If you want to explicitly stop a script, you must
+stop all activities.</p>
+
+<h2 id="strategies">Strategies</h2>
+
+<p>You can use EngineBlock in the classic form with <em>activity
+&lt;param&gt;=&lt;value&gt; &hellip;</em> command line syntax. There are reasons,
+however, that you will sometimes want customize and modify your scripts
+directly, such as:</p>
+
+<ul>
+<li>permute test variables to cover many sub-conditions in a test</li>
+<li>automatically adjust load factors to identify the nominal capacity of a system</li>
+<li>Adjust rate of a workload in order to get a specific measurement of system behavior</li>
+<li>React to changes in test or target system state in order to properly sequence a test</li>
+</ul>
+
+<h2 id="script-input-output">Script Input &amp; Output</h2>
+
+<p>Internal buffers are kept for <em>stdin</em>, <em>stdout</em>, and <em>stderr</em>. These are logged
+to the logfile upon script completion, with markers showing the timestamp and
+file descriptor (stdin, stdout, or stderr) that each line was recorded from.</p>
+
+<h2 id="external-docs">External Docs</h2>
+
+<ul>
+<li><a href="https://docs.oracle.com/javase/8/docs/technotes/guides/scripting/nashorn/api.html">Java Platform, Standard Edition Nashorn User&rsquo;s Guide (Java 8)</a></li>
+<li><a href="https://wiki.openjdk.java.net/display/Nashorn/Nashorn+extensions">Nashorn extensions on OpenJDK Wiki</a></li>
+<li><a href="http://docs.oracle.com/javase/8/docs/technotes/guides/scripting/">Scripting for the Java (8) Platform</a></li>
+</ul>
+
+
+			<aside class="copyright" role="note">
+				
+				&copy; 2017 APL 2.0 &ndash;
+				
+				Documentation built with
+				<a href="https://www.gohugo.io" target="_blank">Hugo</a>
+				using the
+				<a href="http://github.com/digitalcraftsman/hugo-material-docs" target="_blank">Material</a> theme.
+			</aside>
+
+			<footer class="footer">
+				
+
+<nav class="pagination" aria-label="Footer">
+  <div class="previous">
+  
+      <a href="http://docs.engineblock.io/users-guide/metrics/" title="Metrics">
+        <span class="direction">
+          Previous
+        </span>
+        <div class="page">
+          <div class="button button-previous" role="button" aria-label="Previous">
+            <i class="icon icon-back"></i>
+          </div>
+          <div class="stretch">
+            <div class="title">
+              Metrics
+            </div>
+          </div>
+        </div>
+      </a>
+  
+  </div>
+
+  <div class="next">
+  
+      <a href="http://docs.engineblock.io/users-guide/command_line/" title="Command Line">
+        <span class="direction">
+          Next
+        </span>
+        <div class="page">
+          <div class="stretch">
+            <div class="title">
+              Command Line
+            </div>
+          </div>
+          <div class="button button-next" role="button" aria-label="Next">
+            <i class="icon icon-forward"></i>
+          </div>
+        </div>
+      </a>
+  
+  </div>
+</nav>
+
+
+
+
+
+			</footer>
+		</div>
+	</article>
+
+	<div class="results" role="status" aria-live="polite">
+		<div class="scrollable">
+			<div class="wrapper">
+				<div class="meta"></div>
+				<div class="list"></div>
+			</div>
+		</div>
+	</div>
+</main>
+
+    <script>
+    
+      var base_url = '';
+      var repo_id  = '';
+    
+    </script>
+
+    <script src="http://docs.engineblock.io/javascripts/application.js"></script>
+    
+
+    <script>
+      /* Add headers to scrollspy */
+      var headers   = document.getElementsByTagName("h2");
+      var scrollspy = document.getElementById('scrollspy');
+
+      if(scrollspy) {
+        if(headers.length > 0) {
+          for(var i = 0; i < headers.length; i++) {
+            var li = document.createElement("li");
+            li.setAttribute("class", "anchor");
+
+            var a  = document.createElement("a");
+            a.setAttribute("href", "#" + headers[i].id);
+            a.setAttribute("title", headers[i].innerHTML);
+            a.innerHTML = headers[i].innerHTML;
+
+            li.appendChild(a)
+            scrollspy.appendChild(li);
+          }
+        } else {
+          scrollspy.parentElement.removeChild(scrollspy)
+        }
+
+
+        /* Add permanent link next to the headers */
+        var headers = document.querySelectorAll("h1, h2, h3, h4, h5, h6");
+
+        for(var i = 0; i < headers.length; i++) {
+            var a = document.createElement("a");
+            a.setAttribute("class", "headerlink");
+            a.setAttribute("href", "#" + headers[i].id);
+            a.setAttribute("title", "Permanent link")
+            a.innerHTML = "¶";
+            headers[i].appendChild(a);
+        }
+      }
+    </script>
+
+    
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+  </body>
+</html>
+

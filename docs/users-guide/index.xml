@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Users-guides on EngineBlock</title>
+    <link>http://docs.engineblock.io/users-guide/</link>
+    <description>Recent content in Users-guides on EngineBlock</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>APL 2.0</copyright>
+    <lastBuildDate>Fri, 19 May 2017 21:52:57 +0000</lastBuildDate>
+    
+	<atom:link href="http://docs.engineblock.io/users-guide/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Concepts</title>
+      <link>http://docs.engineblock.io/users-guide/concepts/</link>
+      <pubDate>Fri, 19 May 2017 21:52:57 +0000</pubDate>
+      
+      <guid>http://docs.engineblock.io/users-guide/concepts/</guid>
+      <description>EngineBlock (EB) is a machine pattern for load test design and execution. This guide is intended to illustrate the moving parts and how they work together.
+Scenario EngineBlock executes performance testing scenarios in a Nashorn scripting environment. The scenario is in the form of a script, either constructed on-the-fly from the command line options, or directly created by a scenario designer.
+Activity A scenario can have multiple activities. Each activity runs independently of the others, and independently of the control flow of the scenario script.</description>
+    </item>
+    
+    <item>
+      <title>Metrics</title>
+      <link>http://docs.engineblock.io/users-guide/metrics/</link>
+      <pubDate>Fri, 19 May 2017 21:52:57 +0000</pubDate>
+      
+      <guid>http://docs.engineblock.io/users-guide/metrics/</guid>
+      <description>Unit of Measure All metrics collected from activities are recorded in nanoseconds and ops per second. All histograms are recorded with 4 digits of precision using HDR histograms.
+Collecting Metrics If you like to have all of your testing data in one place, then you may be interested in reporting your measurements to a monitoring system. For this, EB includes a Metrics Library. Graphite reporting is baked in as the default reporter.</description>
+    </item>
+    
+    <item>
+      <title>Scenario Scripting</title>
+      <link>http://docs.engineblock.io/users-guide/scripting/</link>
+      <pubDate>Fri, 19 May 2017 21:52:57 +0000</pubDate>
+      
+      <guid>http://docs.engineblock.io/users-guide/scripting/</guid>
+      <description>Motive The EB runtime is a combination of a scripting sandbox and a workload execution machine. This is not accidental. With this particular arrangement, it should be possible to build sophisticated tests across a variety of scenarios. In particular, logic which can observe and react to the system under test can be powerful. With this approach, it becomes possible to break away from the conventional run-interpret-adjust cycle which is all too often done by human hands.</description>
+    </item>
+    
+    <item>
+      <title>Command Line</title>
+      <link>http://docs.engineblock.io/users-guide/command_line/</link>
+      <pubDate>Fri, 19 May 2017 22:09:53 +0000</pubDate>
+      
+      <guid>http://docs.engineblock.io/users-guide/command_line/</guid>
+      <description>To get built-in help on the available command line options, run
+java -jar eb.jar --help  The most common and useful commands will be explained at some depth in this guide, however the built-in help above will be complete, with proper syntax for all commands.
+There is more than one way to invoke EngineBlock. The sections below explain more about them, with more detail about how EngineBlock works as you read further.</description>
+    </item>
+    
+    <item>
+      <title>User Guide</title>
+      <link>http://docs.engineblock.io/users-guide/</link>
+      <pubDate>Fri, 19 May 2017 22:00:36 +0000</pubDate>
+      
+      <guid>http://docs.engineblock.io/users-guide/</guid>
+      <description> This is the user&amp;rsquo;s guide.
+This is another section </description>
+    </item>
+    
+    <item>
+      <title>CLI Scripting</title>
+      <link>http://docs.engineblock.io/users-guide/cli_scripting/</link>
+      <pubDate>Fri, 19 May 2017 22:09:53 +0000</pubDate>
+      
+      <guid>http://docs.engineblock.io/users-guide/cli_scripting/</guid>
+      <description>Sometimes you want to to run a set of workloads in a particular order, or call other specific test setup logic in between phases or workloads. While the full scripting environment allows you to do this and more, it is not necessary to write javascript for every scenario.
+For more basic setup and sequencing needs, you can achive a fair degree of flexibility on the command line. A few key API calls are supported directly on the command line.</description>
+    </item>
+    
+  </channel>
+</rss>
