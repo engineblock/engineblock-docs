@@ -54,6 +54,16 @@ There is more than one way to invoke EngineBlock. The sections below explain mor
     </item>
     
     <item>
+      <title>Cycle Tracking</title>
+      <link>http://docs.engineblock.io/designsketches/tracking/</link>
+      <pubDate>Fri, 19 May 2017 22:09:53 +0000</pubDate>
+      
+      <guid>http://docs.engineblock.io/designsketches/tracking/</guid>
+      <description>Synopsis When coordinating activities with each other, it is necessary to link the completion status of an activity to the inputs available to another. Doing this concurrently and efficiently presents some interesting challenges.
+Some testing scenarios require that you are able to take the results of one phase of testing as input to another phase. For example, you may want to simply visit created data in a later phase to verify that it is accurate.</description>
+    </item>
+    
+    <item>
       <title>Scripting Histograms</title>
       <link>http://docs.engineblock.io/designsketches/scripting_histograms/</link>
       <pubDate>Fri, 19 May 2017 22:09:53 +0000</pubDate>
