@@ -1,10 +1,11 @@
-#!/bin/bash
+##!/bin/bash
 IP=$(ifconfig | awk '/inet/ { print $2 }' | egrep -v '^fe|^127|^192|^172|::' | head -1)
 IP=${IP#addr:}
 
 if [ ! -x /usr/bin/hugo ]
 then
  HUGO_VERSION=0.20.7
+ #HUGO_VERSION=0.19
  DL_SUFFIX=Linux-64bit
  INNER_SUFFIX=linux_amd64
  wget -P /tmp/ https://github.com/spf13/hugo/releases/download/v${HUGO_VERSION}/hugo_${HUGO_VERSION}_${DL_SUFFIX}.tar.gz
@@ -33,7 +34,7 @@ hugo serve \
  --renderToDisk \
  --ignoreCache \
  --canonifyURLs \
- --bind ${IP} \
+ --bind 0.0.0.0 \
  --appendPort \
  --baseUrl "http://${IP}/" \
  --logFile hugo.log \

@@ -1,3 +1,8 @@
+---
+date: 2017-05-19T22:09:53
+title: Command Line
+weight: 32
+---
 # EngineBlock Command Line
 
 To get built-in help on the available command line options, run
@@ -40,7 +45,7 @@ With this mode, you can build test scenarios which are more sophisticated than a
 
 No matter how you start an EngineBlock scenario, a control script is always the outer-most level of logic.
 
-The scripting runtime is simply Java 8's Nashorn. You can do anything in your script that it allows. Furthermore, elements of the [core runtime](../content/concepts/index.md) are wired into the scripting sandbox. 
+The scripting runtime is simply Java 8's Nashorn. You can do anything in your script that it allows. Furthermore, elements of the [core runtime](concepts.md) are wired into the scripting sandbox. 
 
 You can combine ``activity`` and ``script`` options in the same command line:
 
@@ -69,7 +74,7 @@ You can also learn more about a particular activity type like this:
 java -jar eb.jar help <activity type>
 ~~~
 
-Most everything else that you need to know is covered elsewhere in the [Usage Guide](usage_guide.md). 
+Most everything else that you need to know is covered elsewhere in the [Usage Guide](../../original/usage_guide.md). 
 
-If you haven't already, it would be a good time to read about [core concepts](../content/concepts/index.md).
+If you haven't already, it would be a good time to read about [core concepts](concepts.md).
 

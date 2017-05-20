@@ -1,10 +1,66 @@
-languageCode = "en-us"
-title = "EngineBlock Docs"
 baseURL = "http://docs.engineblock.io/"
+languageCode = "en-us"
+title = "EngineBlock"
 theme = "hugo-material-docs"
+metadataformat = "yaml"
+canonifyurls = true
+
+[params]
+	# General information
+	# author = "Jonathan Shook"
+	description = "EngineBlock Docs"
+	copyright = "APL 2.0"
+
+	# Repository
+	# provider = "GitHub"
+	# repo_url = "https://github.com/engineblock/engineblock"
+
+	# version = "1.0"
+	logo = "images/engineblock_128.png"
+	favicon = "/images/engineblock_32.png"
+
+	# permalink = "#"
+
+[params.palette]
+    primary = "grey"
+    accent  = "teal"
+
+#[params.font]
+#    text = "Ubuntu"
+#    code = "Ubuntu Mono"
+
+[social]
+	github  = "engineblock/engineblock"
 
 [[menu.main]]
-  name   = "Concepts"
-  url    = "/concepts"
-  weight = 0
-  pre    = ""
+	name   = "EngineBlock"
+	url    = "/"
+	weight = 10
+[[menu.main]]
+	name   = "Quickstart"
+	url    = "quickstart/"
+	weight = 20
+[[menu.main]]
+	name   = "User's Guide"
+	url    = "users-guide/"
+	weight = 30
+[[menu.main]]
+    name   = "Developer's Guide"
+    url    = "developers/"
+    weight = 100
+
+
+
+
+#[[menu.main]]
+#  name = "Quick Start"
+#  url = "quick-start/"
+#  weight = 10
+#
+
+[blackfriday]
+	smartypants	= true
+	fractions = true
+	smartDashes = true
+	plainIDAnchors = true
+

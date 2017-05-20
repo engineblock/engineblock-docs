@@ -1,13 +1,12 @@
 ---
-menu:
-  main:
-    parent: Concepts
-    identifier: concepts1
-    weight: 0
+date: 2017-05-19T21:52:57
+title: Concepts
+weight: 11
 ---
 
-# Core Concepts
- wgn and execution. This guide is intended to illustrate the moving parts and how they work together.
+EngineBlock (EB) is a machine pattern for load test design and
+execution.  This guide is intended to illustrate the moving parts and how they
+work together.
 
 ## Scenario
 

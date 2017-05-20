@@ -1,22 +1,24 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Concepts on EngineBlock Docs</title>
-    <link>http://127.0.0.1:1314/concepts/</link>
-    <description>Recent content in Concepts on EngineBlock Docs</description>
+    <title>Concepts on EngineBlock</title>
+    <link>http://10.10.100.5:1314/concepts/</link>
+    <description>Recent content in Concepts on EngineBlock</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
+    <copyright>APL 2.0</copyright>
+    <lastBuildDate>Fri, 19 May 2017 21:52:57 +0000</lastBuildDate>
     
-	<atom:link href="http://127.0.0.1:1314/concepts/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://10.10.100.5:1314/concepts/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title></title>
-      <link>http://127.0.0.1:1314/concepts/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <title>Concepts</title>
+      <link>http://10.10.100.5:1314/concepts/concepts/</link>
+      <pubDate>Fri, 19 May 2017 21:52:57 +0000</pubDate>
       
-      <guid>http://127.0.0.1:1314/concepts/</guid>
-      <description>Core Concepts wgn and execution. This guide is intended to illustrate the moving parts and how they work together.
+      <guid>http://10.10.100.5:1314/concepts/concepts/</guid>
+      <description>EngineBlock (EB) is a machine pattern for load test design and execution. This guide is intended to illustrate the moving parts and how they work together.
 Scenario EngineBlock executes performance testing scenarios in a Nashorn scripting environment. The scenario is in the form of a script, either constructed on-the-fly from the command line options, or directly created by a scenario designer.
 Activity A scenario can have multiple activities. Each activity runs independently of the others, and independently of the control flow of the scenario script.</description>
     </item>
