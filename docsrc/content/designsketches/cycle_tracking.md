@@ -26,7 +26,24 @@ that match some criteria selected by the tester. There isn't even yet a
 facility for an activity to capture results as an information source for others.
 
 In this section, hypothetical activities A and B will be coordinating
-their execution on individual cycles.
+their execution on individual cycles. A schematic of the dataflow between activity A and B follows:
+
+{{< viz >}}
+digraph sys1 {
+ rankdir=LR;
+ node[shape=box]
+ edge[dir=out]
+ state[label="Internal state"];
+ 
+ A -> marker;
+ marker -> state;
+ state -> tracker;
+ tracker -> B;
+}
+{{< /viz >}}
+
+The logic for producing inter-activity data and consuming it is mostly decoupled
+from activity internals for a couple of reasons that will become clearer below.
 
 ## Definitions
 
@@ -174,3 +191,11 @@ One potential solution to this is to require marker users (senders) to have a
 logicall connected and disconnected state, and to allow marker implementations
 to use these as active management events for the purposes of adjusting blocking
 modes according to efficiency and timeliness requirements.
+
+{{< viz >}}
+digraph d {
+ node[shape="box"];
+a[shape="record",label="0|1|2|3|4|5|6|7|8|9|10|11|..."];
+    
+}
+{{< /viz >}}
