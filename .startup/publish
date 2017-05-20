@@ -25,9 +25,9 @@ git submodule sync
 rm -rf docsrc/public
 hugo --source docsrc --config docsrc/config.toml --canonifyURLs
 
-echo "docs.engineblock.io" > docs/CNAME
 
 rsync -av --delete --progress docsrc/public/ docs/
+echo "docs.engineblock.io" > docs/CNAME
 
 git add docs
 git commit -m'publishing docs'
