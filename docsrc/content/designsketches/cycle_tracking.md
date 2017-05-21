@@ -19,14 +19,15 @@ Some testing scenarios require that you are able to take the results of
 one phase of testing as input to another phase. For example, you may want
 to simply visit created data in a later phase to verify that it is accurate.
 
-Engineblock already encapsulates a phase of testing with the *activity* concept.
-Activities also have well-defined input semantics. However, there is not yet
-a facility to allow an activity to feed another one with a set of inputs
-that match some criteria selected by the tester. There isn't even yet a
-facility for an activity to capture results as an information source for others.
+Engineblock already encapsulates a unit of testing with the *activity* concept.
+Activities also have well-defined input semantics. However, there is not yet a
+facility to allow an activity to feed another one with a set of inputs that
+match some criteria selected by the tester. There isn't even yet a facility for
+an activity to capture results as an information source for others.
 
-In this section, hypothetical activities A and B will be coordinating
-their execution on individual cycles. A schematic of the dataflow between activity A and B follows:
+In this section, hypothetical activities A and B will be coordinating their
+execution on individual cycles. A schematic of the dataflow between activity A
+and B follows:
 
 {{< viz >}}
 digraph sys1 {
@@ -47,35 +48,29 @@ from activity internals for a couple of reasons that will become clearer below.
 
 ## Definitions
 
-### Pacing
+### Serializing Cycles
 
 A simple form of interplay between two activities is to allow a downstream
 activity to take action on cycles that have been fully retired or completed by
-an upstream activity. This specific functionality is termed *pacing* in this
-section. When pacing an activity A to activity B, you are ensuring that, for
-each specific cycle executed by A, B will not see it until the cycle has fully
-completed on A. This is a way to achieve serialization of cycle iterations
-between A and B. It simply means that the input to B blocks until it has enough
-completion data from A to know that the next cycle is no longer active in A.
+an upstream activity. When serializing cycles values between an activity A and
+an activity B, you are ensuring that active processing of that iteration does
+not overlap in time between them. It simply means that the input to B blocks
+until it has enough completion data to know that that activity A has retired the
+cycle.
 
-### Marking
+### Consuming Results
 
-If you want to provide some detail to activity B for the specific iterations run
-by A, then each cycle of A needs to yield a result. This means that Activities
-in general need to to act as a function between the cycle number and some result
-type. Not only do you need to track whether a given cycle has been completed,
-but you also need to know what the result of that cycle was, providing it to
-activity B to operate on. *Marking* refers to the ability to record specific
-cycle outcomes for an activity. It is the producer side of cycle status sharing
-between two activities. A *CycleMarker* is an implementation of the recorder
-side of result data provided by an activity.
+If you want to provide some detail to activity B for the specific cycle
+iterations run by A, then each cycle of A needs to yield a result. This means
+that Activities in general need to to act as a function between the cycle number
+and some result type. It is not sufficient to simply know when a cycle is no
+longer active in A. Now, you have data that needs to be pipelined between activities
+A and B. Typical queueing methods can create higher contention than is desired here,
+so other type-specific strategies will be used.
 
-### Tracking
-
-Tracking is the consumer side of cycle status sharing between two activities. A
-*CycleTracker* is an implementation of the reader side of data provided by a
-cycle marker. If activity A is marking cycles, then activity B could be tracking
-those cycles with the help of a tracker.
+- A *CycleResultSink* is the data consumer side of result data provided by an activity.
+- A *CycleResultSource* is the data producer side of result data provided by an activity.
+- The combination of these two functions is called a *CycleTracker*.
 
 ### Result Coding
 
@@ -104,11 +99,12 @@ we go forward.
 
 ### Filtering
 
-Once you have the ability to provide specific outcomes from each activity cycle,
-filtering becomes relatively easy. This would be useful, for example, for
-marking cycles of activity A for further work **downstream** in activity B.
+A *CycleFilter* is simply an IntPredicate wrapper. It is used to filter cycle
+results. The thread harness (The Motor, in EB parlance) uses cycle filters
+when provided in order to subfilter the available cycles that will be dispatched
+to an action.
 
-## The Marking Bestiary
+## The Tracking Bestiary
 
 There are various functional design trade-offs to think about when building an
 efficient coordination layer between different thread pools. Practically
@@ -120,17 +116,17 @@ different implementations.
 
 ### blocking or non-blocking
 
-A Marker or Tracker is non-blocking if it is able to scale well to many marking
-cycles. It is not, for example, if it has internal synchronization that makes it
-block cycles as a bottleneck. Given that this EngineBlock is meant to be a test
-instrument, you should not build markers that do this unless they are purchasing
-something very useful for the trade-off.
+A Tracker is non-blocking if it is able to scale well for many sources and
+sinks. It is not, for example, if it has internal synchronization that could
+make it a critical bottleneck. Given that this EngineBlock is meant to be a test
+instrument, you should not build trackers that do this unless they are
+purchasing something very useful for the trade-off.
 
 ### throttling or non-throttling
 
 Slightly different than blocking is the notion of throtting. In terms of functional
-needs, a marker may have good reason to throttle a completing activity cycle, and
-a tracker may have good reason to throttle a starting activity cycle. 
+needs, a tracker may have good reason to throttle either the source or the sink
+side of data flow. 
 
 ### blocking vs throttling
 
@@ -138,36 +134,39 @@ The primary distinction between blocking and throttling is whether or not the
 behavior is needed to support a particular scenario or configuration.
 
 Consider a case in which activity A runs 54,000,000,000 cycles, each after which
-activity B is intended to repeat a different action on the same cycles. If
-activity A ran on average 2x a fast as activity B, then there is an implied
-buffer of 27,000,000,000 cycles. If this were a performance test, then the cost
-of holding that queue would surely impact the results and very likely the
-ability of the test system to run well. In this case it would make sense to tie
-the execution rate of activity B to activity A, at least within some reasonable
-bound. That would mean that A would have to wait on B about half the time,
-however the flow between the two activities would still be meaningful and
-executable. This is an example of throttling that makes sense.
+activity B is intended to repeat a different action on the same numbered cycles.
+If activity A ran on average twice a fast as activity B, then there is an
+implied buffer of 27,000,000,000 cycles that would be waiting for B to catch up
+once A is finished. If this were a performance test, then the cost of holding
+that queue would surely impact the results and very likely the ability of the
+test system to run well. In this case it would make sense to tie the execution
+rate of activity B to activity A, at least within some reasonable bound. That
+would mean that A would have to wait on B about half the time, however the flow
+between the two activities would still be meaningful and executable. This is an
+example of throttling that makes sense.
 
-However, if you were to cause activity A to wait often in a marker even if there
-were no activity B tracking the data for that marker, this would be considered a
-serious blocking effect that would limit the fidelity of any such test.
+Alternatively, consider what would happen if you were to cause activity A to
+wait often while sinking a result. Even if activity B was not sourcing data from
+that tracker, it would be considered a serious blocking effect that would limit
+the fidelity of any test results.
 
 ### Thread-safety: all markers and trackers
 
-All markers and trackers must be thread safe. Any practical scenario has
-activities with many threads.
+All trackers must be thread safe. Any practical scenario has activities with
+many threads.
 
 ### persisted or non-persisted
 
-A marker may record its data stream (a sequence of cycle values and result codes)
-in a form to be later re-used.
+A tracker may record its data stream (a sequence of cycle values and result
+codes) in a form to be later re-used. These may be provided in the future with
+CycleRecorder* and *CyclePlayer* types.
 
 ### buffered or non-buffered
 
-The interaction between the producer-consumer pairing of a marker and tracker
-may be buffered, meaning that the tracker may not always see the last logical
-value recorded by the marker, or that the marker may not expose it immediately.
-
+The interaction between the producer-consumer pairing of a sink and source may
+be buffered, meaning that the tracker may not always see the last logical value
+recorded by the upstream activity, or that the it may not imediatly expose the
+absolute latest value to any downstream activity.
 
 ## Open questions
 

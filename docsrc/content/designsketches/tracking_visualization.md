@@ -104,6 +104,39 @@ In this case, it is possible to efficiently pace each segment as a unit, by allo
 efficient concurrent counting algorithms to operate exclusively on the segment state
 without exposing it yet to the reader side.
 
+## Stride and Filtering
+
+When using cycle stride of greater than 1, a strategy that causes a number of
+cycles to be processed within each thread, filtering may become a challenge.
+This is because you may want the same type of operational grouping within a downstream
+thread as you have in an upstream thread.
+
+Here is the current flow of stride, as managed by a thread harness (AKA a Motor in EB parlance),
+an input, and an action:
+
+{{< jssequence >}}
+Motor->Input: get[stride=5]
+Input->Motor: startsat=25
+Note over Motor: foreach v in [25,30)\n(contiguously)
+Motor->Action: runCycle(v)
+Action->Motor: result
+{{< /jssequence >}}
+
+That means that any filtering needs to be applied at the motor level, after applying stride, but
+before providing the cycles to the Action. This is also in keeping with the desire to avoid
+injecting inter-activity flow logic into the programming scope of individual activities.
+
+The revised *stride & filter* scenario looks like this:
+
+{{< jssequence >}}
+Motor->Input: get[stride=5]
+Input->Motor: startsat=25
+Note over Motor: foreach v in [25,30)\n(matching filter)
+Motor->Action: runCycle(v)
+Action->Motor: result
+{{< /jssequence >}}
+
+
 ## Performance Strategies
 
 1. Track the highest contiguous completed cycle as well as the highest completed cycle.
