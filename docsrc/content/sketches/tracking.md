@@ -2,12 +2,16 @@
 date: 2017-05-19T22:09:53
 title: Cycle Tracking
 weight: 13
-menu:
-  main:
-    parent: Design Sketches
-    identifier: Cycle Tracking
-    weight: 12
+#menu:
+#  main:
+#    parent: Design Sketches
+#    identifier: Cycle Tracking
+#    weight: 12
 ---
+
+{{< note >}}
+See also: [Tracking, Visually](../tracking_visually/)
+{{< /note >}}
 
 ## Synopsis
 

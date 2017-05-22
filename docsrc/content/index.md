@@ -14,13 +14,13 @@ The design goals:
 1. Provide a useful and intuitive Reusable Machine Pattern for constructing and
    reasoning about concurrent performance tests. To encourage this, the runtime
    machinery is based on 
-   [simple and tangible core concepts](/concepts.md).
+   [simple and tangible core concepts](/user-guide/concepts/).
 2. Reduce testing time of complex scenarios with many variables. This is
    achieved by controlling tests from an
-   [open javascript sandbox](/scripting.md).
+   [open javascript sandbox](/user-guide/scripting/).
    This makes more sophisticated scenarios possible when needed. 
 3. Minimize the amount of effort required to get empirical results from a 
-   test cycle. For this, [metrics reporting](metrics.md) is baked in.
+   test cycle. For this, [metrics reporting](/user-guide/metrics/) is baked in.
 
 In short, EngineBlock wishes to be a programmable power tool for performance
 testing. However, it is somewhat generic. It doesn't know directly about a
@@ -34,13 +34,13 @@ your own ActivityTypes and embed EngineBlock with them as the core runtime. You
 can always experiment with it and learn how it works by using the built-in
 diagnostic drivers.
 
-## Contributions
+### Contributions
 
 If you are interested in contributing to Engine Block, more information is
 available in the 
-[Developer's section](https://github.com/engineblock/engineblock/blob/master/docs/developers.md).
+[Developer's Guide](/dev-guide/).
 
-## History
+### History
 
 The Engine Block project started as a branch of [test client](http://github.com/jshook/testclient). 
 It has since evolved to be more generic.

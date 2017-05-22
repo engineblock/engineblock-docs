@@ -61,7 +61,7 @@ enable modularity.
 
 ## Intermodule Dependencies
 
-![Project Structure](../../original/diagrams/project_structure.png)
+![Project Structure](../../static/diagrams/project_structure.png)
 
 Modularity at runtime is enabled via the
 [ServiceLoader](https://docs.oracle.com/javase/8/docs/api/java/util/ServiceLoader.html).

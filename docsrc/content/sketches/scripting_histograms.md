@@ -2,11 +2,11 @@
 date: 2017-05-19T22:09:53
 title: Scripting Histograms
 weight: 13
-menu:
-  main:
-    parent: Design Sketches
-    identifier: Scripting Histograms
-    weight: 12
+#menu:
+#  main:
+#    parent: Design Sketches
+#    identifier: Scripting Histograms
+#    weight: 12
 ---
 
 Histogram-based analysis is one of the most effective methods for performance

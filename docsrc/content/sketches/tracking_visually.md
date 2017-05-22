@@ -2,11 +2,11 @@
 date: 2017-05-19T22:09:53
 title: Tracking Diagrams
 weight: 13
-menu:
-  main:
-    parent: Design Sketches
-    identifier: Tracking Diagrams
-    weight: 12
+#menu:
+#  main:
+#    parent: Design Sketches
+#    identifier: Tracking Diagrams
+#    weight: 12
 ---
 
 This section lays out visually some of the design challenges in the cycle
@@ -136,6 +136,17 @@ Motor->Action: runCycle(v)
 Action->Motor: result
 {{< /jssequence >}}
 
+
+## Tracking Highest Contiguous
+
+When marking an array, when cycles can complete out of order, it is useful to track
+the highest contiguous value that has been completed. To do this efficiently, CAS
+can be employed to do an almost free "pull up" to the current value when the most
+max contiguous value was already one less than the current marking cycle.
+This does not, however, handle the case of fast-forwarding the contiguous count
+according to cycles that have already been marked. Also, because the bytebuffer is
+not atomic or volatile itself, a more resilient check needs to be added to the
+max contiguous property that will eagerly update when asked.
 
 ## Performance Strategies
 

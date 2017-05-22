@@ -11,10 +11,10 @@ menu:
 
 ## Motive
 
-The EB runtime is a combination of a scripting sandbox and a workload execution
-machine. This is not accidental. With this particular arrangement, it should be
-possible to build sophisticated tests across a variety of scenarios. In
-particular, logic which can observe and react to the system under test can be
+The EngineBlock runtime is a combination of a scripting sandbox and a workload
+execution machine. This is not accidental. With this particular arrangement, it
+should be possible to build sophisticated tests across a variety of scenarios.
+In particular, logic which can observe and react to the system under test can be
 powerful. With this approach, it becomes possible to break away from the
 conventional run-interpret-adjust cycle which is all too often done by human
 hands.
@@ -40,7 +40,7 @@ fly.
 Here is a view of what is below the line, separate from the scripting sandbox,
 and what is hoisted up into the scripting sandbox.
 
-![ScriptingEngine](../../original/diagrams/artandmachinery.png)
+![ScriptingEngine](/diagrams/artandmachinery.png)
 
 ## Scripting Environment
 

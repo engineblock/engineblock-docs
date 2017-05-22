@@ -20,7 +20,7 @@ appropriately. That is what an Activity Type is for -- filling in the difference
 between what the core machinery provides and what is needed to simulate a
 particular kind of application workload.
 
-### ActivityTypes
+## ActivityTypes
 
 Each activity that runs in EngineBlock is provided by an instance of an
 ActivityType. The first activity type that you will become familiar with is
@@ -28,9 +28,9 @@ called ``diag``. An ActivityType is responsible for providing the
 application-like functionality that can be used in template form by activity
 instances. When you are ready, there is a section all about the basics of
 actually [implementing an activity
-type](dev_building_activities.md).
+type](/dev-guide/building_activities/).
 
-### Activity Parameters
+## Activity Parameters
 
 All activities are controlled at runtime with a _ParameterMap_. This is simply
 an observable thread-safe map of configuration values in string-string form,
@@ -44,7 +44,8 @@ type=cql alias=activity1 yaml=inserts_cql.yaml cycles=0..1000 threads=10
 
 Other convenient forms are available when needed -- a JSON map for example.
 
-### Thread Controls
+
+## Threading
 
 At runtime, an activity is driven by a dedicated thread pool harness -- the
 ActivityExecutor. This harness knows how to adjust the running threads down or
@@ -56,8 +57,6 @@ for a couple of reasons:
 2. The synthetic thread ID can be borrowed and used to directly 
    map some measure of concurrency of data flow.
 3. It is a familiar concurrency primitive that is used in many other testing tools.
-
-### From ActivityTypes to Threads
 
 There are a few lifetime scopes to keep in mind when a scenario is running. They
 are:
@@ -108,8 +107,10 @@ and ActionDispenser on that activity, respectively.
 
 In practice, you don't have to think about the API at this level of detail. Most
 new ActivityType implementations will simply implement the API just enough to
-provide an Action implementation and nothing more. A basic annotated example is
-shown under [dev_annotated_diag.md](dev_annotated_diag.md).
+provide an Action implementation and nothing more.
+
+The [annotated Diag](/dev-guide/annotated_diag/) section shows the diag activity
+type, built one piece at a time.
 
 ### Why Motors?
 
@@ -147,14 +148,14 @@ implementation chooses, it may return a unique input for each slot, or a single
 cached instance for all slots. This is controlled simply by the slot index,
 which is passed into the factory methods for motors, inputs and threads.
 
-### Activity Alias
+## Activity Alias
 
 The only way to address a running activity for dynamic control is through its
 _alias_. An alias is simply the name that the ScenarioController knows as the
 activity's name at runtime. If an alias is not provided, the runtime may accept
 a new activity, but it will be forced to generate an internal name for it.
 
-### ActivityType Name
+## ActivityType Name
 
 ActivityTypes are discovered by the runtime via the Java ServiceLoader API. In
 addition to the basic Java type, an ActivityType instance has a name. For the
@@ -184,7 +185,7 @@ The default implementation of an activity input is a sequence generator. This is
 what most activities will need. However, rate controls and other decorators may
 be desired, so the API makes it easy to wrap the default input.
 
-### ActivityType Packaging & Discovery
+## ActivityType Discovery
 
 _ActivityType_ implementations are discovered by the runtime using the
 [ServiceLoader API](https://docs.oracle.com/javase/8/docs/api/java/util/ServiceLoader.html) ,

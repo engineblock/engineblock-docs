@@ -78,7 +78,3 @@ You can also learn more about a particular activity type like this:
 java -jar eb.jar help <activity type>
 ~~~
 
-Most everything else that you need to know is covered elsewhere in the [Usage Guide](../../original/usage_guide.md). 
-
-If you haven't already, it would be a good time to read about [core concepts](concepts.md).
-

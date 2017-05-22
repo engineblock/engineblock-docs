@@ -2,11 +2,6 @@
 date: 2017-05-19T22:09:53
 title: Slot Assembly    
 weight: 32
-menu:
-  main:
-    parent: Dev Guide
-    identifier: Slot Assembly
-    weight: 12
 ---
 
 # This is superceded with recent changes and needs to be rewritten
@@ -14,13 +9,18 @@ menu:
 
 ### Understanding Slot Assembly
 
-If you are building new ActionType implementations for EngineBlock, it can help to understand the creational patterns used for slot assembly.
+If you are building new ActionType implementations for EngineBlock, it can help
+to understand the creational patterns used for slot assembly.
 
 ### What is Slot Assembly?
 
-_Slot assembly_ in this context simply refers the logic that determines how to assemble a motor, input, and action instance together for a numbered slot within an activity.
+_Slot assembly_ in this context simply refers the logic that determines how to
+assemble a motor, input, and action instance together for a numbered slot within
+an activity.
 
-The slot assembly logic is contained within the ActivitySlotAssembler class. That is its sole responsibility. It was isolated in this way because it is core to understanding how slots are populated within an activity.
+The slot assembly logic is contained within the ActivitySlotAssembler class.
+That is its sole responsibility. It was isolated in this way because it is core
+to understanding how slots are populated within an activity.
 
 ### How does it work?
 

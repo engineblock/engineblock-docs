@@ -1,12 +1,7 @@
 ---
-date: 2017-05-19T22:09:53
-title: Contributing
-weight: 32
-menu:
-  main:
-    parent: Dev Guide
-    identifier: Contributing
-    weight: 12
+date: 2017-05-19T21:52:39
+title: EngineBlock Dev Guide
+weight: 0
 ---
 
 ## Conduct
@@ -56,6 +51,7 @@ in more detail the moving parts and user-facing ideas which might be too complex
 or opaque for a single coding and testing effort. Think of these as *epic*
 ideas, which will, by their nature, be required to have some design and usage
 documentation submitted before they are merged.
+
 
 
 

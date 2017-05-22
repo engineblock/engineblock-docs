@@ -123,5 +123,5 @@ If your script takes named parameters, you can pass them in &lt;param&gt;=&lt;va
 
 
 There are many other command line options available. For more advanced usage, 
-consult the [Command Line Reference](../users-guide/command_line.md), or even the full
-[Usage Guide](../../original/usage_guide.md)
+consult the [Command Line Reference](/user-guide/command_line/), or even the full
+[User's Guide](/user-guide/concepts/)
