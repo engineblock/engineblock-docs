@@ -34,12 +34,6 @@ your own ActivityTypes and embed EngineBlock with them as the core runtime. You
 can always experiment with it and learn how it works by using the built-in
 diagnostic drivers.
 
-### Contributions
-
-If you are interested in contributing to Engine Block, more information is
-available in the 
-[Developer's Guide](/dev-guide/).
-
 ### History
 
 The Engine Block project started as a branch of [test client](http://github.com/jshook/testclient). 
@@ -48,6 +42,12 @@ It has since evolved to be more generic.
 ## License
 
 EngineBlock is licensed under the Apache Public License 2.0
+
+## Contributing
+
+If you are interested in contributing to Engine Block, more information is
+available in the 
+[Developer's Guide](/dev-guide/).
 
 
 
