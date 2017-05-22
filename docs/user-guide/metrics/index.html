@@ -9,16 +9,16 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,maximum-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=10" />
-    <title>Getting Started - EngineBlock</title>
+    <title>Metrics - EngineBlock</title>
     <meta name="generator" content="Hugo 0.20.7" />
 
     
     <meta name="description" content="EngineBlock Docs">
     
-    <link rel="canonical" href="http://docs.engineblock.io/quickstart/">
+    <link rel="canonical" href="http://docs.engineblock.io/user-guide/metrics/">
     
 
-    <meta property="og:url" content="http://docs.engineblock.io/quickstart/">
+    <meta property="og:url" content="http://docs.engineblock.io/user-guide/metrics/">
     <meta property="og:title" content="EngineBlock">
     <meta property="og:image" content="http://docs.engineblock.io/images/engineblock_128.png">
     <meta name="apple-mobile-web-app-title" content="EngineBlock">
@@ -118,7 +118,7 @@
     </div>
     <div class="stretch">
       <div class="title">
-        Getting Started
+        Metrics
       </div>
     </div>
 
@@ -201,14 +201,11 @@
 
 
 
-<a class="current" title="Quickstart" href="http://docs.engineblock.io/quickstart/">
+<a  title="Quickstart" href="http://docs.engineblock.io/quickstart/">
 	
 	Quickstart
 </a>
 
-
-<ul id="scrollspy">
-</ul>
 
 
   
@@ -265,11 +262,14 @@
 
 
 
-<a  title="Metrics" href="http://docs.engineblock.io/user-guide/metrics/">
+<a class="current" title="Metrics" href="http://docs.engineblock.io/user-guide/metrics/">
 	
 	Metrics
 </a>
 
+
+<ul id="scrollspy">
+</ul>
 
 
       
@@ -380,128 +380,95 @@
 
 	<article class="article">
 		<div class="wrapper">
-			<h1>Getting Started </h1>
+			<h1>Metrics </h1>
 
 			
 
-<h2 id="getting-engineblock">Getting EngineBlock</h2>
+<h2 id="unit-of-measure">Unit of Measure</h2>
 
-<p>The latest release can always be run with this simple script: <a href="https://raw.githubusercontent.com/engineblock/engineblock/master/eb-cli/bin/run-eb">run-eb</a>. You can use the commands below to get it.</p>
+<p>All metrics collected from activities are recorded in nanoseconds and ops per second. All histograms are recorded with 4 digits of precision using HDR histograms.</p>
 
-<pre><code>curl -O https://raw.githubusercontent.com/engineblock/engineblock/master/eb-cli/bin/run-eb
-chmod u+x run-eb
-./run-eb help
+<h2 id="collecting-metrics">Collecting Metrics</h2>
+
+<p>If you like to have all of your testing data in one place, then you may be interested in reporting your measurements to a monitoring system. For this, EB includes a <a href="https://github.com/dropwizard/metrics">Metrics Library</a>. Graphite reporting is baked in as the default reporter.</p>
+
+<p>In order to enable graphite reporting, use one of these options formats:</p>
+
+<pre><code>    --report-graphite-to &lt;host&gt;
+    --report-graphite-to &lt;host&gt;:&lt;port&gt;
 </code></pre>
 
-<p>This script demonstrates how to fetch the version of the latest published artifact via maven central search. It also downloads that artifact if it doesn&rsquo;t find it locally cached within the last 2 days.</p>
+<h2 id="metrics-scripting">Metrics &amp; Scripting</h2>
 
-<p><strong>A cautionary word</strong>: As always, blindly running scripts from the web is not a good idea. Look at this script before you run it. Make sure you are comfortable with what it does. If you want, you can always download the jar directly:</p>
+<p>There are enhancements to the metrics bundled with EngineBlock to support advanced scripting. See the <a href="scripting.md#enhanced-metrics-for-scripting">Advanced Metrics for Scripting</a> in the scripting guide for more details.</p>
 
-<pre><code>curl -o eb-cli.jar https://repo1.maven.org/maven2/io/engineblock/eb-cli/1.0.17/eb-cli-1.0.17.jar
-java -jar eb-cli.jar
+<h2 id="metric-naming">Metric Naming</h2>
+
+<h4 id="prefix">Prefix</h4>
+
+<p>Core metrics use the prefix <em>engineblock</em> by default. You can override this with the &ndash;metrics-prefix option:</p>
+
+<pre><code>--metrics-prefix myclient.group5
 </code></pre>
 
-<p>The run-eb script may be used in place of:</p>
+<h4 id="identifiers">Identifiers</h4>
 
-<pre><code>java -jar eb.jar arg0 arg1 ...
+<p>Metrics associated with a specific activity will have the activity alias in their name. The names and types of metrics provided for each activity type vary. You can easily see what metrics are available for a given activity type:</p>
+
+<pre><code>java -jar eb.jar --show-metrics alias=test type=diag
 </code></pre>
 
-<p>All command line arguments will be carried through, as in:</p>
+<p>This initializes an activity as if to run it, but never starts cycling it.</p>
 
-<pre><code>./run-eb arg0 arg1 ...
+<h2 id="hdr-histograms">HDR Histograms</h2>
+
+<h3 id="recording-hdr-histogram-logs">Recording HDR Histogram Logs</h3>
+
+<p>You can record details of histograms from any compatible metric (histograms and timers) with an option like this:</p>
+
+<pre><code>--log-histograms hdrdata.log
 </code></pre>
 
-<h2 id="using-built-in-docs">Using Built-in Docs</h2>
+<p>If you want to record only certain metrics in this way, then use this form:</p>
 
-<pre><code>./run-eb --list-activity-types
+<pre><code>--log-histograms 'hdrdata.log:.*suffix'
 </code></pre>
 
-<p>This should provide a list of the activity types that are known to the client. The built-in activity type &ldquo;diag&rdquo;, is always available. If you are learning how to use EngineBlock, you will be using the &ldquo;diag&rdquo; activity quite a bit. If you are using a tailored engineblock runtime, you will have other activity types available according to your distribution.</p>
+<p>Notice that the option is enclosed in single quotes. This is because the second part of the option value is a regex. The &lsquo;.*suffix&rsquo; pattern matches any metric name that ends with &ldquo;suffix&rdquo;. Effectively, leaving out the pattern is the same as using &lsquo;.*&rsquo;, which matches all metrics.</p>
 
-<p><strong>Activity Type Docs</strong></p>
+<p>Metrics may be included in multiple logs, but care should be taken not to overdo this. Keeping higher fidelity histogram reservoirs does come with a cost, so be sure to be specific in what you record as much as possible.</p>
 
-<p>You can get further documentation about an activity&hellip;</p>
+<p>If you want to specify the recording interval, use this form:</p>
 
-<pre><code>./run-eb help diag
+<pre><code>--log-histograms 'hdrdata.log:.*suffix:5s'
 </code></pre>
 
-<p>This will show the internal documentation for the diag activity type. There will be documentation for every activity, as the activity loader will not recognize one without it.</p>
+<p>If you want to specify the interval, you must use the third form, although it is valid to leave
+the pattern empty, such as &lsquo;hdrdata.log::5s&rsquo;.</p>
 
-<p><strong>Running an Activity</strong></p>
+<h3 id="recording-hdr-histogram-stats">Recording HDR Histogram Stats</h3>
 
-<p>You can run an instance of an activity:</p>
+<p>You can also record basic snapshots of histogram data on a periodic interval just like above with
+HDR histogram logs. The option to do this is:</p>
 
-<pre><code>./run-eb activity alias=test1 type=diag threads=10 interval=200
+<pre><code>--log-histostats 'hdrstats.log:.*suffix:10s'
 </code></pre>
 
-<p>This shows the standard form of an activity definition. It is simply a map of activity parameters and values.
-Here is what they do:</p>
+<p>Everything works the same as for hdr histogram logging, except that the format is in
+CSV as shown in the example below:</p>
 
-<ul>
-<li><strong>type</strong> - All activities must have a type. This determines which ActivityType implementation is used to run the activity.</li>
-<li><strong>alias</strong> - All dynamically controlled activities must have an alias. The activity alias is the only way to modify a running activity once it is started. Think of the alias as the handle to the activity instance.</li>
-<li><strong>threads</strong> - All activities have this parameter. If you do not specify it, it defaults to 1. This determines how many threads are run concurrently within the activity.</li>
-</ul>
-
-<p>There are other parameters available to an activity, depending on the activity type. To discover the parameters
-for a given activity type and what they mean, use the <em>help &lt;activitytype&gt;</em> form shown above.</p>
-
-<p><strong>Running Multiple Activities</strong></p>
-
-<p>You can also run multiple activities, like this</p>
-
-<pre><code>./run-eb \
-activity alias=test1 type=diag threads=10 interval=200  \
-activity alias=test2 type=diag threads=1 interval=10
+<pre><code>#logging stats for session scenario-1479089852022
+#[Histogram log format version 1.0]
+#[StartTime: 1479089852.046 (seconds since epoch), Sun Nov 13 20:17:32 CST 2016]
+#Tag,Interval_Start,Interval_Length,count,min,p25,p50,p75,p90,p95,p98,p99,p999,p9999,max
+Tag=diag1.delay,0.457,0.044,1,16,31,31,31,31,31,31,31,31,31,31
+Tag=diag1.cycles,0.48,0.021,31,4096,8191,8191,8191,8191,8191,8191,8191,8191,8191,2097151
+Tag=diag1.delay,0.501,0.499,1,1,1,1,1,1,1,1,1,1,1,1
+Tag=diag1.cycles,0.501,0.499,498,1024,2047,2047,4095,4095,4095,4095,4095,4095,4095,4194303
+...
 </code></pre>
 
-<p>This shows a basic form of command-line scripting. The verb <em>activity</em> as actually a synonym for <em>start</em>, but it is more
-readable when all you are doing is starting some activities. The activities in this scenario are run concurrently,
-because each one is started asynchronously. If you wanted to run them one at a time, you could do this instead:</p>
-
-<pre><code>./run-eb \
-run alias=test1 type=diag threads=10 interval=200  \
-run alias=test2 type=diag threads=1 interval=10
-</code></pre>
-
-<p>The <em>run</em> command is synchronous. It waits for the activity named &lsquo;test1&rsquo; to complete before starting &lsquo;test2&rsquo;.</p>
-
-<h2 id="command-scripting">Command Scripting</h2>
-
-<p>Any time you invoke engineblock, you are asking it to run a scenario. Scenarios are Nashorn scripts, always.
-If you wanted to see the script that resulted from a particular command line, you can always ask, with the
-&ndash;show-script option.</p>
-
-<pre><code>./run-eb --show-script \
-run alias=test1 type=diag threads=10 interval=200  \
-run alias=test2 type=diag threads=1 interval=10
-</code></pre>
-
-<p>will show you this:</p>
-
-<pre><code>// Script
-scenario.run(&quot;alias=test1;type=diag;threads=10;interval=200;&quot;);
-scenario.run(&quot;alias=test2;type=diag;threads=1;interval=10;&quot;);
-</code></pre>
-
-<h2 id="custom-scenarios">Custom Scenarios</h2>
-
-<p>Of course, you can always write your own scenario script, using any valid javascript along with the built-in
-engineblock scripting extensions. This is often done by a <em>scenario designer</em>.</p>
-
-<p>Once you have a script, no matter how you came by it, you can simply run it like this:</p>
-
-<pre><code>./run-eb somescript
-</code></pre>
-
-<p>If your script takes named parameters, you can pass them in &lt;param&gt;=&lt;value&gt; &hellip; form, such as</p>
-
-<pre><code>./run-eb somescript arg1=val1 arg2=val2
-</code></pre>
-
-<p>There are many other command line options available. For more advanced usage,
-consult the <a href="http://docs.engineblock.io/user-guide/command_line/">Command Line Reference</a>, or even the full
-<a href="http://docs.engineblock.io/user-guide/concepts/">User&rsquo;s Guide</a></p>
+<p>Notice that the format used is similar to that of the HDR logging.</p>
 
 
 			<aside class="copyright" role="note">
@@ -520,7 +487,7 @@ consult the <a href="http://docs.engineblock.io/user-guide/command_line/">Comman
 <nav class="pagination" aria-label="Footer">
   <div class="previous">
   
-      <a href="http://docs.engineblock.io/" title="EngineBlock Users Guide">
+      <a href="http://docs.engineblock.io/user-guide/concepts/" title="Concepts">
         <span class="direction">
           Previous
         </span>
@@ -530,7 +497,7 @@ consult the <a href="http://docs.engineblock.io/user-guide/command_line/">Comman
           </div>
           <div class="stretch">
             <div class="title">
-              EngineBlock Users Guide
+              Concepts
             </div>
           </div>
         </div>
@@ -539,6 +506,22 @@ consult the <a href="http://docs.engineblock.io/user-guide/command_line/">Comman
   </div>
 
   <div class="next">
+  
+      <a href="http://docs.engineblock.io/user-guide/scripting/" title="Scenario Scripting">
+        <span class="direction">
+          Next
+        </span>
+        <div class="page">
+          <div class="stretch">
+            <div class="title">
+              Scenario Scripting
+            </div>
+          </div>
+          <div class="button button-next" role="button" aria-label="Next">
+            <i class="icon icon-forward"></i>
+          </div>
+        </div>
+      </a>
   
   </div>
 </nav>

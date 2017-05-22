@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Historics on EngineBlock</title>
+    <link>http://docs.engineblock.io/historic/</link>
+    <description>Recent content in Historics on EngineBlock</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>APL 2.0</copyright>
+    <lastBuildDate>Fri, 19 May 2017 22:09:53 +0000</lastBuildDate>
+    
+	<atom:link href="http://docs.engineblock.io/historic/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Slot Assembly</title>
+      <link>http://docs.engineblock.io/historic/internals_slot_assembly/</link>
+      <pubDate>Fri, 19 May 2017 22:09:53 +0000</pubDate>
+      
+      <guid>http://docs.engineblock.io/historic/internals_slot_assembly/</guid>
+      <description>This is superceded with recent changes and needs to be rewritten It is currently inaccurate and will be rewritten shortly Understanding Slot Assembly If you are building new ActionType implementations for EngineBlock, it can help to understand the creational patterns used for slot assembly.
+What is Slot Assembly? Slot assembly in this context simply refers the logic that determines how to assemble a motor, input, and action instance together for a numbered slot within an activity.</description>
+    </item>
+    
+  </channel>
+</rss>

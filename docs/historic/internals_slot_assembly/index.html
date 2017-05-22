@@ -9,16 +9,16 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,maximum-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=10" />
-    <title>Getting Started - EngineBlock</title>
+    <title>Slot Assembly - EngineBlock</title>
     <meta name="generator" content="Hugo 0.20.7" />
 
     
     <meta name="description" content="EngineBlock Docs">
     
-    <link rel="canonical" href="http://docs.engineblock.io/quickstart/">
+    <link rel="canonical" href="http://docs.engineblock.io/historic/internals_slot_assembly/">
     
 
-    <meta property="og:url" content="http://docs.engineblock.io/quickstart/">
+    <meta property="og:url" content="http://docs.engineblock.io/historic/internals_slot_assembly/">
     <meta property="og:title" content="EngineBlock">
     <meta property="og:image" content="http://docs.engineblock.io/images/engineblock_128.png">
     <meta name="apple-mobile-web-app-title" content="EngineBlock">
@@ -118,7 +118,7 @@
     </div>
     <div class="stretch">
       <div class="title">
-        Getting Started
+        Slot Assembly
       </div>
     </div>
 
@@ -201,14 +201,11 @@
 
 
 
-<a class="current" title="Quickstart" href="http://docs.engineblock.io/quickstart/">
+<a  title="Quickstart" href="http://docs.engineblock.io/quickstart/">
 	
 	Quickstart
 </a>
 
-
-<ul id="scrollspy">
-</ul>
 
 
   
@@ -380,128 +377,75 @@
 
 	<article class="article">
 		<div class="wrapper">
-			<h1>Getting Started </h1>
+			<h1>Slot Assembly </h1>
 
 			
 
-<h2 id="getting-engineblock">Getting EngineBlock</h2>
+<h1 id="this-is-superceded-with-recent-changes-and-needs-to-be-rewritten">This is superceded with recent changes and needs to be rewritten</h1>
 
-<p>The latest release can always be run with this simple script: <a href="https://raw.githubusercontent.com/engineblock/engineblock/master/eb-cli/bin/run-eb">run-eb</a>. You can use the commands below to get it.</p>
+<h2 id="it-is-currently-inaccurate-and-will-be-rewritten-shortly">It is currently inaccurate and will be rewritten shortly</h2>
 
-<pre><code>curl -O https://raw.githubusercontent.com/engineblock/engineblock/master/eb-cli/bin/run-eb
-chmod u+x run-eb
-./run-eb help
+<h3 id="understanding-slot-assembly">Understanding Slot Assembly</h3>
+
+<p>If you are building new ActionType implementations for EngineBlock, it can help
+to understand the creational patterns used for slot assembly.</p>
+
+<h3 id="what-is-slot-assembly">What is Slot Assembly?</h3>
+
+<p><em>Slot assembly</em> in this context simply refers the logic that determines how to
+assemble a motor, input, and action instance together for a numbered slot within
+an activity.</p>
+
+<p>The slot assembly logic is contained within the ActivitySlotAssembler class.
+That is its sole responsibility. It was isolated in this way because it is core
+to understanding how slots are populated within an activity.</p>
+
+<h3 id="how-does-it-work">How does it work?</h3>
+
+<p>The three primary components to a slot are the Motor, the Input, and the Action. The Motor is the Runnable for the slot&rsquo;s thread. It requires an input and an action instance. Each of the Motor, Input, and Action instances for a slot is provided by a MotorDispenser, InputDispenser, and ActionDispenser, respectively.</p>
+
+<p>An ActivityType implementation determines which components of an activity instance it will manage per-slot. This means that it could, if desired, provide no dispensers at all. (No MotorDispenser, no ActionDispenser, no InputDispenser) Such an implementation would do close to nothing, since the default action only logs the input value. When an ActivityType doesn&rsquo;t implement one of the three dispensers, the default implementation just uses a very basic core dispenser.</p>
+
+<p>All of the dispenser methods take a slot number as a parameter. The rest of the details for how a particular instance of a motor, input or action is created are controlled by the instance of the dispenser itself.</p>
+
+<h3 id="an-example">An example</h3>
+
+<p>Suppose you have a type FooActivityType implementing ActivityType. It implements none of the decorator interfaces. It looks like this:</p>
+
+<pre><code>public class FooActivityType implements ActivityType {
+
+  public string getName() {
+    return &quot;foo&quot;;
+  }
+
+...
 </code></pre>
 
-<p>This script demonstrates how to fetch the version of the latest published artifact via maven central search. It also downloads that artifact if it doesn&rsquo;t find it locally cached within the last 2 days.</p>
+<p>In this case, all of the components for each slot are provided by the core runtime and assembled into a motor to be run within the ActivityExecutor&rsquo;s thread pool.</p>
 
-<p><strong>A cautionary word</strong>: As always, blindly running scripts from the web is not a good idea. Look at this script before you run it. Make sure you are comfortable with what it does. If you want, you can always download the jar directly:</p>
+<p>if you wanted to add an action to it, so that it does something besides just logging every 1000th cycle (as the CoreAction does), you would declare your implementation like this:</p>
 
-<pre><code>curl -o eb-cli.jar https://repo1.maven.org/maven2/io/engineblock/eb-cli/1.0.17/eb-cli-1.0.17.jar
-java -jar eb-cli.jar
+<pre><code>public class FooActivityType implements ActivityType {
+
+  public string getName() {
+    return &quot;foo&quot;;
+  }
+
+  public getActionDispenser(ActivityDef activity) {
+   // return an ActionDispenser that is tailored
+   // to the ActivityDef
+   return new FrisbeeActionDispenser(activity);
+  }
+}
 </code></pre>
 
-<p>The run-eb script may be used in place of:</p>
+<p>The core runtime will find your activity type by way of its name &ldquo;foo&rdquo;, and then call the above method when it needs an action dispenser for a new activity which uses type &ldquo;foo&rdquo;, customized by the ActivityDef.</p>
 
-<pre><code>java -jar eb.jar arg0 arg1 ...
-</code></pre>
+<p>With that ActionDispenser, the ActivityExecutor will create a new action to assign to a slot as it is started, customized by the slot number.</p>
 
-<p>All command line arguments will be carried through, as in:</p>
+<p>This same pattern applies to Motors and Inputs as well.</p>
 
-<pre><code>./run-eb arg0 arg1 ...
-</code></pre>
-
-<h2 id="using-built-in-docs">Using Built-in Docs</h2>
-
-<pre><code>./run-eb --list-activity-types
-</code></pre>
-
-<p>This should provide a list of the activity types that are known to the client. The built-in activity type &ldquo;diag&rdquo;, is always available. If you are learning how to use EngineBlock, you will be using the &ldquo;diag&rdquo; activity quite a bit. If you are using a tailored engineblock runtime, you will have other activity types available according to your distribution.</p>
-
-<p><strong>Activity Type Docs</strong></p>
-
-<p>You can get further documentation about an activity&hellip;</p>
-
-<pre><code>./run-eb help diag
-</code></pre>
-
-<p>This will show the internal documentation for the diag activity type. There will be documentation for every activity, as the activity loader will not recognize one without it.</p>
-
-<p><strong>Running an Activity</strong></p>
-
-<p>You can run an instance of an activity:</p>
-
-<pre><code>./run-eb activity alias=test1 type=diag threads=10 interval=200
-</code></pre>
-
-<p>This shows the standard form of an activity definition. It is simply a map of activity parameters and values.
-Here is what they do:</p>
-
-<ul>
-<li><strong>type</strong> - All activities must have a type. This determines which ActivityType implementation is used to run the activity.</li>
-<li><strong>alias</strong> - All dynamically controlled activities must have an alias. The activity alias is the only way to modify a running activity once it is started. Think of the alias as the handle to the activity instance.</li>
-<li><strong>threads</strong> - All activities have this parameter. If you do not specify it, it defaults to 1. This determines how many threads are run concurrently within the activity.</li>
-</ul>
-
-<p>There are other parameters available to an activity, depending on the activity type. To discover the parameters
-for a given activity type and what they mean, use the <em>help &lt;activitytype&gt;</em> form shown above.</p>
-
-<p><strong>Running Multiple Activities</strong></p>
-
-<p>You can also run multiple activities, like this</p>
-
-<pre><code>./run-eb \
-activity alias=test1 type=diag threads=10 interval=200  \
-activity alias=test2 type=diag threads=1 interval=10
-</code></pre>
-
-<p>This shows a basic form of command-line scripting. The verb <em>activity</em> as actually a synonym for <em>start</em>, but it is more
-readable when all you are doing is starting some activities. The activities in this scenario are run concurrently,
-because each one is started asynchronously. If you wanted to run them one at a time, you could do this instead:</p>
-
-<pre><code>./run-eb \
-run alias=test1 type=diag threads=10 interval=200  \
-run alias=test2 type=diag threads=1 interval=10
-</code></pre>
-
-<p>The <em>run</em> command is synchronous. It waits for the activity named &lsquo;test1&rsquo; to complete before starting &lsquo;test2&rsquo;.</p>
-
-<h2 id="command-scripting">Command Scripting</h2>
-
-<p>Any time you invoke engineblock, you are asking it to run a scenario. Scenarios are Nashorn scripts, always.
-If you wanted to see the script that resulted from a particular command line, you can always ask, with the
-&ndash;show-script option.</p>
-
-<pre><code>./run-eb --show-script \
-run alias=test1 type=diag threads=10 interval=200  \
-run alias=test2 type=diag threads=1 interval=10
-</code></pre>
-
-<p>will show you this:</p>
-
-<pre><code>// Script
-scenario.run(&quot;alias=test1;type=diag;threads=10;interval=200;&quot;);
-scenario.run(&quot;alias=test2;type=diag;threads=1;interval=10;&quot;);
-</code></pre>
-
-<h2 id="custom-scenarios">Custom Scenarios</h2>
-
-<p>Of course, you can always write your own scenario script, using any valid javascript along with the built-in
-engineblock scripting extensions. This is often done by a <em>scenario designer</em>.</p>
-
-<p>Once you have a script, no matter how you came by it, you can simply run it like this:</p>
-
-<pre><code>./run-eb somescript
-</code></pre>
-
-<p>If your script takes named parameters, you can pass them in &lt;param&gt;=&lt;value&gt; &hellip; form, such as</p>
-
-<pre><code>./run-eb somescript arg1=val1 arg2=val2
-</code></pre>
-
-<p>There are many other command line options available. For more advanced usage,
-consult the <a href="http://docs.engineblock.io/user-guide/command_line/">Command Line Reference</a>, or even the full
-<a href="http://docs.engineblock.io/user-guide/concepts/">User&rsquo;s Guide</a></p>
+<p><img src="diagrams/slot_assembly.svg" alt="SlotAssembler" /></p>
 
 
 			<aside class="copyright" role="note">
@@ -520,7 +464,7 @@ consult the <a href="http://docs.engineblock.io/user-guide/command_line/">Comman
 <nav class="pagination" aria-label="Footer">
   <div class="previous">
   
-      <a href="http://docs.engineblock.io/" title="EngineBlock Users Guide">
+      <a href="http://docs.engineblock.io/dev-guide/scripting_extensions/" title="Scripting Extensions">
         <span class="direction">
           Previous
         </span>
@@ -530,7 +474,7 @@ consult the <a href="http://docs.engineblock.io/user-guide/command_line/">Comman
           </div>
           <div class="stretch">
             <div class="title">
-              EngineBlock Users Guide
+              Scripting Extensions
             </div>
           </div>
         </div>
@@ -539,6 +483,22 @@ consult the <a href="http://docs.engineblock.io/user-guide/command_line/">Comman
   </div>
 
   <div class="next">
+  
+      <a href="http://docs.engineblock.io/sketches/" title="Design Sketches">
+        <span class="direction">
+          Next
+        </span>
+        <div class="page">
+          <div class="stretch">
+            <div class="title">
+              Design Sketches
+            </div>
+          </div>
+          <div class="button button-next" role="button" aria-label="Next">
+            <i class="icon icon-forward"></i>
+          </div>
+        </div>
+      </a>
   
   </div>
 </nav>

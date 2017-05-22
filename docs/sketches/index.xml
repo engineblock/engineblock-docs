@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Sketches on EngineBlock</title>
+    <link>http://docs.engineblock.io/sketches/</link>
+    <description>Recent content in Sketches on EngineBlock</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>APL 2.0</copyright>
+    <lastBuildDate>Fri, 19 May 2017 22:09:53 +0000</lastBuildDate>
+    
+	<atom:link href="http://docs.engineblock.io/sketches/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Cycle Tracking</title>
+      <link>http://docs.engineblock.io/sketches/tracking/</link>
+      <pubDate>Fri, 19 May 2017 22:09:53 +0000</pubDate>
+      
+      <guid>http://docs.engineblock.io/sketches/tracking/</guid>
+      <description>See also: Tracking, Visually
+ Synopsis When coordinating activities with each other, it is necessary to link the completion status of an activity to the inputs available to another. Doing this concurrently and efficiently presents some interesting challenges.
+Some testing scenarios require that you are able to take the results of one phase of testing as input to another phase. For example, you may want to simply visit created data in a later phase to verify that it is accurate.</description>
+    </item>
+    
+    <item>
+      <title>Scripting Histograms</title>
+      <link>http://docs.engineblock.io/sketches/scripting_histograms/</link>
+      <pubDate>Fri, 19 May 2017 22:09:53 +0000</pubDate>
+      
+      <guid>http://docs.engineblock.io/sketches/scripting_histograms/</guid>
+      <description>Histogram-based analysis is one of the most effective methods for performance characterization. However, there is not enough flexibility in how the existing tools work to support the scripting needs in EngineBlock. This document outlines the problems with the existing tool in the context of advanced scripting and a design for how to collect and use histogram data effectively.
+The Accuracy Challenge When making analysis decisions from histogram data, you need full delta snapshots between measurement times.</description>
+    </item>
+    
+    <item>
+      <title>Tracking Diagrams</title>
+      <link>http://docs.engineblock.io/sketches/tracking_visually/</link>
+      <pubDate>Fri, 19 May 2017 22:09:53 +0000</pubDate>
+      
+      <guid>http://docs.engineblock.io/sketches/tracking_visually/</guid>
+      <description>This section lays out visually some of the design challenges in the cycle tracking design. The diagrams are very basic, but serve as a basis for discussion and elaboration.
+Scenario: A -&amp;gt; B  digraph sys1 { rankdir=LR; node[shape=box] edge[dir=out] state[label=&amp;#34;Internal state&amp;#34;]; A -&amp;gt; marker; marker -&amp;gt; state; state -&amp;gt; tracker; tracker -&amp;gt; B; }   Internal State  digraph d { a[shape=&amp;#34;record&amp;#34;,label=&amp;#34;0|1|2|3|4|5|6|7|8|9|10|11|...&amp;#34;]; }   Pacing Data Only For pacing purposes, in which a consuming tracker watches the state of a producing marker, the only state that is necessary to record is whether a given cycle has been completed.</description>
+    </item>
+    
+    <item>
+      <title>Design Sketches</title>
+      <link>http://docs.engineblock.io/sketches/</link>
+      <pubDate>Fri, 19 May 2017 21:51:26 +0000</pubDate>
+      
+      <guid>http://docs.engineblock.io/sketches/</guid>
+      <description>This section holds design sketches of some of the more esoteric design elements of EngineBlock.
+ scripting_histograms tracking tracking, visually  </description>
+    </item>
+    
+  </channel>
+</rss>

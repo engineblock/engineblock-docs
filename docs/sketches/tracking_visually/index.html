@@ -9,16 +9,16 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,maximum-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=10" />
-    <title>Getting Started - EngineBlock</title>
+    <title>Tracking Diagrams - EngineBlock</title>
     <meta name="generator" content="Hugo 0.20.7" />
 
     
     <meta name="description" content="EngineBlock Docs">
     
-    <link rel="canonical" href="http://docs.engineblock.io/quickstart/">
+    <link rel="canonical" href="http://docs.engineblock.io/sketches/tracking_visually/">
     
 
-    <meta property="og:url" content="http://docs.engineblock.io/quickstart/">
+    <meta property="og:url" content="http://docs.engineblock.io/sketches/tracking_visually/">
     <meta property="og:title" content="EngineBlock">
     <meta property="og:image" content="http://docs.engineblock.io/images/engineblock_128.png">
     <meta name="apple-mobile-web-app-title" content="EngineBlock">
@@ -71,11 +71,19 @@
       
     
     
+    <script src="http://docs.engineblock.io//modules/viz/viz.js"></script>
+    
 
     
     
 
     
+    
+    <script src="http://docs.engineblock.io//modules/jssequence/webfont.js"></script>
+    <script src="http://docs.engineblock.io//modules/jssequence/snap.svg-min.js"></script>
+    <script src="http://docs.engineblock.io//modules/jssequence/underscore-min.js"></script>
+    <script src="http://docs.engineblock.io//modules/jssequence/sequence-diagram.js"></script>
+    <link href="http://docs.engineblock.io//modules/jssequence/sequence-diagram-min.css" rel="stylesheet" />
     
 
     
@@ -118,7 +126,7 @@
     </div>
     <div class="stretch">
       <div class="title">
-        Getting Started
+        Tracking Diagrams
       </div>
     </div>
 
@@ -201,14 +209,11 @@
 
 
 
-<a class="current" title="Quickstart" href="http://docs.engineblock.io/quickstart/">
+<a  title="Quickstart" href="http://docs.engineblock.io/quickstart/">
 	
 	Quickstart
 </a>
 
-
-<ul id="scrollspy">
-</ul>
 
 
   
@@ -380,128 +385,185 @@
 
 	<article class="article">
 		<div class="wrapper">
-			<h1>Getting Started </h1>
+			<h1>Tracking Diagrams </h1>
 
 			
 
-<h2 id="getting-engineblock">Getting EngineBlock</h2>
+<p>This section lays out visually some of the design challenges in the cycle
+tracking design. The diagrams are very basic, but serve as a basis for
+discussion and elaboration.</p>
 
-<p>The latest release can always be run with this simple script: <a href="https://raw.githubusercontent.com/engineblock/engineblock/master/eb-cli/bin/run-eb">run-eb</a>. You can use the commands below to get it.</p>
+<h2 id="scenario-a-b">Scenario: A -&gt; B</h2>
 
-<pre><code>curl -O https://raw.githubusercontent.com/engineblock/engineblock/master/eb-cli/bin/run-eb
-chmod u+x run-eb
-./run-eb help
-</code></pre>
 
-<p>This script demonstrates how to fetch the version of the latest published artifact via maven central search. It also downloads that artifact if it doesn&rsquo;t find it locally cached within the last 2 days.</p>
 
-<p><strong>A cautionary word</strong>: As always, blindly running scripts from the web is not a good idea. Look at this script before you run it. Make sure you are comfortable with what it does. If you want, you can always download the jar directly:</p>
+<div align="center" class="viz-text"><pre>
+digraph sys1 {
+ rankdir=LR;
+ node[shape=box]
+ edge[dir=out]
+ state[label=&#34;Internal state&#34;];
+ 
+ A -&gt; marker;
+ marker -&gt; state;
+ state -&gt; tracker;
+ tracker -&gt; B;
+}
+</pre></div>
+<script type="text/javascript" src="http://docs.engineblock.io/modules/viz/inithook-viz.js"></script>
 
-<pre><code>curl -o eb-cli.jar https://repo1.maven.org/maven2/io/engineblock/eb-cli/1.0.17/eb-cli-1.0.17.jar
-java -jar eb-cli.jar
-</code></pre>
 
-<p>The run-eb script may be used in place of:</p>
+<h2 id="internal-state">Internal State</h2>
 
-<pre><code>java -jar eb.jar arg0 arg1 ...
-</code></pre>
 
-<p>All command line arguments will be carried through, as in:</p>
 
-<pre><code>./run-eb arg0 arg1 ...
-</code></pre>
+<div align="center" class="viz-text"><pre>
+digraph d {
+a[shape=&#34;record&#34;,label=&#34;0|1|2|3|4|5|6|7|8|9|10|11|...&#34;];
+}
+</pre></div>
+<script type="text/javascript" src="http://docs.engineblock.io/modules/viz/inithook-viz.js"></script>
 
-<h2 id="using-built-in-docs">Using Built-in Docs</h2>
 
-<pre><code>./run-eb --list-activity-types
-</code></pre>
+<h3 id="pacing-data-only">Pacing Data Only</h3>
 
-<p>This should provide a list of the activity types that are known to the client. The built-in activity type &ldquo;diag&rdquo;, is always available. If you are learning how to use EngineBlock, you will be using the &ldquo;diag&rdquo; activity quite a bit. If you are using a tailored engineblock runtime, you will have other activity types available according to your distribution.</p>
+<p>For pacing purposes, in which a consuming tracker watches the state of a
+producing marker, the only state that is necessary to record is whether a given
+cycle has been completed. Ostensibly, in this mode the API only needs to support
+the enumeration of a cycle, and not its status. However, since cycles can
+complete in any order, and we do not want to force sequential serialization (as this
+would be a tremendous deoptimization of concurrent performance), the ability
+to pace cycles independently needs to be supported within some bound.
+In this case, the binary state for each cylce only represents whether or not
+it has been marked as completed. Uncompressed, this requires exactly one logical
+bit per cycle, however the implementation may do something else internally.</p>
 
-<p><strong>Activity Type Docs</strong></p>
 
-<p>You can get further documentation about an activity&hellip;</p>
 
-<pre><code>./run-eb help diag
-</code></pre>
+<div align="center" class="viz-text"><pre>
+digraph d {
+a[shape=&#34;record&#34;,label=&#34;&lt;0&gt;0|&lt;1&gt;1|&lt;2&gt;2|&lt;3&gt;3|&lt;4&gt;4|&lt;5&gt;5|&lt;6&gt;6|&lt;7&gt;7|&lt;8&gt;8|&lt;9&gt;9|...&#34;];
+b[shape=&#34;record&#34;,label=&#34;&lt;0&gt;0|&lt;1&gt;1|&lt;2&gt;0|&lt;3&gt;0|&lt;4&gt;1|&lt;5&gt;1|&lt;6&gt;1|&lt;7&gt;0|&lt;8&gt;1|&lt;9&gt;0|...&#34;];
+a:0-&gt;b:0; a:1-&gt;b:1; a:2-&gt;b:2; a:3-&gt;b:3; 
+a:4-&gt;b:4; a:5-&gt;b:5; a:6-&gt;b:6; a:7-&gt;b:7;
+a:8-&gt;b:8; a:9-&gt;b:9;
+}
+</pre></div>
+<script type="text/javascript" src="http://docs.engineblock.io/modules/viz/inithook-viz.js"></script>
 
-<p>This will show the internal documentation for the diag activity type. There will be documentation for every activity, as the activity loader will not recognize one without it.</p>
 
-<p><strong>Running an Activity</strong></p>
+<h3 id="marking-data-too">Marking Data Too</h3>
 
-<p>You can run an instance of an activity:</p>
+<p>When recording some additional state, including an enumerable outcome, it is necessary
+to associate a value with each cycle completion. We are planning to allow these values
+to be in the range of 1..127, inclusive. The zero value will be reserved to mean
+<em>unmarked</em>, or in effect <em>incomplete</em>. In the example below, cycle 7 has not been marked
+yet.</p>
 
-<pre><code>./run-eb activity alias=test1 type=diag threads=10 interval=200
-</code></pre>
 
-<p>This shows the standard form of an activity definition. It is simply a map of activity parameters and values.
-Here is what they do:</p>
 
-<ul>
-<li><strong>type</strong> - All activities must have a type. This determines which ActivityType implementation is used to run the activity.</li>
-<li><strong>alias</strong> - All dynamically controlled activities must have an alias. The activity alias is the only way to modify a running activity once it is started. Think of the alias as the handle to the activity instance.</li>
-<li><strong>threads</strong> - All activities have this parameter. If you do not specify it, it defaults to 1. This determines how many threads are run concurrently within the activity.</li>
-</ul>
+<div align="center" class="viz-text"><pre>
+digraph d {
+a[shape=&#34;record&#34;,label=&#34;&lt;0&gt;0|&lt;1&gt;1|&lt;2&gt;2|&lt;3&gt;3|&lt;4&gt;4|&lt;5&gt;5|&lt;6&gt;6|&lt;7&gt;7|&lt;8&gt;8|&lt;9&gt;9|...&#34;];
+b[shape=&#34;record&#34;,label=&#34;&lt;0&gt;8|&lt;1&gt;4|&lt;2&gt;1|&lt;3&gt;1|&lt;4&gt;4|&lt;5&gt;4|&lt;6&gt;8|&lt;7&gt;0|&lt;8&gt;9|&lt;9&gt;123|...&#34;];
+a:0-&gt;b:0; a:1-&gt;b:1; a:2-&gt;b:2; a:3-&gt;b:3; 
+a:4-&gt;b:4; a:5-&gt;b:5; a:6-&gt;b:6; a:7-&gt;b:7;
+a:8-&gt;b:8; a:9-&gt;b:9;
+}
+</pre></div>
+<script type="text/javascript" src="http://docs.engineblock.io/modules/viz/inithook-viz.js"></script>
 
-<p>There are other parameters available to an activity, depending on the activity type. To discover the parameters
-for a given activity type and what they mean, use the <em>help &lt;activitytype&gt;</em> form shown above.</p>
 
-<p><strong>Running Multiple Activities</strong></p>
+<h2 id="segmenting-state">Segmenting State</h2>
 
-<p>You can also run multiple activities, like this</p>
+<p>When using buffered counting to track completion of a range of cycle values, it
+is necessary to break the number line into a set of uniformly sized intervals.
+This allows for modulo-style assignment of a cycle number to a marking bucket.
+For example, if you were tracking full completion of every 8 cycles in a bucket,
+then you would break the cycles into logical units like this, with a simple &ldquo;mod 8&rdquo; operation,
+which is also equivalent to masking off all but 3 LSBs.</p>
 
-<pre><code>./run-eb \
-activity alias=test1 type=diag threads=10 interval=200  \
-activity alias=test2 type=diag threads=1 interval=10
-</code></pre>
 
-<p>This shows a basic form of command-line scripting. The verb <em>activity</em> as actually a synonym for <em>start</em>, but it is more
-readable when all you are doing is starting some activities. The activities in this scenario are run concurrently,
-because each one is started asynchronously. If you wanted to run them one at a time, you could do this instead:</p>
 
-<pre><code>./run-eb \
-run alias=test1 type=diag threads=10 interval=200  \
-run alias=test2 type=diag threads=1 interval=10
-</code></pre>
+<div align="center" class="viz-text"><pre>
+digraph d {
+rankdir=LR;
+0[shape=&#34;record&#34;,label=&#34;{0|1|2|3|4|5|6|7}&#34;];
+1[shape=&#34;record&#34;,label=&#34;{8|9|10|11|12|13|14|15}&#34;];
+2[shape=&#34;record&#34;,label=&#34;{16|...}&#34;];
+0-&gt;1;
+1-&gt;2;
+}   
+</pre></div>
+<script type="text/javascript" src="http://docs.engineblock.io/modules/viz/inithook-viz.js"></script>
 
-<p>The <em>run</em> command is synchronous. It waits for the activity named &lsquo;test1&rsquo; to complete before starting &lsquo;test2&rsquo;.</p>
 
-<h2 id="command-scripting">Command Scripting</h2>
+<p>In this case, it is possible to efficiently pace each segment as a unit, by allowing for
+efficient concurrent counting algorithms to operate exclusively on the segment state
+without exposing it yet to the reader side.</p>
 
-<p>Any time you invoke engineblock, you are asking it to run a scenario. Scenarios are Nashorn scripts, always.
-If you wanted to see the script that resulted from a particular command line, you can always ask, with the
-&ndash;show-script option.</p>
+<h2 id="stride-and-filtering">Stride and Filtering</h2>
 
-<pre><code>./run-eb --show-script \
-run alias=test1 type=diag threads=10 interval=200  \
-run alias=test2 type=diag threads=1 interval=10
-</code></pre>
+<p>When using cycle stride of greater than 1, a strategy that causes a number of
+cycles to be processed within each thread, filtering may become a challenge.
+This is because you may want the same type of operational grouping within a downstream
+thread as you have in an upstream thread.</p>
 
-<p>will show you this:</p>
+<p>Here is the current flow of stride, as managed by a thread harness (AKA a Motor in EB parlance),
+an input, and an action:</p>
 
-<pre><code>// Script
-scenario.run(&quot;alias=test1;type=diag;threads=10;interval=200;&quot;);
-scenario.run(&quot;alias=test2;type=diag;threads=1;interval=10;&quot;);
-</code></pre>
 
-<h2 id="custom-scenarios">Custom Scenarios</h2>
 
-<p>Of course, you can always write your own scenario script, using any valid javascript along with the built-in
-engineblock scripting extensions. This is often done by a <em>scenario designer</em>.</p>
+<div class="jssequence-text"><pre>
+Motor-&gt;Input: get[stride=5]
+Input-&gt;Motor: startsat=25
+Note over Motor: foreach v in [25,30)\n(contiguously)
+Motor-&gt;Action: runCycle(v)
+Action-&gt;Motor: result
+</pre></div>
+<script type="text/javascript" src="http://docs.engineblock.io/modules/jssequence/inithook-jssequence.js"></script>
 
-<p>Once you have a script, no matter how you came by it, you can simply run it like this:</p>
 
-<pre><code>./run-eb somescript
-</code></pre>
+<p>That means that any filtering needs to be applied at the motor level, after applying stride, but
+before providing the cycles to the Action. This is also in keeping with the desire to avoid
+injecting inter-activity flow logic into the programming scope of individual activities.</p>
 
-<p>If your script takes named parameters, you can pass them in &lt;param&gt;=&lt;value&gt; &hellip; form, such as</p>
+<p>The revised <em>stride &amp; filter</em> scenario looks like this:</p>
 
-<pre><code>./run-eb somescript arg1=val1 arg2=val2
-</code></pre>
 
-<p>There are many other command line options available. For more advanced usage,
-consult the <a href="http://docs.engineblock.io/user-guide/command_line/">Command Line Reference</a>, or even the full
-<a href="http://docs.engineblock.io/user-guide/concepts/">User&rsquo;s Guide</a></p>
+
+<div class="jssequence-text"><pre>
+Motor-&gt;Input: get[stride=5]
+Input-&gt;Motor: startsat=25
+Note over Motor: foreach v in [25,30)\n(matching filter)
+Motor-&gt;Action: runCycle(v)
+Action-&gt;Motor: result
+</pre></div>
+<script type="text/javascript" src="http://docs.engineblock.io/modules/jssequence/inithook-jssequence.js"></script>
+
+
+<h2 id="tracking-highest-contiguous">Tracking Highest Contiguous</h2>
+
+<p>When marking an array, when cycles can complete out of order, it is useful to track
+the highest contiguous value that has been completed. To do this efficiently, CAS
+can be employed to do an almost free &ldquo;pull up&rdquo; to the current value when the most
+max contiguous value was already one less than the current marking cycle.
+This does not, however, handle the case of fast-forwarding the contiguous count
+according to cycles that have already been marked. Also, because the bytebuffer is
+not atomic or volatile itself, a more resilient check needs to be added to the
+max contiguous property that will eagerly update when asked.</p>
+
+<h2 id="performance-strategies">Performance Strategies</h2>
+
+<ol>
+<li>Track the highest contiguous completed cycle as well as the highest completed cycle.
+allowing for fine-grained queries on state only if they are the same.</li>
+<li>Use CAS or LongAdder for counters. For CAS, observing the return value can be used as
+an incrementing state tracker for contiguity. For example, a successful CAS +1 operation
+represents a succesful advance to the current position, and a failed one represents
+that the &ldquo;highest&rdquo; value was not at the right position to advance.
+<br /></li>
+</ol>
 
 
 			<aside class="copyright" role="note">
@@ -520,7 +582,7 @@ consult the <a href="http://docs.engineblock.io/user-guide/command_line/">Comman
 <nav class="pagination" aria-label="Footer">
   <div class="previous">
   
-      <a href="http://docs.engineblock.io/" title="EngineBlock Users Guide">
+      <a href="http://docs.engineblock.io/sketches/scripting_histograms/" title="Scripting Histograms">
         <span class="direction">
           Previous
         </span>
@@ -530,7 +592,7 @@ consult the <a href="http://docs.engineblock.io/user-guide/command_line/">Comman
           </div>
           <div class="stretch">
             <div class="title">
-              EngineBlock Users Guide
+              Scripting Histograms
             </div>
           </div>
         </div>
@@ -539,6 +601,22 @@ consult the <a href="http://docs.engineblock.io/user-guide/command_line/">Comman
   </div>
 
   <div class="next">
+  
+      <a href="http://docs.engineblock.io/user-guide/" title="User Guide">
+        <span class="direction">
+          Next
+        </span>
+        <div class="page">
+          <div class="stretch">
+            <div class="title">
+              User Guide
+            </div>
+          </div>
+          <div class="button button-next" role="button" aria-label="Next">
+            <i class="icon icon-forward"></i>
+          </div>
+        </div>
+      </a>
   
   </div>
 </nav>
