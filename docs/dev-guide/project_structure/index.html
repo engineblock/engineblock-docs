@@ -9,16 +9,16 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,maximum-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=10" />
-    <title>Getting Started - EngineBlock</title>
+    <title>Project Structure - EngineBlock</title>
     <meta name="generator" content="Hugo 0.20.7" />
 
     
     <meta name="description" content="EngineBlock Docs">
     
-    <link rel="canonical" href="http://docs.engineblock.io/quickstart/">
+    <link rel="canonical" href="http://docs.engineblock.io/dev-guide/project_structure/">
     
 
-    <meta property="og:url" content="http://docs.engineblock.io/quickstart/">
+    <meta property="og:url" content="http://docs.engineblock.io/dev-guide/project_structure/">
     <meta property="og:title" content="EngineBlock">
     <meta property="og:image" content="http://docs.engineblock.io/images/engineblock_128.png">
     <meta name="apple-mobile-web-app-title" content="EngineBlock">
@@ -118,7 +118,7 @@
     </div>
     <div class="stretch">
       <div class="title">
-        Getting Started
+        Project Structure
       </div>
     </div>
 
@@ -201,14 +201,11 @@
 
 
 
-<a class="current" title="Quickstart" href="http://docs.engineblock.io/quickstart/">
+<a  title="Quickstart" href="http://docs.engineblock.io/quickstart/">
 	
 	Quickstart
 </a>
 
-
-<ul id="scrollspy">
-</ul>
 
 
   
@@ -380,128 +377,81 @@
 
 	<article class="article">
 		<div class="wrapper">
-			<h1>Getting Started </h1>
+			<h1>Project Structure </h1>
 
 			
 
-<h2 id="getting-engineblock">Getting EngineBlock</h2>
+<p>EngineBlock is packaged as a
+<a href="https://maven.apache.org/guides/mini/guide-multiple-modules.html">Maven Reactor</a> project.</p>
 
-<p>The latest release can always be run with this simple script: <a href="https://raw.githubusercontent.com/engineblock/engineblock/master/eb-cli/bin/run-eb">run-eb</a>. You can use the commands below to get it.</p>
+<h2 id="defaults-and-dependencies">Defaults and Dependencies</h2>
 
-<pre><code>curl -O https://raw.githubusercontent.com/engineblock/engineblock/master/eb-cli/bin/run-eb
-chmod u+x run-eb
-./run-eb help
+<p>Maven reactor projects often confuse developers. In this document, we&rsquo;ll explain
+the basic structure of the EngineBlock project and the reasons for it.</p>
+
+<p>Firstly, there is a parent for each of the modules. In Maven parlance, you can
+think of a parent project as a template for projects that reference it. One of
+the reasons you would do this is to simply common build or dependency settings
+across many maven projects or modules. That is exactly why we do that here. The
+&lsquo;parent&rsquo; project for all EngineBlock modules is aptly named &lsquo;project-defaults&rsquo;,
+as that is exactly what we use it for.</p>
+
+<p>As well, there is a &ldquo;root&rdquo; project, which is simply the project at the project&rsquo;s
+base directory. It pulls in the modules of the project explicitly as in:</p>
+
+<pre><code>    &lt;modules&gt;
+        &lt;module&gt;project-defaults&lt;/module&gt; &lt;!-- Holds project level defaults --&gt;
+        &lt;module&gt;eb-api&lt;/module&gt; &lt;!-- APIs --&gt;
+        ...
+    &lt;/modules&gt;
 </code></pre>
 
-<p>This script demonstrates how to fetch the version of the latest published artifact via maven central search. It also downloads that artifact if it doesn&rsquo;t find it locally cached within the last 2 days.</p>
+<p>This means that when you build the root project, it will build all the modules
+included, but only after linearizing the build order around the inter-module
+dependencies. This is an important detail, as it is often overlooked that this
+is the purpose of a reactor-style project.</p>
 
-<p><strong>A cautionary word</strong>: As always, blindly running scripts from the web is not a good idea. Look at this script before you run it. Make sure you are comfortable with what it does. If you want, you can always download the jar directly:</p>
+<p>The dependencies between the modules is not implicit. Each module listed in the
+root pom.xml has its own explicit dependencies to other modules in the project.
+We could cause them to have a common set of dependencies by adding those
+dependencies to the &lsquo;project-defaults&rsquo; module, but this would mostly prevent us
+from making the dependencies for each as lean and specific as we like. That is
+why the dependencies in the project-default <strong>parent</strong> module are empty.</p>
 
-<pre><code>curl -o eb-cli.jar https://repo1.maven.org/maven2/io/engineblock/eb-cli/1.0.17/eb-cli-1.0.17.jar
-java -jar eb-cli.jar
-</code></pre>
+<p>The project-defaults module does, however, have some build, locale, and project
+identity settings. You can consider these cross-cutting aspects of the modules
+in the project. If you want to put something in the project-default module, and
+it is not strictly cross-cutting across the other modules, then don&rsquo;t. That&rsquo;s
+how you keep thing sane.</p>
 
-<p>The run-eb script may be used in place of:</p>
+<p>To be clear, cross-cutting build behavior and per-module dependencies are two
+separate axes of build management. Try to keep this in mind when thinking about
+modular projects and it will help you stay sane. Violating this basic rule is
+one of the most common mistakes that newer Maven users make when trying to
+enable modularity.</p>
 
-<pre><code>java -jar eb.jar arg0 arg1 ...
-</code></pre>
+<h2 id="intermodule-dependencies">Intermodule Dependencies</h2>
 
-<p>All command line arguments will be carried through, as in:</p>
+<p><img src="../../static/diagrams/project_structure.png" alt="Project Structure" /></p>
 
-<pre><code>./run-eb arg0 arg1 ...
-</code></pre>
+<p>Modularity at runtime is enabled via the
+<a href="https://docs.oracle.com/javase/8/docs/api/java/util/ServiceLoader.html">ServiceLoader</a>.
+The eb-core module uses the eb-api module to know the loadable activity types.
+ActivityType implementations use the eb-api module to implement the loadable
+activity types. In this way, they both depend on the eb-api module to provide
+the common types needed for this to work.</p>
 
-<h2 id="using-built-in-docs">Using Built-in Docs</h2>
+<p>The eb-runtime module allows the separate implementations of the core and the
+activity type implementations to exist together in the same classpath. This goes
+hand-in-hand with how the runtime jar is bundled. Said differently, the artifact
+produced by eb-runtime is a bundling of the things it depends on as a single
+application. eb-runtime consolidates dependencies and provides a proper place to
+do integration testing.</p>
 
-<pre><code>./run-eb --list-activity-types
-</code></pre>
-
-<p>This should provide a list of the activity types that are known to the client. The built-in activity type &ldquo;diag&rdquo;, is always available. If you are learning how to use EngineBlock, you will be using the &ldquo;diag&rdquo; activity quite a bit. If you are using a tailored engineblock runtime, you will have other activity types available according to your distribution.</p>
-
-<p><strong>Activity Type Docs</strong></p>
-
-<p>You can get further documentation about an activity&hellip;</p>
-
-<pre><code>./run-eb help diag
-</code></pre>
-
-<p>This will show the internal documentation for the diag activity type. There will be documentation for every activity, as the activity loader will not recognize one without it.</p>
-
-<p><strong>Running an Activity</strong></p>
-
-<p>You can run an instance of an activity:</p>
-
-<pre><code>./run-eb activity alias=test1 type=diag threads=10 interval=200
-</code></pre>
-
-<p>This shows the standard form of an activity definition. It is simply a map of activity parameters and values.
-Here is what they do:</p>
-
-<ul>
-<li><strong>type</strong> - All activities must have a type. This determines which ActivityType implementation is used to run the activity.</li>
-<li><strong>alias</strong> - All dynamically controlled activities must have an alias. The activity alias is the only way to modify a running activity once it is started. Think of the alias as the handle to the activity instance.</li>
-<li><strong>threads</strong> - All activities have this parameter. If you do not specify it, it defaults to 1. This determines how many threads are run concurrently within the activity.</li>
-</ul>
-
-<p>There are other parameters available to an activity, depending on the activity type. To discover the parameters
-for a given activity type and what they mean, use the <em>help &lt;activitytype&gt;</em> form shown above.</p>
-
-<p><strong>Running Multiple Activities</strong></p>
-
-<p>You can also run multiple activities, like this</p>
-
-<pre><code>./run-eb \
-activity alias=test1 type=diag threads=10 interval=200  \
-activity alias=test2 type=diag threads=1 interval=10
-</code></pre>
-
-<p>This shows a basic form of command-line scripting. The verb <em>activity</em> as actually a synonym for <em>start</em>, but it is more
-readable when all you are doing is starting some activities. The activities in this scenario are run concurrently,
-because each one is started asynchronously. If you wanted to run them one at a time, you could do this instead:</p>
-
-<pre><code>./run-eb \
-run alias=test1 type=diag threads=10 interval=200  \
-run alias=test2 type=diag threads=1 interval=10
-</code></pre>
-
-<p>The <em>run</em> command is synchronous. It waits for the activity named &lsquo;test1&rsquo; to complete before starting &lsquo;test2&rsquo;.</p>
-
-<h2 id="command-scripting">Command Scripting</h2>
-
-<p>Any time you invoke engineblock, you are asking it to run a scenario. Scenarios are Nashorn scripts, always.
-If you wanted to see the script that resulted from a particular command line, you can always ask, with the
-&ndash;show-script option.</p>
-
-<pre><code>./run-eb --show-script \
-run alias=test1 type=diag threads=10 interval=200  \
-run alias=test2 type=diag threads=1 interval=10
-</code></pre>
-
-<p>will show you this:</p>
-
-<pre><code>// Script
-scenario.run(&quot;alias=test1;type=diag;threads=10;interval=200;&quot;);
-scenario.run(&quot;alias=test2;type=diag;threads=1;interval=10;&quot;);
-</code></pre>
-
-<h2 id="custom-scenarios">Custom Scenarios</h2>
-
-<p>Of course, you can always write your own scenario script, using any valid javascript along with the built-in
-engineblock scripting extensions. This is often done by a <em>scenario designer</em>.</p>
-
-<p>Once you have a script, no matter how you came by it, you can simply run it like this:</p>
-
-<pre><code>./run-eb somescript
-</code></pre>
-
-<p>If your script takes named parameters, you can pass them in &lt;param&gt;=&lt;value&gt; &hellip; form, such as</p>
-
-<pre><code>./run-eb somescript arg1=val1 arg2=val2
-</code></pre>
-
-<p>There are many other command line options available. For more advanced usage,
-consult the <a href="http://docs.engineblock.io/user-guide/command_line/">Command Line Reference</a>, or even the full
-<a href="http://docs.engineblock.io/user-guide/concepts/">User&rsquo;s Guide</a></p>
+<p>Taking the API at the bottom, and the components that can be composed together
+at the middle, and the bundling project at the top, you&rsquo;ll see a not-uncommon
+project structure that looks like a diamond. Going from bottom to top, you can
+think of it as API, implementation, and packaging.</p>
 
 
 			<aside class="copyright" role="note">
@@ -520,7 +470,7 @@ consult the <a href="http://docs.engineblock.io/user-guide/command_line/">Comman
 <nav class="pagination" aria-label="Footer">
   <div class="previous">
   
-      <a href="http://docs.engineblock.io/" title="EngineBlock Users Guide">
+      <a href="http://docs.engineblock.io/dev-guide/contributing/" title="Project Structure">
         <span class="direction">
           Previous
         </span>
@@ -530,7 +480,7 @@ consult the <a href="http://docs.engineblock.io/user-guide/command_line/">Comman
           </div>
           <div class="stretch">
             <div class="title">
-              EngineBlock Users Guide
+              Project Structure
             </div>
           </div>
         </div>
@@ -539,6 +489,22 @@ consult the <a href="http://docs.engineblock.io/user-guide/command_line/">Comman
   </div>
 
   <div class="next">
+  
+      <a href="http://docs.engineblock.io/dev-guide/scripting_extensions/" title="Scripting Extensions">
+        <span class="direction">
+          Next
+        </span>
+        <div class="page">
+          <div class="stretch">
+            <div class="title">
+              Scripting Extensions
+            </div>
+          </div>
+          <div class="button button-next" role="button" aria-label="Next">
+            <i class="icon icon-forward"></i>
+          </div>
+        </div>
+      </a>
   
   </div>
 </nav>

@@ -9,7 +9,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,maximum-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=10" />
-    <title>EngineBlock Users Guide - EngineBlock</title>
+    <title>EngineBlock</title>
     <meta name="generator" content="Hugo 0.20.7" />
 
     
@@ -67,6 +67,35 @@
     <script src="http://docs.engineblock.io/javascripts/modernizr.js"></script>
 
     
+    <link href="http://docs.engineblock.io/index.xml" rel="alternate" type="application/rss+xml" title="EngineBlock" />
+    <link href="http://docs.engineblock.io/index.xml" rel="feed" type="application/rss+xml" title="EngineBlock" />
+    
+
+      
+    
+    
+
+    
+    
+
+    
+    
+
+    
+    
+
+    
+    
+
+    
+    
+    
+    
+    
+
+    
+    
+
 
   </head>
   <body class="palette-primary-grey palette-accent-teal">
@@ -92,7 +121,7 @@
     </div>
     <div class="stretch">
       <div class="title">
-        EngineBlock Users Guide
+        EngineBlock
       </div>
     </div>
 
@@ -200,7 +229,7 @@
 
 
 
-<a  title="Concepts" href="http://docs.engineblock.io/users-guide/concepts/">
+<a  title="Concepts" href="http://docs.engineblock.io/user-guide/concepts/">
 	
 	Concepts
 </a>
@@ -213,20 +242,7 @@
 
 
 
-<a  title="CLI Scripting" href="http://docs.engineblock.io/users-guide/cli_scripting/">
-	
-	CLI Scripting
-</a>
-
-
-
-      
-        
-        
-
-
-
-<a  title="Command Line" href="http://docs.engineblock.io/users-guide/command_line/">
+<a  title="Command Line" href="http://docs.engineblock.io/user-guide/command_line/">
 	
 	Command Line
 </a>
@@ -239,7 +255,20 @@
 
 
 
-<a  title="Metrics" href="http://docs.engineblock.io/users-guide/metrics/">
+<a  title="CLI Scripting" href="http://docs.engineblock.io/user-guide/cli_scripting/">
+	
+	CLI Scripting
+</a>
+
+
+
+      
+        
+        
+
+
+
+<a  title="Metrics" href="http://docs.engineblock.io/user-guide/metrics/">
 	
 	Metrics
 </a>
@@ -252,7 +281,7 @@
 
 
 
-<a  title="Scenario Scripting" href="http://docs.engineblock.io/users-guide/scripting/">
+<a  title="Scenario Scripting" href="http://docs.engineblock.io/user-guide/scripting/">
 	
 	Scenario Scripting
 </a>
@@ -276,7 +305,7 @@
 
 
 
-<a  title="Activity Internals" href="http://docs.engineblock.io/developers/activity_internals/">
+<a  title="Activity Internals" href="http://docs.engineblock.io/dev-guide/activity_internals/">
 	
 	Activity Internals
 </a>
@@ -289,7 +318,7 @@
 
 
 
-<a  title="Building ActivityTypes" href="http://docs.engineblock.io/developers/dev_building_activities/">
+<a  title="Building ActivityTypes" href="http://docs.engineblock.io/dev-guide/building_activities/">
 	
 	Building ActivityTypes
 </a>
@@ -302,20 +331,7 @@
 
 
 
-<a  title="Contributing" href="http://docs.engineblock.io/developers/dev_contributing/">
-	
-	Contributing
-</a>
-
-
-
-      
-        
-        
-
-
-
-<a  title="Diag ActivityType" href="http://docs.engineblock.io/developers/dev_annotated_diag/">
+<a  title="Diag ActivityType" href="http://docs.engineblock.io/dev-guide/annotated_diag/">
 	
 	Diag ActivityType
 </a>
@@ -328,7 +344,7 @@
 
 
 
-<a  title="Project Structure" href="http://docs.engineblock.io/developers/project_structure/">
+<a  title="Project Structure" href="http://docs.engineblock.io/dev-guide/contributing/">
 	
 	Project Structure
 </a>
@@ -341,59 +357,9 @@
 
 
 
-<a  title="Scripting Extensions" href="http://docs.engineblock.io/developers/dev_scripting_extensions/">
+<a  title="Scripting Extensions" href="http://docs.engineblock.io/dev-guide/scripting_extensions/">
 	
 	Scripting Extensions
-</a>
-
-
-
-      
-        
-        
-
-
-
-<a  title="Slot Assembly" href="http://docs.engineblock.io/developers/dev_internals_slot_assembly/">
-	
-	Slot Assembly
-</a>
-
-
-
-      
-    </ul>
-  
-</li>
-
-
-
-<li>
-  
-    <span class="section">Design Sketches</span>
-    <ul>
-      
-        
-        
-
-
-
-<a  title="Cycle Tracking" href="http://docs.engineblock.io/designsketches/tracking/">
-	
-	Cycle Tracking
-</a>
-
-
-
-      
-        
-        
-
-
-
-<a  title="Scripting Histograms" href="http://docs.engineblock.io/designsketches/scripting_histograms/">
-	
-	Scripting Histograms
 </a>
 
 
@@ -417,9 +383,10 @@
 
 	<article class="article">
 		<div class="wrapper">
-			<h1>EngineBlock Users Guide </h1>
-
 			
+				<h1>EngineBlock Users Guide </h1>
+
+				
 
 <p><a href="https://maven-badges.herokuapp.com/maven-central/io.engineblock/engineblock/"><img src="https://maven-badges.herokuapp.com/maven-central/io.engineblock/eb-api/badge.svg" alt="Latest Release" /></a> <a href="https://travis-ci.org/engineblock/engineblock"><img src="https://travis-ci.org/engineblock/engineblock.svg?branch=master" alt="Build Status" /></a></p>
 
@@ -431,13 +398,13 @@
 <li>Provide a useful and intuitive Reusable Machine Pattern for constructing and
 reasoning about concurrent performance tests. To encourage this, the runtime
 machinery is based on
-<a href="http://docs.engineblock.io/concepts.md">simple and tangible core concepts</a>.</li>
+<a href="http://docs.engineblock.io/user-guide/concepts/">simple and tangible core concepts</a>.</li>
 <li>Reduce testing time of complex scenarios with many variables. This is
 achieved by controlling tests from an
-<a href="http://docs.engineblock.io/scripting.md">open javascript sandbox</a>.
+<a href="http://docs.engineblock.io/user-guide/scripting/">open javascript sandbox</a>.
 This makes more sophisticated scenarios possible when needed.</li>
 <li>Minimize the amount of effort required to get empirical results from a
-test cycle. For this, <a href="metrics.md">metrics reporting</a> is baked in.</li>
+test cycle. For this, <a href="http://docs.engineblock.io/user-guide/metrics/">metrics reporting</a> is baked in.</li>
 </ol>
 
 <p>In short, EngineBlock wishes to be a programmable power tool for performance
@@ -452,13 +419,7 @@ your own ActivityTypes and embed EngineBlock with them as the core runtime. You
 can always experiment with it and learn how it works by using the built-in
 diagnostic drivers.</p>
 
-<h2 id="contributions">Contributions</h2>
-
-<p>If you are interested in contributing to Engine Block, more information is
-available in the
-<a href="https://github.com/engineblock/engineblock/blob/master/docs/developers.md">Developer&rsquo;s section</a>.</p>
-
-<h2 id="history">History</h2>
+<h3 id="history">History</h3>
 
 <p>The Engine Block project started as a branch of <a href="http://github.com/jshook/testclient">test client</a>.
 It has since evolved to be more generic.</p>
@@ -467,6 +428,13 @@ It has since evolved to be more generic.</p>
 
 <p>EngineBlock is licensed under the Apache Public License 2.0</p>
 
+<h2 id="contributing">Contributing</h2>
+
+<p>If you are interested in contributing to Engine Block, more information is
+available in the
+<a href="http://docs.engineblock.io/dev-guide/">Developer&rsquo;s Guide</a>.</p>
+
+			
 
 			<aside class="copyright" role="note">
 				
@@ -481,37 +449,23 @@ It has since evolved to be more generic.</p>
 			<footer class="footer">
 				
 
+
+
 <nav class="pagination" aria-label="Footer">
   <div class="previous">
-  
-      <a href="http://docs.engineblock.io/designsketches/" title="Design Sketches">
-        <span class="direction">
-          Previous
-        </span>
-        <div class="page">
-          <div class="button button-previous" role="button" aria-label="Previous">
-            <i class="icon icon-back"></i>
-          </div>
-          <div class="stretch">
-            <div class="title">
-              Design Sketches
-            </div>
-          </div>
-        </div>
-      </a>
-  
   </div>
 
-  <div class="next">
   
-      <a href="http://docs.engineblock.io/quickstart/" title="Getting Started">
+  
+  <div class="next">
+      <a href="http://docs.engineblock.io/tags/" title="Tags">
         <span class="direction">
           Next
         </span>
         <div class="page">
           <div class="stretch">
             <div class="title">
-              Getting Started
+              Tags
             </div>
           </div>
           <div class="button button-next" role="button" aria-label="Next">
@@ -519,11 +473,8 @@ It has since evolved to be more generic.</p>
           </div>
         </div>
       </a>
-  
   </div>
 </nav>
-
-
 
 
 

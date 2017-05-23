@@ -2,83 +2,93 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://docs.engineblock.io/users-guide/concepts/</loc>
+    <loc>http://docs.engineblock.io/user-guide/concepts/</loc>
     <lastmod>2017-05-19T21:52:57+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://docs.engineblock.io/users-guide/metrics/</loc>
+    <loc>http://docs.engineblock.io/user-guide/metrics/</loc>
     <lastmod>2017-05-19T21:52:57+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://docs.engineblock.io/users-guide/scripting/</loc>
+    <loc>http://docs.engineblock.io/user-guide/scripting/</loc>
     <lastmod>2017-05-19T21:52:57+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://docs.engineblock.io/users-guide/command_line/</loc>
+    <loc>http://docs.engineblock.io/user-guide/command_line/</loc>
     <lastmod>2017-05-19T22:09:53+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://docs.engineblock.io/designsketches/tracking/</loc>
+    <loc>http://docs.engineblock.io/sketches/tracking/</loc>
     <lastmod>2017-05-19T22:09:53+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://docs.engineblock.io/designsketches/scripting_histograms/</loc>
+    <loc>http://docs.engineblock.io/sketches/scripting_histograms/</loc>
     <lastmod>2017-05-19T22:09:53+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://docs.engineblock.io/users-guide/</loc>
+    <loc>http://docs.engineblock.io/sketches/tracking_visually/</loc>
+    <lastmod>2017-05-19T22:09:53+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://docs.engineblock.io/user-guide/</loc>
     <lastmod>2017-05-19T22:00:36+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://docs.engineblock.io/developers/activity_internals/</loc>
+    <loc>http://docs.engineblock.io/dev-guide/activity_internals/</loc>
     <lastmod>2017-05-19T22:09:53+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://docs.engineblock.io/developers/dev_building_activities/</loc>
+    <loc>http://docs.engineblock.io/dev-guide/building_activities/</loc>
     <lastmod>2017-05-19T22:09:53+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://docs.engineblock.io/users-guide/cli_scripting/</loc>
+    <loc>http://docs.engineblock.io/user-guide/cli_scripting/</loc>
     <lastmod>2017-05-19T22:09:53+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://docs.engineblock.io/developers/dev_contributing/</loc>
+    <loc>http://docs.engineblock.io/dev-guide/annotated_diag/</loc>
     <lastmod>2017-05-19T22:09:53+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://docs.engineblock.io/developers/dev_annotated_diag/</loc>
+    <loc>http://docs.engineblock.io/dev-guide/contributing/</loc>
     <lastmod>2017-05-19T22:09:53+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://docs.engineblock.io/developers/project_structure/</loc>
+    <loc>http://docs.engineblock.io/dev-guide/project_structure/</loc>
     <lastmod>2017-05-19T22:09:53+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://docs.engineblock.io/developers/dev_scripting_extensions/</loc>
+    <loc>http://docs.engineblock.io/dev-guide/scripting_extensions/</loc>
     <lastmod>2017-05-19T22:09:53+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://docs.engineblock.io/developers/dev_internals_slot_assembly/</loc>
+    <loc>http://docs.engineblock.io/historic/internals_slot_assembly/</loc>
     <lastmod>2017-05-19T22:09:53+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://docs.engineblock.io/designsketches/</loc>
+    <loc>http://docs.engineblock.io/sketches/</loc>
     <lastmod>2017-05-19T21:51:26+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://docs.engineblock.io/dev-guide/</loc>
+    <lastmod>2017-05-19T21:52:39+00:00</lastmod>
   </url>
   
   <url>
@@ -97,14 +107,8 @@
   </url>
   
   <url>
-    <loc>http://docs.engineblock.io/designsketches/</loc>
-    <lastmod>2017-05-19T22:09:53+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://docs.engineblock.io/developers/</loc>
-    <lastmod>2017-05-19T22:09:53+00:00</lastmod>
+    <loc>http://docs.engineblock.io/dev-guide/</loc>
+    <lastmod>2017-05-19T21:52:39+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -115,8 +119,20 @@
   </url>
   
   <url>
+    <loc>http://docs.engineblock.io/historic/</loc>
+    <lastmod>2017-05-19T22:09:53+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>http://docs.engineblock.io/quickstart/</loc>
     <lastmod>2017-05-19T21:51:26+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://docs.engineblock.io/sketches/</loc>
+    <lastmod>2017-05-19T22:09:53+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -126,7 +142,7 @@
   </url>
   
   <url>
-    <loc>http://docs.engineblock.io/users-guide/</loc>
+    <loc>http://docs.engineblock.io/user-guide/</loc>
     <lastmod>2017-05-19T21:52:57+00:00</lastmod>
     <priority>0</priority>
   </url>

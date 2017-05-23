@@ -9,16 +9,16 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,maximum-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=10" />
-    <title>Getting Started - EngineBlock</title>
+    <title>Project Structure - EngineBlock</title>
     <meta name="generator" content="Hugo 0.20.7" />
 
     
     <meta name="description" content="EngineBlock Docs">
     
-    <link rel="canonical" href="http://docs.engineblock.io/quickstart/">
+    <link rel="canonical" href="http://docs.engineblock.io/dev-guide/contributing/">
     
 
-    <meta property="og:url" content="http://docs.engineblock.io/quickstart/">
+    <meta property="og:url" content="http://docs.engineblock.io/dev-guide/contributing/">
     <meta property="og:title" content="EngineBlock">
     <meta property="og:image" content="http://docs.engineblock.io/images/engineblock_128.png">
     <meta name="apple-mobile-web-app-title" content="EngineBlock">
@@ -118,7 +118,7 @@
     </div>
     <div class="stretch">
       <div class="title">
-        Getting Started
+        Project Structure
       </div>
     </div>
 
@@ -201,14 +201,11 @@
 
 
 
-<a class="current" title="Quickstart" href="http://docs.engineblock.io/quickstart/">
+<a  title="Quickstart" href="http://docs.engineblock.io/quickstart/">
 	
 	Quickstart
 </a>
 
-
-<ul id="scrollspy">
-</ul>
 
 
   
@@ -341,11 +338,14 @@
 
 
 
-<a  title="Project Structure" href="http://docs.engineblock.io/dev-guide/contributing/">
+<a class="current" title="Project Structure" href="http://docs.engineblock.io/dev-guide/contributing/">
 	
 	Project Structure
 </a>
 
+
+<ul id="scrollspy">
+</ul>
 
 
       
@@ -380,128 +380,57 @@
 
 	<article class="article">
 		<div class="wrapper">
-			<h1>Getting Started </h1>
+			<h1>Project Structure </h1>
 
 			
 
-<h2 id="getting-engineblock">Getting EngineBlock</h2>
+<h2 id="conduct">Conduct</h2>
 
-<p>The latest release can always be run with this simple script: <a href="https://raw.githubusercontent.com/engineblock/engineblock/master/eb-cli/bin/run-eb">run-eb</a>. You can use the commands below to get it.</p>
+<p>It&rsquo;s simple really. Everything in the <a href="http://todogroup.org/opencodeofconduct/">Open Code of
+Conduct</a> applies here. If, after
+reading that, you are unclear, then please pick another project to work on. The
+maintainers will not hesitate to enforce a code of conduct.</p>
 
-<pre><code>curl -O https://raw.githubusercontent.com/engineblock/engineblock/master/eb-cli/bin/run-eb
-chmod u+x run-eb
-./run-eb help
-</code></pre>
+<h2 id="license">License</h2>
 
-<p>This script demonstrates how to fetch the version of the latest published artifact via maven central search. It also downloads that artifact if it doesn&rsquo;t find it locally cached within the last 2 days.</p>
+<p>EngineBlock is licensed under the <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache License, version
+2.0</a>. If you wish to contribute
+your code to this project, you must be willing to use this license. All code
+contributed here is presumed to be licensed automatically as such.</p>
 
-<p><strong>A cautionary word</strong>: As always, blindly running scripts from the web is not a good idea. Look at this script before you run it. Make sure you are comfortable with what it does. If you want, you can always download the jar directly:</p>
+<h2 id="how-to-contribute">How to Contribute</h2>
 
-<pre><code>curl -o eb-cli.jar https://repo1.maven.org/maven2/io/engineblock/eb-cli/1.0.17/eb-cli-1.0.17.jar
-java -jar eb-cli.jar
-</code></pre>
+<h3 id="issue-tracker">Issue Tracker</h3>
 
-<p>The run-eb script may be used in place of:</p>
+<p>There are multiple ways to contribute. This most direct and engaging way is to
+file an issue when you have requests for enhancements or bug fixes.</p>
 
-<pre><code>java -jar eb.jar arg0 arg1 ...
-</code></pre>
+<p>Tickets which may be suitable for newer contributes will be marked as <strong>easy
+pick</strong> in the spirit of encouragement.</p>
 
-<p>All command line arguments will be carried through, as in:</p>
+<h3 id="project-site">Project Site</h3>
 
-<pre><code>./run-eb arg0 arg1 ...
-</code></pre>
+<p>The project site at engineblock.io could use some help as well. This is in the
+codebase under the gh-pages branch. Consider this as part of the codebase in
+general. You can file issues against it, or submit pull requests.</p>
 
-<h2 id="using-built-in-docs">Using Built-in Docs</h2>
+<h3 id="pull-request">Pull Request</h3>
 
-<pre><code>./run-eb --list-activity-types
-</code></pre>
+<p>This project is eager to have contributors. To that end, pull requests which are
+in the spirit of the project will be welcome. When pull requests are not
+directly accepted, kind and specific explanation of why will be provided. If you
+want to contribute, and are not sure about whether your improvements would be
+accepted, simply file an issue and describe what you are interested in doing
+before coding too much.</p>
 
-<p>This should provide a list of the activity types that are known to the client. The built-in activity type &ldquo;diag&rdquo;, is always available. If you are learning how to use EngineBlock, you will be using the &ldquo;diag&rdquo; activity quite a bit. If you are using a tailored engineblock runtime, you will have other activity types available according to your distribution.</p>
+<h3 id="change-scoping">Change Scoping</h3>
 
-<p><strong>Activity Type Docs</strong></p>
-
-<p>You can get further documentation about an activity&hellip;</p>
-
-<pre><code>./run-eb help diag
-</code></pre>
-
-<p>This will show the internal documentation for the diag activity type. There will be documentation for every activity, as the activity loader will not recognize one without it.</p>
-
-<p><strong>Running an Activity</strong></p>
-
-<p>You can run an instance of an activity:</p>
-
-<pre><code>./run-eb activity alias=test1 type=diag threads=10 interval=200
-</code></pre>
-
-<p>This shows the standard form of an activity definition. It is simply a map of activity parameters and values.
-Here is what they do:</p>
-
-<ul>
-<li><strong>type</strong> - All activities must have a type. This determines which ActivityType implementation is used to run the activity.</li>
-<li><strong>alias</strong> - All dynamically controlled activities must have an alias. The activity alias is the only way to modify a running activity once it is started. Think of the alias as the handle to the activity instance.</li>
-<li><strong>threads</strong> - All activities have this parameter. If you do not specify it, it defaults to 1. This determines how many threads are run concurrently within the activity.</li>
-</ul>
-
-<p>There are other parameters available to an activity, depending on the activity type. To discover the parameters
-for a given activity type and what they mean, use the <em>help &lt;activitytype&gt;</em> form shown above.</p>
-
-<p><strong>Running Multiple Activities</strong></p>
-
-<p>You can also run multiple activities, like this</p>
-
-<pre><code>./run-eb \
-activity alias=test1 type=diag threads=10 interval=200  \
-activity alias=test2 type=diag threads=1 interval=10
-</code></pre>
-
-<p>This shows a basic form of command-line scripting. The verb <em>activity</em> as actually a synonym for <em>start</em>, but it is more
-readable when all you are doing is starting some activities. The activities in this scenario are run concurrently,
-because each one is started asynchronously. If you wanted to run them one at a time, you could do this instead:</p>
-
-<pre><code>./run-eb \
-run alias=test1 type=diag threads=10 interval=200  \
-run alias=test2 type=diag threads=1 interval=10
-</code></pre>
-
-<p>The <em>run</em> command is synchronous. It waits for the activity named &lsquo;test1&rsquo; to complete before starting &lsquo;test2&rsquo;.</p>
-
-<h2 id="command-scripting">Command Scripting</h2>
-
-<p>Any time you invoke engineblock, you are asking it to run a scenario. Scenarios are Nashorn scripts, always.
-If you wanted to see the script that resulted from a particular command line, you can always ask, with the
-&ndash;show-script option.</p>
-
-<pre><code>./run-eb --show-script \
-run alias=test1 type=diag threads=10 interval=200  \
-run alias=test2 type=diag threads=1 interval=10
-</code></pre>
-
-<p>will show you this:</p>
-
-<pre><code>// Script
-scenario.run(&quot;alias=test1;type=diag;threads=10;interval=200;&quot;);
-scenario.run(&quot;alias=test2;type=diag;threads=1;interval=10;&quot;);
-</code></pre>
-
-<h2 id="custom-scenarios">Custom Scenarios</h2>
-
-<p>Of course, you can always write your own scenario script, using any valid javascript along with the built-in
-engineblock scripting extensions. This is often done by a <em>scenario designer</em>.</p>
-
-<p>Once you have a script, no matter how you came by it, you can simply run it like this:</p>
-
-<pre><code>./run-eb somescript
-</code></pre>
-
-<p>If your script takes named parameters, you can pass them in &lt;param&gt;=&lt;value&gt; &hellip; form, such as</p>
-
-<pre><code>./run-eb somescript arg1=val1 arg2=val2
-</code></pre>
-
-<p>There are many other command line options available. For more advanced usage,
-consult the <a href="http://docs.engineblock.io/user-guide/command_line/">Command Line Reference</a>, or even the full
-<a href="http://docs.engineblock.io/user-guide/concepts/">User&rsquo;s Guide</a></p>
+<p>Like with <strong>easy pick</strong> issues, those which are likely to be more effort will be
+marked as <strong>needs design</strong>. The goals of any <strong>needs design</strong> will be to propose
+in more detail the moving parts and user-facing ideas which might be too complex
+or opaque for a single coding and testing effort. Think of these as <em>epic</em>
+ideas, which will, by their nature, be required to have some design and usage
+documentation submitted before they are merged.</p>
 
 
 			<aside class="copyright" role="note">
@@ -520,7 +449,7 @@ consult the <a href="http://docs.engineblock.io/user-guide/command_line/">Comman
 <nav class="pagination" aria-label="Footer">
   <div class="previous">
   
-      <a href="http://docs.engineblock.io/" title="EngineBlock Users Guide">
+      <a href="http://docs.engineblock.io/dev-guide/annotated_diag/" title="Diag ActivityType">
         <span class="direction">
           Previous
         </span>
@@ -530,7 +459,7 @@ consult the <a href="http://docs.engineblock.io/user-guide/command_line/">Comman
           </div>
           <div class="stretch">
             <div class="title">
-              EngineBlock Users Guide
+              Diag ActivityType
             </div>
           </div>
         </div>
@@ -539,6 +468,22 @@ consult the <a href="http://docs.engineblock.io/user-guide/command_line/">Comman
   </div>
 
   <div class="next">
+  
+      <a href="http://docs.engineblock.io/dev-guide/project_structure/" title="Project Structure">
+        <span class="direction">
+          Next
+        </span>
+        <div class="page">
+          <div class="stretch">
+            <div class="title">
+              Project Structure
+            </div>
+          </div>
+          <div class="button button-next" role="button" aria-label="Next">
+            <i class="icon icon-forward"></i>
+          </div>
+        </div>
+      </a>
   
   </div>
 </nav>

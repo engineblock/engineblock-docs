@@ -49,15 +49,15 @@ canonifyurls = true
 	weight = 20
 [[menu.main]]
 	name   = "User Guide"
-	url    = "users-guide/"
+	url    = "user-guide/"
 	weight = 30
 [[menu.main]]
     name   = "Dev Guide"
-    url    = "developers/"
+    url    = "dev-guide/"
     weight = 100
-[[menu.main]]
-    name   = "Design Sketches"
-    url    = "designsketches/"
-    weight = 200
+#[[menu.main]]
+#    name   = "Design Sketches"
+#    url    = "designsketches/"
+#    weight = 200
 
 

@@ -9,16 +9,16 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,maximum-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=10" />
-    <title>Getting Started - EngineBlock</title>
+    <title>CLI Scripting - EngineBlock</title>
     <meta name="generator" content="Hugo 0.20.7" />
 
     
     <meta name="description" content="EngineBlock Docs">
     
-    <link rel="canonical" href="http://docs.engineblock.io/quickstart/">
+    <link rel="canonical" href="http://docs.engineblock.io/user-guide/cli_scripting/">
     
 
-    <meta property="og:url" content="http://docs.engineblock.io/quickstart/">
+    <meta property="og:url" content="http://docs.engineblock.io/user-guide/cli_scripting/">
     <meta property="og:title" content="EngineBlock">
     <meta property="og:image" content="http://docs.engineblock.io/images/engineblock_128.png">
     <meta name="apple-mobile-web-app-title" content="EngineBlock">
@@ -118,7 +118,7 @@
     </div>
     <div class="stretch">
       <div class="title">
-        Getting Started
+        CLI Scripting
       </div>
     </div>
 
@@ -201,14 +201,11 @@
 
 
 
-<a class="current" title="Quickstart" href="http://docs.engineblock.io/quickstart/">
+<a  title="Quickstart" href="http://docs.engineblock.io/quickstart/">
 	
 	Quickstart
 </a>
 
-
-<ul id="scrollspy">
-</ul>
 
 
   
@@ -252,11 +249,14 @@
 
 
 
-<a  title="CLI Scripting" href="http://docs.engineblock.io/user-guide/cli_scripting/">
+<a class="current" title="CLI Scripting" href="http://docs.engineblock.io/user-guide/cli_scripting/">
 	
 	CLI Scripting
 </a>
 
+
+<ul id="scrollspy">
+</ul>
 
 
       
@@ -380,128 +380,73 @@
 
 	<article class="article">
 		<div class="wrapper">
-			<h1>Getting Started </h1>
+			<h1>CLI Scripting </h1>
 
 			
 
-<h2 id="getting-engineblock">Getting EngineBlock</h2>
+<p>Sometimes you want to to run a set of workloads in a particular order, or call other specific test setup logic in between phases or workloads. While the full scripting environment allows you to do this and more, it is not necessary to write javascript for every scenario.</p>
 
-<p>The latest release can always be run with this simple script: <a href="https://raw.githubusercontent.com/engineblock/engineblock/master/eb-cli/bin/run-eb">run-eb</a>. You can use the commands below to get it.</p>
+<p>For more basic setup and sequencing needs, you can achive a fair degree of flexibility on the command line. A few key API calls are supported directly on the command line. This guide explains each of them, what the do, and how to use them together.</p>
 
-<pre><code>curl -O https://raw.githubusercontent.com/engineblock/engineblock/master/eb-cli/bin/run-eb
-chmod u+x run-eb
-./run-eb help
-</code></pre>
+<h2 id="script-construction">Script Construction</h2>
 
-<p>This script demonstrates how to fetch the version of the latest published artifact via maven central search. It also downloads that artifact if it doesn&rsquo;t find it locally cached within the last 2 days.</p>
+<p>As the command line is parsed, from left to right, the scenario script is built in an internal scripting buffer. Once the command line is fully parsed, this script is executed. Each of the commands below is effectively a macro for a snippet of script. It is important to remember that order is important.</p>
 
-<p><strong>A cautionary word</strong>: As always, blindly running scripts from the web is not a good idea. Look at this script before you run it. Make sure you are comfortable with what it does. If you want, you can always download the jar directly:</p>
+<h2 id="command-line-format">Command line format</h2>
 
-<pre><code>curl -o eb-cli.jar https://repo1.maven.org/maven2/io/engineblock/eb-cli/1.0.17/eb-cli-1.0.17.jar
-java -jar eb-cli.jar
-</code></pre>
+<p>Newlines are not allowed when building scripts from the command line. As long as you follow the allowed forms below, you can simply string multiple commands together with spaces between. As usual, single word options without double dashes are commands, key=value style parameters apply to the previous command, and all other commands with &ndash;this-style are non-scripting options.</p>
 
-<p>The run-eb script may be used in place of:</p>
+<h2 id="concurrency-control">Concurrency &amp; Control</h2>
 
-<pre><code>java -jar eb.jar arg0 arg1 ...
-</code></pre>
+<p>All activities that run during a scenario run under the control of, but independently from the scenario script. This means that you can have a number of activities running while the scenario script is doing its own thing. The scenario only completes when both the scenario script and the activities are finished.</p>
 
-<p>All command line arguments will be carried through, as in:</p>
+<h3 id="start-type-lt-activity-type-gt-alias-lt-alias-gt">start type=&lt;activity type&gt; alias=&lt;alias&gt; &hellip;</h3>
 
-<pre><code>./run-eb arg0 arg1 ...
-</code></pre>
+<p>You can start an activity with this command. At the time this command is evaluated, the activity is started, and the script continues without blocking. This is an asynchronous start of an activity. If you start multiple activities in this way, they will run concurrently.</p>
 
-<h2 id="using-built-in-docs">Using Built-in Docs</h2>
+<p>The type argument is required to identify the activity type to run. The alias parameter is not strictly required, unless you want to be able to interact with the started activity later. In any case, it is a good idea to name all your activities with a meaningful alias.</p>
 
-<pre><code>./run-eb --list-activity-types
-</code></pre>
+<h3 id="stop-lt-alias-gt">stop &lt;alias&gt;</h3>
 
-<p>This should provide a list of the activity types that are known to the client. The built-in activity type &ldquo;diag&rdquo;, is always available. If you are learning how to use EngineBlock, you will be using the &ldquo;diag&rdquo; activity quite a bit. If you are using a tailored engineblock runtime, you will have other activity types available according to your distribution.</p>
+<p>Stop an activity with the given alias. This is synchronous, and causes the scenario to pause until the activity is stopped. This means that all threads for the activity have completed and signalled that they&rsquo;re in a stopped state.</p>
 
-<p><strong>Activity Type Docs</strong></p>
+<h3 id="await-lt-alias-gt">await &lt;alias&gt;</h3>
 
-<p>You can get further documentation about an activity&hellip;</p>
+<p>Await the normal completion of an activity with the given alias. This causes the scenario script to pause while it waits for the named activity to finish. This does not tell the activity to stop. It simply puts the scenario script into a paused state until the named activity is complete.</p>
 
-<pre><code>./run-eb help diag
-</code></pre>
+<h3 id="run-type-lt-activity-type-gt-alias-lt-alias-gt">run type=&lt;activity type&gt; alias=&lt;alias&gt; &hellip;</h3>
 
-<p>This will show the internal documentation for the diag activity type. There will be documentation for every activity, as the activity loader will not recognize one without it.</p>
+<p>Run an activity to completion, waiting until it is complete before continuing with the scenario script.
+It is effectively the same as <strong>start type=&lt;activity type&gt; &hellip; alias&lt;alias&gt; await &lt;alias&gt;</strong></p>
 
-<p><strong>Running an Activity</strong></p>
+<h3 id="waitmillis-lt-milliseconds-gt">waitmillis &lt;milliseconds&gt;</h3>
 
-<p>You can run an instance of an activity:</p>
+<p>Pause the scenario script for this many milliseconds. This is useful for controlling workload run duration, etc.</p>
 
-<pre><code>./run-eb activity alias=test1 type=diag threads=10 interval=200
-</code></pre>
+<h3 id="script-lt-script-file-gt">script &lt;script file&gt;</h3>
 
-<p>This shows the standard form of an activity definition. It is simply a map of activity parameters and values.
-Here is what they do:</p>
+<p>Add the contents of the named file to the script buffer.</p>
 
-<ul>
-<li><strong>type</strong> - All activities must have a type. This determines which ActivityType implementation is used to run the activity.</li>
-<li><strong>alias</strong> - All dynamically controlled activities must have an alias. The activity alias is the only way to modify a running activity once it is started. Think of the alias as the handle to the activity instance.</li>
-<li><strong>threads</strong> - All activities have this parameter. If you do not specify it, it defaults to 1. This determines how many threads are run concurrently within the activity.</li>
-</ul>
-
-<p>There are other parameters available to an activity, depending on the activity type. To discover the parameters
-for a given activity type and what they mean, use the <em>help &lt;activitytype&gt;</em> form shown above.</p>
-
-<p><strong>Running Multiple Activities</strong></p>
-
-<p>You can also run multiple activities, like this</p>
+<h1 id="an-example-cli-script">An example CLI script</h1>
 
 <pre><code>./run-eb \
-activity alias=test1 type=diag threads=10 interval=200  \
-activity alias=test2 type=diag threads=1 interval=10
+start type=diag alias=activity_one cycles=10000000 \
+start type=diag alias=activity_two cycles=20000000 \
+waitmillis 10000 \
+await activity_one \
+stop activity_two
 </code></pre>
 
-<p>This shows a basic form of command-line scripting. The verb <em>activity</em> as actually a synonym for <em>start</em>, but it is more
-readable when all you are doing is starting some activities. The activities in this scenario are run concurrently,
-because each one is started asynchronously. If you wanted to run them one at a time, you could do this instead:</p>
+<p>in this CLI script, the backslashes are necessary in order keep everything on the same command line. Here is a narrative of what happens when it is run.</p>
 
-<pre><code>./run-eb \
-run alias=test1 type=diag threads=10 interval=200  \
-run alias=test2 type=diag threads=1 interval=10
-</code></pre>
-
-<p>The <em>run</em> command is synchronous. It waits for the activity named &lsquo;test1&rsquo; to complete before starting &lsquo;test2&rsquo;.</p>
-
-<h2 id="command-scripting">Command Scripting</h2>
-
-<p>Any time you invoke engineblock, you are asking it to run a scenario. Scenarios are Nashorn scripts, always.
-If you wanted to see the script that resulted from a particular command line, you can always ask, with the
-&ndash;show-script option.</p>
-
-<pre><code>./run-eb --show-script \
-run alias=test1 type=diag threads=10 interval=200  \
-run alias=test2 type=diag threads=1 interval=10
-</code></pre>
-
-<p>will show you this:</p>
-
-<pre><code>// Script
-scenario.run(&quot;alias=test1;type=diag;threads=10;interval=200;&quot;);
-scenario.run(&quot;alias=test2;type=diag;threads=1;interval=10;&quot;);
-</code></pre>
-
-<h2 id="custom-scenarios">Custom Scenarios</h2>
-
-<p>Of course, you can always write your own scenario script, using any valid javascript along with the built-in
-engineblock scripting extensions. This is often done by a <em>scenario designer</em>.</p>
-
-<p>Once you have a script, no matter how you came by it, you can simply run it like this:</p>
-
-<pre><code>./run-eb somescript
-</code></pre>
-
-<p>If your script takes named parameters, you can pass them in &lt;param&gt;=&lt;value&gt; &hellip; form, such as</p>
-
-<pre><code>./run-eb somescript arg1=val1 arg2=val2
-</code></pre>
-
-<p>There are many other command line options available. For more advanced usage,
-consult the <a href="http://docs.engineblock.io/user-guide/command_line/">Command Line Reference</a>, or even the full
-<a href="http://docs.engineblock.io/user-guide/concepts/">User&rsquo;s Guide</a></p>
+<ol>
+<li>An activity named &lsquo;activity_one&rsquo; is started, with 1 million cycles of work.</li>
+<li>An activity named &lsquo;activity_two&rsquo; is started, with 2 million cycles of work.</li>
+<li>While these activities run, the scenario script waits for ten seconds.</li>
+<li>If activity_one is complete, the await returns immediately. If not, the script waits for activity_one to complete its 1000000 cycles.</li>
+<li>activity_two is immediately stopped.</li>
+<li>Because all activities are stopped or complete, and the script is complete, the scenario exits.</li>
+</ol>
 
 
 			<aside class="copyright" role="note">
@@ -520,7 +465,7 @@ consult the <a href="http://docs.engineblock.io/user-guide/command_line/">Comman
 <nav class="pagination" aria-label="Footer">
   <div class="previous">
   
-      <a href="http://docs.engineblock.io/" title="EngineBlock Users Guide">
+      <a href="http://docs.engineblock.io/dev-guide/building_activities/" title="Building ActivityTypes">
         <span class="direction">
           Previous
         </span>
@@ -530,7 +475,7 @@ consult the <a href="http://docs.engineblock.io/user-guide/command_line/">Comman
           </div>
           <div class="stretch">
             <div class="title">
-              EngineBlock Users Guide
+              Building ActivityTypes
             </div>
           </div>
         </div>
@@ -539,6 +484,22 @@ consult the <a href="http://docs.engineblock.io/user-guide/command_line/">Comman
   </div>
 
   <div class="next">
+  
+      <a href="http://docs.engineblock.io/dev-guide/annotated_diag/" title="Diag ActivityType">
+        <span class="direction">
+          Next
+        </span>
+        <div class="page">
+          <div class="stretch">
+            <div class="title">
+              Diag ActivityType
+            </div>
+          </div>
+          <div class="button button-next" role="button" aria-label="Next">
+            <i class="icon icon-forward"></i>
+          </div>
+        </div>
+      </a>
   
   </div>
 </nav>
