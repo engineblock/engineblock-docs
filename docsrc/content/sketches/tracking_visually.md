@@ -148,12 +148,52 @@ according to cycles that have already been marked. Also, because the bytebuffer 
 not atomic or volatile itself, a more resilient check needs to be added to the
 max contiguous property that will eagerly update when asked.
 
-## Performance Strategies
+## Implementation Sketch
 
-1. Track the highest contiguous completed cycle as well as the highest completed cycle.
-   allowing for fine-grained queries on state only if they are the same.
-2. Use CAS or LongAdder for counters. For CAS, observing the return value can be used as
-   an incrementing state tracker for contiguity. For example, a successful CAS +1 operation
-   represents a succesful advance to the current position, and a failed one represents
-   that the "highest" value was not at the right position to advance.
+![Tracking Extent](/diagrams/cycle_tracking.png#center)
+
+This diagram shows a series of tracking extents. Each one is simply a buffer of
+result codes.
+
+### Locking and Signals
+
+Locking should be kept to a minimum. The only time locks should be used at all is when there
+is a blocking state that would otherwise consume resources in an idle loop, and for which
+there is a proper and coherent signaling scheme available.
+
+- nowMarking signal should be set any time a new extent is added.
    
+### Marking
+
+When a marker attempts to mark a cycle of an extent:
+
+1. Mark the correct and active extent if possible.
+2. If the marked extent was completed, attempt to activate a serving extent, but only
+   if the serving extent was not set (atomically). If succesful, signal nowServing.
+3. If the marked extent was completed, add another extent and signal nowMarking.
+4. If an active extent was marked, return success
+5. Add an extent, if the the maxExtents limit is not reached.
+6. If an extent was added, retry request.
+7. If an extent was not added, block for nowMarking state, when signaled, retry request.
+
+### Reading
+
+When a reader attempts to read a segment of an extent:
+1. Acquire the serving extent. 
+2. If the serving extent is not defined, then block awaiting nowServing state.
+3. If all cycles are consumed from the current extent, then advance the servingExtent
+   if possible.
+4. When a serving extent is advanced, then signal nowMarking, in case  extent limit
+   opens up new marking extents.
+
+
+The important details are as follows:
+
+1. No extent may be read from by a consumer until it has been fully filled.
+2. The only extent that may be read from at any one time is the serving extent.
+   That is the lowest extent that has been filled and not fully served.
+3. Lock-free readers and writers 
+3. A fixed number of extents is maintained at all times.
+4. It is still up to the consumer of cycle codes to determine when to stop reading
+   cycles.
+
