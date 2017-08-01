@@ -25,7 +25,7 @@ In order to enable graphite reporting, use one of these options formats:
 
 ## Metrics & Scripting
 
-There are enhancements to the metrics bundled with EngineBlock to support advanced scripting. See the [Advanced Metrics for Scripting](/scripting/#enhanced-metrics-for-scripting) in the scripting guide for more details.
+There are enhancements to the metrics bundled with EngineBlock to support advanced scripting. See the [Advanced Metrics for Scripting](/user-guide/scripting/#enhanced-metrics-for-scripting) in the scripting guide for more details.
 
 ## Metric Naming
 
