@@ -9,4 +9,5 @@ This section holds design sketches of some of the more esoteric design elements 
 - [scripting_histograms](scripting_histograms/)
 - [tracking](tracking/)
 - [tracking, visually](tracking_visually)
+- [ring tracking](ring_tracking/)
 

@@ -14,7 +14,7 @@ to generate work against a test target. However, a purely abstract interface for
 activities would be so open-ended that it would provide no common scaffolding.
 On the contrary, we do want some sense of isomorphism between activity types in
 terms of how they are implemented and reasoned about. After reading this
-document, you should now what it means to implement an activity properly--
+document, you should know what it means to implement an activity properly--
 building on the core machinery while adding in activity-type behavior
 appropriately. That is what an Activity Type is for -- filling in the difference
 between what the core machinery provides and what is needed to simulate a
