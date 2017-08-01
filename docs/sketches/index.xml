@@ -24,6 +24,17 @@ Some testing scenarios require that you are able to take the results of one phas
     </item>
     
     <item>
+      <title>Ring Tracking</title>
+      <link>http://docs.engineblock.io/sketches/ring_tracking/</link>
+      <pubDate>Fri, 19 May 2017 22:09:53 +0000</pubDate>
+      
+      <guid>http://docs.engineblock.io/sketches/ring_tracking/</guid>
+      <description>This schematic is an attempt to explain a very basic pattern. It really is a simple pattern, but it sometimes helps to have visuals to get newer users grounded in the concepts.
+Why Ring Tracking? The tracking mechanisms in EngineBlock serve two purposes:
+ To coordinate cycle number dispatch between collaborating activities. To coordinate cycle result values between enhanced activities that know how to use them, or for intermediate cycle number filters that scrutinize the result codes provided by an upstream activity.</description>
+    </item>
+    
+    <item>
       <title>Scripting Histograms</title>
       <link>http://docs.engineblock.io/sketches/scripting_histograms/</link>
       <pubDate>Fri, 19 May 2017 22:09:53 +0000</pubDate>
@@ -50,7 +61,7 @@ Scenario: A -&amp;gt; B  digraph sys1 { rankdir=LR; node[shape=box] edge[dir=out
       
       <guid>http://docs.engineblock.io/sketches/</guid>
       <description>This section holds design sketches of some of the more esoteric design elements of EngineBlock.
- scripting_histograms tracking tracking, visually  </description>
+ scripting_histograms tracking tracking, visually ring tracking  </description>
     </item>
     
   </channel>

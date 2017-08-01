@@ -48,6 +48,8 @@
     <link rel="stylesheet" href="http://docs.engineblock.io/stylesheets/application.css">
     <link rel="stylesheet" href="http://docs.engineblock.io/stylesheets/temporary.css">
     <link rel="stylesheet" href="http://docs.engineblock.io/stylesheets/palettes.css">
+    <link rel="stylesheet" href="http://docs.engineblock.io/stylesheets/images.css">
+
     <link rel="stylesheet" href="http://docs.engineblock.io/stylesheets/highlight/highlight.css">
 
     
@@ -68,30 +70,49 @@
 
     
 
+  
+    
+    
+
+    
+    
+
+    
+    
+
+    
+    
+
+    
+    
+
+    
+    
+
+    
+    
+    
+    
+    
+
+    
+    
+
+
       
     
-    
-
-    
-    
-
-    
-    
-
-    
-    
-
-    
-    
-
-    
-    
-    
-    
-    
-
-    
-    
+    <link href="http://docs.engineblock.io//modules/annotatorjs/annotator.css" rel="stylesheet" />
+    <script src="http://docs.engineblock.io//modules/annotatorjs/jquery-3.2.1.js"></script>
+    <script src="http://docs.engineblock.io//modules/annotatorjs/annotator.js"></script>
+    <script>
+        var app = new annotator.App();
+        app.include(annotator.ui.main);
+        app
+            .start()
+            .then(function() {
+                app.annotations.load();
+            });
+    </script>
 
 
   </head>
@@ -400,7 +421,7 @@
 
 <h2 id="metrics-scripting">Metrics &amp; Scripting</h2>
 
-<p>There are enhancements to the metrics bundled with EngineBlock to support advanced scripting. See the <a href="scripting.md#enhanced-metrics-for-scripting">Advanced Metrics for Scripting</a> in the scripting guide for more details.</p>
+<p>There are enhancements to the metrics bundled with EngineBlock to support advanced scripting. See the <a href="http://docs.engineblock.io/user-guide/scripting/#enhanced-metrics-for-scripting">Advanced Metrics for Scripting</a> in the scripting guide for more details.</p>
 
 <h2 id="metric-naming">Metric Naming</h2>
 

@@ -65,6 +65,17 @@ Some testing scenarios require that you are able to take the results of one phas
     </item>
     
     <item>
+      <title>Ring Tracking</title>
+      <link>http://docs.engineblock.io/sketches/ring_tracking/</link>
+      <pubDate>Fri, 19 May 2017 22:09:53 +0000</pubDate>
+      
+      <guid>http://docs.engineblock.io/sketches/ring_tracking/</guid>
+      <description>This schematic is an attempt to explain a very basic pattern. It really is a simple pattern, but it sometimes helps to have visuals to get newer users grounded in the concepts.
+Why Ring Tracking? The tracking mechanisms in EngineBlock serve two purposes:
+ To coordinate cycle number dispatch between collaborating activities. To coordinate cycle result values between enhanced activities that know how to use them, or for intermediate cycle number filters that scrutinize the result codes provided by an upstream activity.</description>
+    </item>
+    
+    <item>
       <title>Scripting Histograms</title>
       <link>http://docs.engineblock.io/sketches/scripting_histograms/</link>
       <pubDate>Fri, 19 May 2017 22:09:53 +0000</pubDate>
@@ -100,7 +111,7 @@ This is another section </description>
       <pubDate>Fri, 19 May 2017 22:09:53 +0000</pubDate>
       
       <guid>http://docs.engineblock.io/dev-guide/activity_internals/</guid>
-      <description>Activities are a generalization of some type of client work that needs to occur to generate work against a test target. However, a purely abstract interface for activities would be so open-ended that it would provide no common scaffolding. On the contrary, we do want some sense of isomorphism between activity types in terms of how they are implemented and reasoned about. After reading this document, you should now what it means to implement an activity properly&amp;ndash; building on the core machinery while adding in activity-type behavior appropriately.</description>
+      <description>Activities are a generalization of some type of client work that needs to occur to generate work against a test target. However, a purely abstract interface for activities would be so open-ended that it would provide no common scaffolding. On the contrary, we do want some sense of isomorphism between activity types in terms of how they are implemented and reasoned about. After reading this document, you should know what it means to implement an activity properly&amp;ndash; building on the core machinery while adding in activity-type behavior appropriately.</description>
     </item>
     
     <item>
@@ -180,7 +191,7 @@ What is Slot Assembly? Slot assembly in this context simply refers the logic tha
       
       <guid>http://docs.engineblock.io/sketches/</guid>
       <description>This section holds design sketches of some of the more esoteric design elements of EngineBlock.
- scripting_histograms tracking tracking, visually  </description>
+ scripting_histograms tracking tracking, visually ring tracking  </description>
     </item>
     
     <item>

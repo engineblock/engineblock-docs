@@ -28,7 +28,7 @@ License EngineBlock is licensed under the Apache License, version 2.0. If you wi
       <pubDate>Fri, 19 May 2017 22:09:53 +0000</pubDate>
       
       <guid>http://docs.engineblock.io/dev-guide/activity_internals/</guid>
-      <description>Activities are a generalization of some type of client work that needs to occur to generate work against a test target. However, a purely abstract interface for activities would be so open-ended that it would provide no common scaffolding. On the contrary, we do want some sense of isomorphism between activity types in terms of how they are implemented and reasoned about. After reading this document, you should now what it means to implement an activity properly&amp;ndash; building on the core machinery while adding in activity-type behavior appropriately.</description>
+      <description>Activities are a generalization of some type of client work that needs to occur to generate work against a test target. However, a purely abstract interface for activities would be so open-ended that it would provide no common scaffolding. On the contrary, we do want some sense of isomorphism between activity types in terms of how they are implemented and reasoned about. After reading this document, you should know what it means to implement an activity properly&amp;ndash; building on the core machinery while adding in activity-type behavior appropriately.</description>
     </item>
     
     <item>

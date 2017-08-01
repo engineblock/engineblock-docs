@@ -48,6 +48,8 @@
     <link rel="stylesheet" href="http://docs.engineblock.io/stylesheets/application.css">
     <link rel="stylesheet" href="http://docs.engineblock.io/stylesheets/temporary.css">
     <link rel="stylesheet" href="http://docs.engineblock.io/stylesheets/palettes.css">
+    <link rel="stylesheet" href="http://docs.engineblock.io/stylesheets/images.css">
+
     <link rel="stylesheet" href="http://docs.engineblock.io/stylesheets/highlight/highlight.css">
 
     
@@ -68,7 +70,12 @@
 
     
 
-      
+  
+    
+    
+    <script src="http://docs.engineblock.io//modules/vega/vega.js"></script>
+    
+
     
     
     <script src="http://docs.engineblock.io//modules/viz/viz.js"></script>
@@ -100,6 +107,22 @@
 
     
     
+
+
+      
+    
+    <link href="http://docs.engineblock.io//modules/annotatorjs/annotator.css" rel="stylesheet" />
+    <script src="http://docs.engineblock.io//modules/annotatorjs/jquery-3.2.1.js"></script>
+    <script src="http://docs.engineblock.io//modules/annotatorjs/annotator.js"></script>
+    <script>
+        var app = new annotator.App();
+        app.include(annotator.ui.main);
+        app
+            .start()
+            .then(function() {
+                app.annotations.load();
+            });
+    </script>
 
 
   </head>
@@ -553,6 +576,63 @@ according to cycles that have already been marked. Also, because the bytebuffer 
 not atomic or volatile itself, a more resilient check needs to be added to the
 max contiguous property that will eagerly update when asked.</p>
 
+<h2 id="implementation-sketch">Implementation Sketch</h2>
+
+<p><img src="http://docs.engineblock.io/diagrams/cycle_tracking.png#center" alt="Tracking Extent" /></p>
+
+<p>This diagram shows a series of tracking extents. Each one is simply a buffer of
+result codes.</p>
+
+<h3 id="locking-and-signals">Locking and Signals</h3>
+
+<p>Locking should be kept to a minimum. The only time locks should be used at all is when there
+is a blocking state that would otherwise consume resources in an idle loop, and for which
+there is a proper and coherent signaling scheme available.</p>
+
+<ul>
+<li>nowMarking signal should be set any time a new extent is added.
+<br /></li>
+</ul>
+
+<h3 id="marking">Marking</h3>
+
+<p>When a marker attempts to mark a cycle of an extent:</p>
+
+<ol>
+<li>Mark the correct and active extent if possible.</li>
+<li>If the marked extent was completed, attempt to activate a serving extent, but only
+if the serving extent was not set (atomically). If succesful, signal nowServing.</li>
+<li>If the marked extent was completed, add another extent and signal nowMarking.</li>
+<li>If an active extent was marked, return success</li>
+<li>Add an extent, if the the maxExtents limit is not reached.</li>
+<li>If an extent was added, retry request.</li>
+<li>If an extent was not added, block for nowMarking state, when signaled, retry request.</li>
+</ol>
+
+<h3 id="reading">Reading</h3>
+
+<p>When a reader attempts to read a segment of an extent:
+1. Acquire the serving extent.
+2. If the serving extent is not defined, then block awaiting nowServing state.
+3. If all cycles are consumed from the current extent, then advance the servingExtent
+   if possible.
+4. When a serving extent is advanced, then signal nowMarking, in case  extent limit
+   opens up new marking extents.</p>
+
+<p>The important details are as follows:</p>
+
+<ol>
+<li>No extent may be read from by a consumer until it has been fully filled.</li>
+<li>The only extent that may be read from at any one time is the serving extent.
+That is the lowest extent that has been filled and not fully served.</li>
+<li>Lock-free readers and writers</li>
+<li>A fixed number of extents is maintained at all times.</li>
+<li>It is still up to the consumer of cycle codes to determine when to stop reading
+cycles.</li>
+</ol>
+
+<p>=======</p>
+
 <h2 id="performance-strategies">Performance Strategies</h2>
 
 <ol>
@@ -561,9 +641,113 @@ allowing for fine-grained queries on state only if they are the same.</li>
 <li>Use CAS or LongAdder for counters. For CAS, observing the return value can be used as
 an incrementing state tracker for contiguity. For example, a successful CAS +1 operation
 represents a succesful advance to the current position, and a failed one represents
-that the &ldquo;highest&rdquo; value was not at the right position to advance.
-<br /></li>
+that the &ldquo;highest&rdquo; value was not at the right position to advance.</li>
 </ol>
+
+<p>Vega here below</p>
+
+<p>
+
+<div align="center" class="vega-text"><pre>
+{
+  &#34;$schema&#34;: &#34;https://vega.github.io/schema/vega/v3.0.json&#34;,
+  &#34;width&#34;: 400,
+  &#34;height&#34;: 200,
+  &#34;padding&#34;: 5,
+
+  &#34;data&#34;: [
+    {
+      &#34;name&#34;: &#34;table&#34;,
+      &#34;values&#34;: [
+        {&#34;category&#34;: &#34;A&#34;, &#34;amount&#34;: 28},
+        {&#34;category&#34;: &#34;B&#34;, &#34;amount&#34;: 55},
+        {&#34;category&#34;: &#34;C&#34;, &#34;amount&#34;: 43},
+        {&#34;category&#34;: &#34;D&#34;, &#34;amount&#34;: 91},
+        {&#34;category&#34;: &#34;E&#34;, &#34;amount&#34;: 81},
+        {&#34;category&#34;: &#34;F&#34;, &#34;amount&#34;: 53},
+        {&#34;category&#34;: &#34;G&#34;, &#34;amount&#34;: 19},
+        {&#34;category&#34;: &#34;H&#34;, &#34;amount&#34;: 87}
+      ]
+    }
+  ],
+
+  &#34;signals&#34;: [
+    {
+      &#34;name&#34;: &#34;tooltip&#34;,
+      &#34;value&#34;: {},
+      &#34;on&#34;: [
+        {&#34;events&#34;: &#34;rect:mouseover&#34;, &#34;update&#34;: &#34;datum&#34;},
+        {&#34;events&#34;: &#34;rect:mouseout&#34;,  &#34;update&#34;: &#34;{}&#34;}
+      ]
+    }
+  ],
+
+  &#34;scales&#34;: [
+    {
+      &#34;name&#34;: &#34;xscale&#34;,
+      &#34;type&#34;: &#34;band&#34;,
+      &#34;domain&#34;: {&#34;data&#34;: &#34;table&#34;, &#34;field&#34;: &#34;category&#34;},
+      &#34;range&#34;: &#34;width&#34;
+    },
+    {
+      &#34;name&#34;: &#34;yscale&#34;,
+      &#34;domain&#34;: {&#34;data&#34;: &#34;table&#34;, &#34;field&#34;: &#34;amount&#34;},
+      &#34;nice&#34;: true,
+      &#34;range&#34;: &#34;height&#34;
+    }
+  ],
+
+  &#34;axes&#34;: [
+    { &#34;orient&#34;: &#34;bottom&#34;, &#34;scale&#34;: &#34;xscale&#34; },
+    { &#34;orient&#34;: &#34;left&#34;, &#34;scale&#34;: &#34;yscale&#34; }
+  ],
+
+  &#34;marks&#34;: [
+    {
+      &#34;type&#34;: &#34;rect&#34;,
+      &#34;from&#34;: {&#34;data&#34;:&#34;table&#34;},
+      &#34;encode&#34;: {
+        &#34;enter&#34;: {
+          &#34;x&#34;: {&#34;scale&#34;: &#34;xscale&#34;, &#34;field&#34;: &#34;category&#34;, &#34;offset&#34;: 1},
+          &#34;width&#34;: {&#34;scale&#34;: &#34;xscale&#34;, &#34;band&#34;: 1, &#34;offset&#34;: -1},
+          &#34;y&#34;: {&#34;scale&#34;: &#34;yscale&#34;, &#34;field&#34;: &#34;amount&#34;},
+          &#34;y2&#34;: {&#34;scale&#34;: &#34;yscale&#34;, &#34;value&#34;: 0}
+        },
+        &#34;update&#34;: {
+          &#34;fill&#34;: {&#34;value&#34;: &#34;steelblue&#34;}
+        },
+        &#34;hover&#34;: {
+          &#34;fill&#34;: {&#34;value&#34;: &#34;red&#34;}
+        }
+      }
+    },
+    {
+      &#34;type&#34;: &#34;text&#34;,
+      &#34;encode&#34;: {
+        &#34;enter&#34;: {
+          &#34;align&#34;: {&#34;value&#34;: &#34;center&#34;},
+          &#34;baseline&#34;: {&#34;value&#34;: &#34;bottom&#34;},
+          &#34;fill&#34;: {&#34;value&#34;: &#34;#333&#34;}
+        },
+        &#34;update&#34;: {
+          &#34;x&#34;: {&#34;scale&#34;: &#34;xscale&#34;, &#34;signal&#34;: &#34;tooltip.category&#34;, &#34;band&#34;: 0.5},
+          &#34;y&#34;: {&#34;scale&#34;: &#34;yscale&#34;, &#34;signal&#34;: &#34;tooltip.amount&#34;, &#34;offset&#34;: -2},
+          &#34;text&#34;: {&#34;signal&#34;: &#34;tooltip.amount&#34;},
+          &#34;fillOpacity&#34;: [
+            {&#34;test&#34;: &#34;datum === tooltip&#34;, &#34;value&#34;: 0},
+            {&#34;value&#34;: 1}
+          ]
+        }
+      }
+    }
+  ]
+}
+</pre></div>
+
+
+<script type="text/javascript" src="http://docs.engineblock.io/modules/vega/inithook-vega.js"></script>
+
+Vega here above</p>
 
 
 			<aside class="copyright" role="note">

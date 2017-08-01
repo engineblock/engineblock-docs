@@ -48,6 +48,8 @@
     <link rel="stylesheet" href="http://docs.engineblock.io/stylesheets/application.css">
     <link rel="stylesheet" href="http://docs.engineblock.io/stylesheets/temporary.css">
     <link rel="stylesheet" href="http://docs.engineblock.io/stylesheets/palettes.css">
+    <link rel="stylesheet" href="http://docs.engineblock.io/stylesheets/images.css">
+
     <link rel="stylesheet" href="http://docs.engineblock.io/stylesheets/highlight/highlight.css">
 
     
@@ -68,30 +70,49 @@
 
     
 
+  
+    
+    
+
+    
+    
+
+    
+    
+
+    
+    
+
+    
+    
+
+    
+    
+
+    
+    
+    
+    
+    
+
+    
+    
+
+
       
     
-    
-
-    
-    
-
-    
-    
-
-    
-    
-
-    
-    
-
-    
-    
-    
-    
-    
-
-    
-    
+    <link href="http://docs.engineblock.io//modules/annotatorjs/annotator.css" rel="stylesheet" />
+    <script src="http://docs.engineblock.io//modules/annotatorjs/jquery-3.2.1.js"></script>
+    <script src="http://docs.engineblock.io//modules/annotatorjs/annotator.js"></script>
+    <script>
+        var app = new annotator.App();
+        app.include(annotator.ui.main);
+        app
+            .start()
+            .then(function() {
+                app.annotations.load();
+            });
+    </script>
 
 
   </head>
@@ -466,7 +487,7 @@ for local computations, because of 1)</p>
 <nav class="pagination" aria-label="Footer">
   <div class="previous">
   
-      <a href="http://docs.engineblock.io/sketches/tracking/" title="Cycle Tracking">
+      <a href="http://docs.engineblock.io/sketches/ring_tracking/" title="Ring Tracking">
         <span class="direction">
           Previous
         </span>
@@ -476,7 +497,7 @@ for local computations, because of 1)</p>
           </div>
           <div class="stretch">
             <div class="title">
-              Cycle Tracking
+              Ring Tracking
             </div>
           </div>
         </div>

@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+  
+  
+  
+  
+   <html class="no-js"> 
+
+  <head lang="en-us">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,maximum-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=10" />
+    <title>Ring Tracking - EngineBlock</title>
+    <meta name="generator" content="Hugo 0.20.7" />
+
+    
+    <meta name="description" content="EngineBlock Docs">
+    
+    <link rel="canonical" href="http://docs.engineblock.io/sketches/ring_tracking/">
+    
+
+    <meta property="og:url" content="http://docs.engineblock.io/sketches/ring_tracking/">
+    <meta property="og:title" content="EngineBlock">
+    <meta property="og:image" content="http://docs.engineblock.io/images/engineblock_128.png">
+    <meta name="apple-mobile-web-app-title" content="EngineBlock">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <link rel="shortcut icon" type="image/x-icon" href="http://docs.engineblock.io/images/engineblock_32.png">
+    <link rel="icon" type="image/x-icon" href="http://docs.engineblock.io/images/engineblock_32.png">
+
+    <style>
+      @font-face {
+        font-family: 'Icon';
+        src: url('http://docs.engineblock.io/fonts/icon.eot');
+        src: url('http://docs.engineblock.io/fonts/icon.eot')
+               format('embedded-opentype'),
+             url('http://docs.engineblock.io/fonts/icon.woff')
+               format('woff'),
+             url('http://docs.engineblock.io/fonts/icon.ttf')
+               format('truetype'),
+             url('http://docs.engineblock.io/fonts/icon.svg')
+               format('svg');
+        font-weight: normal;
+        font-style: normal;
+      }
+    </style>
+
+    <link rel="stylesheet" href="http://docs.engineblock.io/stylesheets/application.css">
+    <link rel="stylesheet" href="http://docs.engineblock.io/stylesheets/temporary.css">
+    <link rel="stylesheet" href="http://docs.engineblock.io/stylesheets/palettes.css">
+    <link rel="stylesheet" href="http://docs.engineblock.io/stylesheets/images.css">
+
+    <link rel="stylesheet" href="http://docs.engineblock.io/stylesheets/highlight/highlight.css">
+
+    
+    
+    
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:400,700|Roboto&#43;Mono">
+    <style>
+      body, input {
+        font-family: 'Roboto', Helvetica, Arial, sans-serif;
+      }
+      pre, code {
+        font-family: 'Roboto Mono', 'Courier New', 'Courier', monospace;
+      }
+    </style>
+
+    
+    <script src="http://docs.engineblock.io/javascripts/modernizr.js"></script>
+
+    
+
+  
+    
+    
+
+    
+    
+    <script src="http://docs.engineblock.io//modules/viz/viz.js"></script>
+    
+
+    
+    
+    <script src="http://docs.engineblock.io//modules/flowchart/raphael.js"></script>
+    <script src="http://docs.engineblock.io//modules/flowchart/flowchart-latest.js"></script>
+    
+
+    
+    
+
+    
+    
+
+    
+    
+
+    
+    
+    
+    
+    
+
+    
+    
+
+
+      
+    
+    <link href="http://docs.engineblock.io//modules/annotatorjs/annotator.css" rel="stylesheet" />
+    <script src="http://docs.engineblock.io//modules/annotatorjs/jquery-3.2.1.js"></script>
+    <script src="http://docs.engineblock.io//modules/annotatorjs/annotator.js"></script>
+    <script>
+        var app = new annotator.App();
+        app.include(annotator.ui.main);
+        app
+            .start()
+            .then(function() {
+                app.annotations.load();
+            });
+    </script>
+
+
+  </head>
+  <body class="palette-primary-grey palette-accent-teal">
+
+
+
+
+<div class="backdrop">
+	<div class="backdrop-paper"></div>
+</div>
+
+<input class="toggle" type="checkbox" id="toggle-drawer">
+<input class="toggle" type="checkbox" id="toggle-search">
+<label class="toggle-button overlay" for="toggle-drawer"></label>
+
+<header class="header">
+	<nav aria-label="Header">
+  <div class="bar default">
+    <div class="button button-menu" role="button" aria-label="Menu">
+      <label class="toggle-button icon icon-menu" for="toggle-drawer">
+        <span></span>
+      </label>
+    </div>
+    <div class="stretch">
+      <div class="title">
+        Ring Tracking
+      </div>
+    </div>
+
+    
+
+    
+    <div class="button button-github" role="button" aria-label="GitHub">
+      <a href="https://github.com/engineblock/engineblock" title="@engineblock/engineblock on GitHub" target="_blank" class="toggle-button icon icon-github"></a>
+    </div>
+    
+    
+        
+  </div>
+  <div class="bar search">
+    <div class="button button-close" role="button" aria-label="Close">
+      <label class="toggle-button icon icon-back" for="toggle-search"></label>
+    </div>
+    <div class="stretch">
+      <div class="field">
+        <input class="query" type="text" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck>
+      </div>
+    </div>
+    <div class="button button-reset" role="button" aria-label="Search">
+      <button class="toggle-button icon icon-close" id="reset-search"></button>
+    </div>
+  </div>
+</nav>
+</header>
+
+<main class="main">
+	<div class="drawer">
+		<nav aria-label="Navigation">
+  <a href="http://docs.engineblock.io/" class="project">
+    <div class="banner">
+      
+        <div class="logo">
+          <img src="http://docs.engineblock.io/images/engineblock_128.png">
+        </div>
+      
+      <div class="name">
+        <strong>EngineBlock </strong>
+        
+      </div>
+    </div>
+  </a>
+
+  <div class="scrollable">
+    <div class="wrapper">
+      
+
+      <div class="toc">
+        
+        <ul>
+          
+
+
+
+
+<li>
+  
+    
+
+
+
+<a  title="EngineBlock" href="http://docs.engineblock.io/">
+	
+	EngineBlock
+</a>
+
+
+
+  
+</li>
+
+
+
+<li>
+  
+    
+
+
+
+<a  title="Quickstart" href="http://docs.engineblock.io/quickstart/">
+	
+	Quickstart
+</a>
+
+
+
+  
+</li>
+
+
+
+<li>
+  
+    <span class="section">User Guide</span>
+    <ul>
+      
+        
+        
+
+
+
+<a  title="Concepts" href="http://docs.engineblock.io/user-guide/concepts/">
+	
+	Concepts
+</a>
+
+
+
+      
+        
+        
+
+
+
+<a  title="Command Line" href="http://docs.engineblock.io/user-guide/command_line/">
+	
+	Command Line
+</a>
+
+
+
+      
+        
+        
+
+
+
+<a  title="CLI Scripting" href="http://docs.engineblock.io/user-guide/cli_scripting/">
+	
+	CLI Scripting
+</a>
+
+
+
+      
+        
+        
+
+
+
+<a  title="Metrics" href="http://docs.engineblock.io/user-guide/metrics/">
+	
+	Metrics
+</a>
+
+
+
+      
+        
+        
+
+
+
+<a  title="Scenario Scripting" href="http://docs.engineblock.io/user-guide/scripting/">
+	
+	Scenario Scripting
+</a>
+
+
+
+      
+    </ul>
+  
+</li>
+
+
+
+<li>
+  
+    <span class="section">Dev Guide</span>
+    <ul>
+      
+        
+        
+
+
+
+<a  title="Activity Internals" href="http://docs.engineblock.io/dev-guide/activity_internals/">
+	
+	Activity Internals
+</a>
+
+
+
+      
+        
+        
+
+
+
+<a  title="Building ActivityTypes" href="http://docs.engineblock.io/dev-guide/building_activities/">
+	
+	Building ActivityTypes
+</a>
+
+
+
+      
+        
+        
+
+
+
+<a  title="Diag ActivityType" href="http://docs.engineblock.io/dev-guide/annotated_diag/">
+	
+	Diag ActivityType
+</a>
+
+
+
+      
+        
+        
+
+
+
+<a  title="Project Structure" href="http://docs.engineblock.io/dev-guide/contributing/">
+	
+	Project Structure
+</a>
+
+
+
+      
+        
+        
+
+
+
+<a  title="Scripting Extensions" href="http://docs.engineblock.io/dev-guide/scripting_extensions/">
+	
+	Scripting Extensions
+</a>
+
+
+
+      
+    </ul>
+  
+</li>
+
+
+        </ul>
+        
+
+        
+      </div>
+    </div>
+  </div>
+</nav>
+
+	</div>
+
+	<article class="article">
+		<div class="wrapper">
+			<h1>Ring Tracking </h1>
+
+			
+
+<p>This schematic is an attempt to explain a very basic pattern. It really is a
+simple pattern, but it sometimes helps to have visuals to get newer users
+grounded in the concepts.</p>
+
+<h2 id="why-ring-tracking">Why Ring Tracking?</h2>
+
+<p>The tracking mechanisms in EngineBlock serve two purposes:</p>
+
+<ol>
+<li>To coordinate cycle number dispatch between collaborating activities.</li>
+<li>To coordinate cycle result values between enhanced activities that know how to use them, or for intermediate cycle number filters that scrutinize the result codes provided by an upstream activity.</li>
+</ol>
+
+<p>Since both of these need to sometimes support multiple values being dispatched
+per iteration, the existing concurrent primitives like blocking queues, etc.
+don&rsquo;t suffice. We need to allow upstream activities to mark result codes without
+serial blocking when possible, and we need to let downstream activities consume
+values with as little blocking as possible.</p>
+
+<p>That said, the goals are generally to avoid locks and use atomics where
+possible, falling back to locking modes only where absolutely necessary. Ring
+Tracking is a basic ring-buffer approach that allows for the marking and reading
+of tracking data between two collaborating activities.</p>
+
+<p>Ring Tracking</p>
+
+
+
+<div align="center" class="viz-text"><pre>
+digraph ringtracking {
+ node[fontsize=10,shape=circle];
+ 
+ subgraph buffer {
+  title=&#34;buffer&#34;; label=&#34;buffer&#34;; labeljust=&#34;l&#34;; labelloc=&#34;top&#34;;
+  comment=&#34;foo&#34;;
+  ranksep=0.1; rank=same; edge[color=&#34;blue&#34;]; node[color=&#34;blue&#34;; fontcolor=&#34;blue&#34;;];
+  legend0[shape=&#34;none&#34;; label=&#34;bufferpos&#34;] legend0-&gt;0[arrowhead=&#34;none&#34;;style=&#34;dotted&#34;];
+  0-&gt;1-&gt;2-&gt;3-&gt;4-&gt;5-&gt;6-&gt;0
+ }
+ subgraph cycle {
+  title=&#34;cycle&#34;;
+  ranksep=0.1;rank=same;edge[color=&#34;orange&#34;];node[color=&#34;orange&#34;;fontcolor=&#34;orange&#34;;];
+  legend1[shape=&#34;none&#34;; label=&#34;cyclenum&#34;;]; legend1-&gt;18[arrowhead=&#34;none&#34;;style=&#34;dotted&#34;]
+  18[label=&#34;...&#34;] 26[label=&#34;...&#34;] 19[label=&#34;-1&#34;]
+  20[tooltip=&#34;pending&#34;,color=&#34;black&#34;,fontcolor=&#34;black&#34;]
+  25[tooltip=&#34;marking&#34;,color=&#34;black&#34;,fontcolor=&#34;black&#34;]
+  18-&gt;19-&gt;20-&gt;21-&gt;22-&gt;23-&gt;24-&gt;25-&gt;26
+ }
+ subgraph values {
+  ranksep=0.1; rank=same; node[color=&#34;yellow&#34;,shape=&#34;circle&#34;]; edge[color=&#34;yellow&#34;];
+  node[label=&#34;0&#34;] v1[label=&#34;0&#34;] v2[label=&#34;1&#34;] v3[label=&#34;101&#34;] v4 v5 v6
+  v7[label=&#34;3&#34;]
+  edge[arrowhead=&#34;none&#34;] v1-&gt;v2-&gt;v3-&gt;v4-&gt;v5-&gt;v6-&gt;v7
+  
+ }
+
+ subgraph pointers {
+  node[shape=&#34;box&#34;,rank=same] edge[arrowhead=&#34;none&#34;]
+  pending-&gt;1 marking-&gt;6
+ }
+ 
+ subgraph links {
+  19-&gt;v1 20-&gt;v2 21-&gt;v3 22-&gt;v4 23-&gt;v5 24-&gt;v6 25-&gt;v7
+  0-&gt;19 1-&gt;20 2-&gt;21 3-&gt;22 4-&gt;23 5-&gt;24 6-&gt;25
+ }
+
+}
+</pre></div>
+<script type="text/javascript" src="http://docs.engineblock.io/modules/viz/inithook-viz.js"></script>
+
+
+<p><font color="blue">
+The bufferpos level shows the actual offset within the cycle
+result buffer, in blue. In this example, the buffer can only hold eight
+positions. The buffer logically wraps back around.
+</font></p>
+
+<p><font color="orange"> The cyclenum level shows the buffer position translated to
+a sub interval of a larger cycle range. The cycle range could be any positive
+interval within the bounds of 0 and Long.MAX_VALUE. The cycle positions do not
+wrap as the buffer does, but each active cycle position corresponds to one
+buffer position. </font></p>
+
+<p>The pending and marking pointers show the current position of the next read and
+write, respectively. The number of available cycles to dispatch atomically is
+equal to the difference between the marking position and the pending position.
+When marking==pending, no cycles are available.</p>
+
+<p>The pending and marking positions are tracked in terms of cycles, not buffer
+position. All buffer positions derived from the cycle number using buffer size
+modulo. Still, the important invariants are enforced on the cycle level,
+preventing andy under or over ranging on the buffer.</p>
+
+<h3 id="marking-cycle-values">Marking Cycle Values</h3>
+
+
+
+<div align="center" class="flowchart-text"><pre>
+st=&gt;start: Start
+rangecheck=&gt;subroutine: rangecheck
+awaitmarkable=&gt;subroutine: await
+ markable
+windowfull=&gt;condition: Window Full?
+docas=&gt;subroutine: calculate &amp; 
+ apply CAS
+casapplied=&gt;condition: CAS applied?
+signalreadable=&gt;subroutine: Notify
+ readable
+en=&gt;end: End
+
+
+st-&gt;windowfull
+windowfull(yes,right)-&gt;awaitmarkable
+awaitmarkable(right)-&gt;windowfull
+windowfull(no)-&gt;docas-&gt;casapplied(yes)-&gt;signalreadable-&gt;en
+casapplied(no)-&gt;windowfull
+</pre></div>
+
+
+<script type="text/javascript" src="http://docs.engineblock.io/modules/flowchart/inithook-flowchart.js"></script>
+
+
+<p>When a reader requests a number of cycle values, it first checks whether or not
+there is a sufficient range between the current pending and marking values. If
+so, it calculates the CAS operation needed in order atomically move the pending
+pointer up by the size of the request (stride). If this operation succeeds, then
+a cycle segment is created from the marked values in the range between the
+previous pending and marking pointers <em>after</em> the pending value is updated.
+Because this could possibly create a buffering race condition, the buffer is
+required to be large enough to prevent a full wrap-around between the data read
+by pending threads and the marker data written by marking threads.</p>
+
+<p>When the read operation succeeds, markers who were waiting on a &ldquo;can write&rdquo;
+semaphore are signalled by the reader thread before returning to the caller.</p>
+
+<p>If this read operation fails, the check is repeated and the process attempted
+again. This process repeats until either advancing the pending marker succeeds, or the
+precondition check fails. If the precondition check fails, (there are not enough
+data to fulfill the request) then the reader blocks on a semaphore awaiting a
+notification from a marker.</p>
+
+<p>When a marker attempts to mark a cycle, it checks whether or not the pending
+position is advanced sufficiently to allow the marker window to shift. If so,
+the values are marked and the window shifted. Readers awaiting a &ldquo;can read&rdquo;
+signal are also notified. If not, the marker enters a similar retry cycle to
+that of the reader, blocking on a &ldquo;can write&rdquo; condition.</p>
+
+<p>As a sanity check condition, all values are initialized to -1 when the marker window moves over them. Values behind the marker window are still active for reads. This means that the buffer size is required to be at least 2x the marker window size in order to avoid a wrap-around race condition. Further, the marker window must be at least a large as the largest stride that may be requested.</p>
+
+<h3 id="invariants">Invariants</h3>
+
+<ol>
+<li>buffer size &gt; window size * 2</li>
+<li>marker position &lt;= pending position + window size</li>
+<li>0 &lt;= min &lt; max &lt;= Long.MAX_VALUE</li>
+<li>min &lt;= pending &lt;= marking &lt;= max</li>
+</ol>
+
+<h3 id="errors">Errors</h3>
+
+<ol>
+<li>Requesting a stride larger than the window size</li>
+<li>Marking a cycle prior to pending</li>
+<li>Unable to CAS from -1 to cycle value</li>
+</ol>
+
+
+			<aside class="copyright" role="note">
+				
+				&copy; 2017 APL 2.0 &ndash;
+				
+				Documentation built with
+				<a href="https://www.gohugo.io" target="_blank">Hugo</a>
+				using the
+				<a href="http://github.com/digitalcraftsman/hugo-material-docs" target="_blank">Material</a> theme.
+			</aside>
+
+			<footer class="footer">
+				
+
+<nav class="pagination" aria-label="Footer">
+  <div class="previous">
+  
+      <a href="http://docs.engineblock.io/sketches/tracking/" title="Cycle Tracking">
+        <span class="direction">
+          Previous
+        </span>
+        <div class="page">
+          <div class="button button-previous" role="button" aria-label="Previous">
+            <i class="icon icon-back"></i>
+          </div>
+          <div class="stretch">
+            <div class="title">
+              Cycle Tracking
+            </div>
+          </div>
+        </div>
+      </a>
+  
+  </div>
+
+  <div class="next">
+  
+      <a href="http://docs.engineblock.io/sketches/scripting_histograms/" title="Scripting Histograms">
+        <span class="direction">
+          Next
+        </span>
+        <div class="page">
+          <div class="stretch">
+            <div class="title">
+              Scripting Histograms
+            </div>
+          </div>
+          <div class="button button-next" role="button" aria-label="Next">
+            <i class="icon icon-forward"></i>
+          </div>
+        </div>
+      </a>
+  
+  </div>
+</nav>
+
+
+
+
+
+			</footer>
+		</div>
+	</article>
+
+	<div class="results" role="status" aria-live="polite">
+		<div class="scrollable">
+			<div class="wrapper">
+				<div class="meta"></div>
+				<div class="list"></div>
+			</div>
+		</div>
+	</div>
+</main>
+
+    <script>
+    
+      var base_url = '';
+      var repo_id  = '';
+    
+    </script>
+
+    <script src="http://docs.engineblock.io/javascripts/application.js"></script>
+    
+
+    <script>
+      /* Add headers to scrollspy */
+      var headers   = document.getElementsByTagName("h2");
+      var scrollspy = document.getElementById('scrollspy');
+
+      if(scrollspy) {
+        if(headers.length > 0) {
+          for(var i = 0; i < headers.length; i++) {
+            var li = document.createElement("li");
+            li.setAttribute("class", "anchor");
+
+            var a  = document.createElement("a");
+            a.setAttribute("href", "#" + headers[i].id);
+            a.setAttribute("title", headers[i].innerHTML);
+            a.innerHTML = headers[i].innerHTML;
+
+            li.appendChild(a)
+            scrollspy.appendChild(li);
+          }
+        } else {
+          scrollspy.parentElement.removeChild(scrollspy)
+        }
+
+
+        /* Add permanent link next to the headers */
+        var headers = document.querySelectorAll("h1, h2, h3, h4, h5, h6");
+
+        for(var i = 0; i < headers.length; i++) {
+            var a = document.createElement("a");
+            a.setAttribute("class", "headerlink");
+            a.setAttribute("href", "#" + headers[i].id);
+            a.setAttribute("title", "Permanent link")
+            a.innerHTML = "¶";
+            headers[i].appendChild(a);
+        }
+      }
+    </script>
+
+    
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+  </body>
+</html>
+

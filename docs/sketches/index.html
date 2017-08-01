@@ -48,6 +48,8 @@
     <link rel="stylesheet" href="http://docs.engineblock.io/stylesheets/application.css">
     <link rel="stylesheet" href="http://docs.engineblock.io/stylesheets/temporary.css">
     <link rel="stylesheet" href="http://docs.engineblock.io/stylesheets/palettes.css">
+    <link rel="stylesheet" href="http://docs.engineblock.io/stylesheets/images.css">
+
     <link rel="stylesheet" href="http://docs.engineblock.io/stylesheets/highlight/highlight.css">
 
     
@@ -68,30 +70,49 @@
 
     
 
+  
+    
+    
+
+    
+    
+
+    
+    
+
+    
+    
+
+    
+    
+
+    
+    
+
+    
+    
+    
+    
+    
+
+    
+    
+
+
       
     
-    
-
-    
-    
-
-    
-    
-
-    
-    
-
-    
-    
-
-    
-    
-    
-    
-    
-
-    
-    
+    <link href="http://docs.engineblock.io//modules/annotatorjs/annotator.css" rel="stylesheet" />
+    <script src="http://docs.engineblock.io//modules/annotatorjs/jquery-3.2.1.js"></script>
+    <script src="http://docs.engineblock.io//modules/annotatorjs/annotator.js"></script>
+    <script>
+        var app = new annotator.App();
+        app.include(annotator.ui.main);
+        app
+            .start()
+            .then(function() {
+                app.annotations.load();
+            });
+    </script>
 
 
   </head>
@@ -385,6 +406,7 @@
 <li><a href="scripting_histograms/">scripting_histograms</a></li>
 <li><a href="tracking/">tracking</a></li>
 <li><a href="tracking_visually">tracking, visually</a></li>
+<li><a href="ring_tracking/">ring tracking</a></li>
 </ul>
 
 
