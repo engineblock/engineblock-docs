@@ -43,6 +43,16 @@ Collecting Metrics If you like to have all of your testing data in one place, th
     </item>
     
     <item>
+      <title>Config File Format</title>
+      <link>http://docs.engineblock.io/user-guide/standard_yaml/</link>
+      <pubDate>Tue, 24 Oct 2017 00:00:00 +0000</pubDate>
+      
+      <guid>http://docs.engineblock.io/user-guide/standard_yaml/</guid>
+      <description>In the EB 2.* and newer versions, a uniform YAML configuration format is provided that makes it easy to use for any activity that requires statements, tags, parameters and data bindings. That format is described here.
+There are two parts to this documentation. The first part is a description of the document format itself, with some notes on semantics and usage. The second part is a guide for programmers for using the API to load the format.</description>
+    </item>
+    
+    <item>
       <title>Command Line</title>
       <link>http://docs.engineblock.io/user-guide/command_line/</link>
       <pubDate>Fri, 19 May 2017 22:09:53 +0000</pubDate>
@@ -93,6 +103,15 @@ The Accuracy Challenge When making analysis decisions from histogram data, you n
       <guid>http://docs.engineblock.io/sketches/tracking_visually/</guid>
       <description>This section lays out visually some of the design challenges in the cycle tracking design. The diagrams are very basic, but serve as a basis for discussion and elaboration.
 Scenario: A -&amp;gt; B  digraph sys1 { rankdir=LR; node[shape=box] edge[dir=out] state[label=&amp;#34;Internal state&amp;#34;]; A -&amp;gt; marker; marker -&amp;gt; state; state -&amp;gt; tracker; tracker -&amp;gt; B; }   Internal State  digraph d { a[shape=&amp;#34;record&amp;#34;,label=&amp;#34;0|1|2|3|4|5|6|7|8|9|10|11|...&amp;#34;]; }   Pacing Data Only For pacing purposes, in which a consuming tracker watches the state of a producing marker, the only state that is necessary to record is whether a given cycle has been completed.</description>
+    </item>
+    
+    <item>
+      <title>Vega Test</title>
+      <link>http://docs.engineblock.io/sketches/vegatest/</link>
+      <pubDate>Fri, 19 May 2017 22:09:53 +0000</pubDate>
+      
+      <guid>http://docs.engineblock.io/sketches/vegatest/</guid>
+      <description>// Vega here below  { &amp;#34;$schema&amp;#34;: &amp;#34;https://vega.github.io/schema/vega/v3.0.json&amp;#34;, &amp;#34;width&amp;#34;: 400, &amp;#34;height&amp;#34;: 200, &amp;#34;padding&amp;#34;: 5, &amp;#34;data&amp;#34;: [ { &amp;#34;name&amp;#34;: &amp;#34;table&amp;#34;, &amp;#34;values&amp;#34;: [ {&amp;#34;category&amp;#34;: &amp;#34;A&amp;#34;, &amp;#34;amount&amp;#34;: 28}, {&amp;#34;category&amp;#34;: &amp;#34;B&amp;#34;, &amp;#34;amount&amp;#34;: 55}, {&amp;#34;category&amp;#34;: &amp;#34;C&amp;#34;, &amp;#34;amount&amp;#34;: 43}, {&amp;#34;category&amp;#34;: &amp;#34;D&amp;#34;, &amp;#34;amount&amp;#34;: 91}, {&amp;#34;category&amp;#34;: &amp;#34;E&amp;#34;, &amp;#34;amount&amp;#34;: 81}, {&amp;#34;category&amp;#34;: &amp;#34;F&amp;#34;, &amp;#34;amount&amp;#34;: 53}, {&amp;#34;category&amp;#34;: &amp;#34;G&amp;#34;, &amp;#34;amount&amp;#34;: 19}, {&amp;#34;category&amp;#34;: &amp;#34;H&amp;#34;, &amp;#34;amount&amp;#34;: 87} ] } ], &amp;#34;signals&amp;#34;: [ { &amp;#34;name&amp;#34;: &amp;#34;tooltip&amp;#34;, &amp;#34;value&amp;#34;: {}, &amp;#34;on&amp;#34;: [ {&amp;#34;events&amp;#34;: &amp;#34;rect:mouseover&amp;#34;, &amp;#34;update&amp;#34;: &amp;#34;datum&amp;#34;}, {&amp;#34;events&amp;#34;: &amp;#34;rect:mouseout&amp;#34;, &amp;#34;update&amp;#34;: &amp;#34;{}&amp;#34;} ] } ], &amp;#34;scales&amp;#34;: [ { &amp;#34;name&amp;#34;: &amp;#34;xscale&amp;#34;, &amp;#34;type&amp;#34;: &amp;#34;band&amp;#34;, &amp;#34;domain&amp;#34;: {&amp;#34;data&amp;#34;: &amp;#34;table&amp;#34;, &amp;#34;field&amp;#34;: &amp;#34;category&amp;#34;}, &amp;#34;range&amp;#34;: &amp;#34;width&amp;#34; }, { &amp;#34;name&amp;#34;: &amp;#34;yscale&amp;#34;, &amp;#34;domain&amp;#34;: {&amp;#34;data&amp;#34;: &amp;#34;table&amp;#34;, &amp;#34;field&amp;#34;: &amp;#34;amount&amp;#34;}, &amp;#34;nice&amp;#34;: true, &amp;#34;range&amp;#34;: &amp;#34;height&amp;#34; } ], &amp;#34;axes&amp;#34;: [ { &amp;#34;orient&amp;#34;: &amp;#34;bottom&amp;#34;, &amp;#34;scale&amp;#34;: &amp;#34;xscale&amp;#34; }, { &amp;#34;orient&amp;#34;: &amp;#34;left&amp;#34;, &amp;#34;scale&amp;#34;: &amp;#34;yscale&amp;#34; } ], &amp;#34;marks&amp;#34;: [ { &amp;#34;type&amp;#34;: &amp;#34;rect&amp;#34;, &amp;#34;from&amp;#34;: {&amp;#34;data&amp;#34;:&amp;#34;table&amp;#34;}, &amp;#34;encode&amp;#34;: { &amp;#34;enter&amp;#34;: { &amp;#34;x&amp;#34;: {&amp;#34;scale&amp;#34;: &amp;#34;xscale&amp;#34;, &amp;#34;field&amp;#34;: &amp;#34;category&amp;#34;, &amp;#34;offset&amp;#34;: 1}, &amp;#34;width&amp;#34;: {&amp;#34;scale&amp;#34;: &amp;#34;xscale&amp;#34;, &amp;#34;band&amp;#34;: 1, &amp;#34;offset&amp;#34;: -1}, &amp;#34;y&amp;#34;: {&amp;#34;scale&amp;#34;: &amp;#34;yscale&amp;#34;, &amp;#34;field&amp;#34;: &amp;#34;amount&amp;#34;}, &amp;#34;y2&amp;#34;: {&amp;#34;scale&amp;#34;: &amp;#34;yscale&amp;#34;, &amp;#34;value&amp;#34;: 0} }, &amp;#34;update&amp;#34;: { &amp;#34;fill&amp;#34;: {&amp;#34;value&amp;#34;: &amp;#34;steelblue&amp;#34;} }, &amp;#34;hover&amp;#34;: { &amp;#34;fill&amp;#34;: {&amp;#34;value&amp;#34;: &amp;#34;red&amp;#34;} } } }, { &amp;#34;type&amp;#34;: &amp;#34;text&amp;#34;, &amp;#34;encode&amp;#34;: { &amp;#34;enter&amp;#34;: { &amp;#34;align&amp;#34;: {&amp;#34;value&amp;#34;: &amp;#34;center&amp;#34;}, &amp;#34;baseline&amp;#34;: {&amp;#34;value&amp;#34;: &amp;#34;bottom&amp;#34;}, &amp;#34;fill&amp;#34;: {&amp;#34;value&amp;#34;: &amp;#34;#333&amp;#34;} }, &amp;#34;update&amp;#34;: { &amp;#34;x&amp;#34;: {&amp;#34;scale&amp;#34;: &amp;#34;xscale&amp;#34;, &amp;#34;signal&amp;#34;: &amp;#34;tooltip.</description>
     </item>
     
     <item>
@@ -191,7 +210,17 @@ What is Slot Assembly? Slot assembly in this context simply refers the logic tha
       
       <guid>http://docs.engineblock.io/sketches/</guid>
       <description>This section holds design sketches of some of the more esoteric design elements of EngineBlock.
- scripting_histograms tracking tracking, visually ring tracking  </description>
+ scripting_histograms tracking tracking, visually ring tracking tracking concepts  </description>
+    </item>
+    
+    <item>
+      <title>Tracking Concepts</title>
+      <link>http://docs.engineblock.io/sketches/tracking_concepts/</link>
+      <pubDate>Fri, 19 May 2017 22:09:53 +0000</pubDate>
+      
+      <guid>http://docs.engineblock.io/sketches/tracking_concepts/</guid>
+      <description>This section is meant to clarify some of the concepts used within engineblock for marking results of one activity and tracking them for use by other activities.
+Activities and Cycles As before, all activities running within an engineblock scenario iterate on cycles. Whereas before, each activity would operate exclusively on a contiguous interval of cycles, now activities can operate on a set of cycles which are not contiguous. Still, the cycles must be in order.</description>
     </item>
     
     <item>

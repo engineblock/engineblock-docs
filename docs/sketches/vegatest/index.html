@@ -9,16 +9,16 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,maximum-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=10" />
-    <title>Command Line - EngineBlock</title>
+    <title>Vega Test - EngineBlock</title>
     <meta name="generator" content="Hugo 0.20.7" />
 
     
     <meta name="description" content="EngineBlock Docs">
     
-    <link rel="canonical" href="http://docs.engineblock.io/user-guide/command_line/">
+    <link rel="canonical" href="http://docs.engineblock.io/sketches/vegatest/">
     
 
-    <meta property="og:url" content="http://docs.engineblock.io/user-guide/command_line/">
+    <meta property="og:url" content="http://docs.engineblock.io/sketches/vegatest/">
     <meta property="og:title" content="EngineBlock">
     <meta property="og:image" content="http://docs.engineblock.io/images/engineblock_128.png">
     <meta name="apple-mobile-web-app-title" content="EngineBlock">
@@ -72,6 +72,8 @@
 
   
     
+    
+    <script src="http://docs.engineblock.io//modules/vega/vega.js"></script>
     
 
     
@@ -139,7 +141,7 @@
     </div>
     <div class="stretch">
       <div class="title">
-        Command Line
+        Vega Test
       </div>
     </div>
 
@@ -257,14 +259,11 @@
 
 
 
-<a class="current" title="Command Line" href="http://docs.engineblock.io/user-guide/command_line/">
+<a  title="Command Line" href="http://docs.engineblock.io/user-guide/command_line/">
 	
 	Command Line
 </a>
 
-
-<ul id="scrollspy">
-</ul>
 
 
       
@@ -414,72 +413,111 @@
 
 	<article class="article">
 		<div class="wrapper">
-			<h1>Command Line </h1>
+			<h1>Vega Test </h1>
 
-			<p>To get built-in help on the available command line options, run</p>
+			<p>// Vega here below
 
-<pre><code>java -jar eb.jar --help
-</code></pre>
 
-<p>The most common and useful commands will be explained at some depth in this guide, however
-the built-in help above will be complete, with proper syntax for all commands.</p>
+<div align="center" class="vega-text"><pre>
+{
+  &#34;$schema&#34;: &#34;https://vega.github.io/schema/vega/v3.0.json&#34;,
+  &#34;width&#34;: 400,
+  &#34;height&#34;: 200,
+  &#34;padding&#34;: 5,
 
-<p>There is more than one way to invoke EngineBlock. The sections below explain more about them, with more detail about how EngineBlock works as you read further.</p>
+  &#34;data&#34;: [
+    {
+      &#34;name&#34;: &#34;table&#34;,
+      &#34;values&#34;: [
+        {&#34;category&#34;: &#34;A&#34;, &#34;amount&#34;: 28},
+        {&#34;category&#34;: &#34;B&#34;, &#34;amount&#34;: 55},
+        {&#34;category&#34;: &#34;C&#34;, &#34;amount&#34;: 43},
+        {&#34;category&#34;: &#34;D&#34;, &#34;amount&#34;: 91},
+        {&#34;category&#34;: &#34;E&#34;, &#34;amount&#34;: 81},
+        {&#34;category&#34;: &#34;F&#34;, &#34;amount&#34;: 53},
+        {&#34;category&#34;: &#34;G&#34;, &#34;amount&#34;: 19},
+        {&#34;category&#34;: &#34;H&#34;, &#34;amount&#34;: 87}
+      ]
+    }
+  ],
 
-<p><strong>Running a pre-defined activity</strong></p>
+  &#34;signals&#34;: [
+    {
+      &#34;name&#34;: &#34;tooltip&#34;,
+      &#34;value&#34;: {},
+      &#34;on&#34;: [
+        {&#34;events&#34;: &#34;rect:mouseover&#34;, &#34;update&#34;: &#34;datum&#34;},
+        {&#34;events&#34;: &#34;rect:mouseout&#34;,  &#34;update&#34;: &#34;{}&#34;}
+      ]
+    }
+  ],
 
-<p>You may want to simply run one of the activities that are packaged with EB. This is the easiest way to use it, but also the one that offers the least amount of flexibility.</p>
+  &#34;scales&#34;: [
+    {
+      &#34;name&#34;: &#34;xscale&#34;,
+      &#34;type&#34;: &#34;band&#34;,
+      &#34;domain&#34;: {&#34;data&#34;: &#34;table&#34;, &#34;field&#34;: &#34;category&#34;},
+      &#34;range&#34;: &#34;width&#34;
+    },
+    {
+      &#34;name&#34;: &#34;yscale&#34;,
+      &#34;domain&#34;: {&#34;data&#34;: &#34;table&#34;, &#34;field&#34;: &#34;amount&#34;},
+      &#34;nice&#34;: true,
+      &#34;range&#34;: &#34;height&#34;
+    }
+  ],
 
-<pre><code>java -jar eb.jar activity alias=&lt;alias&gt; type=&lt;type&gt; param=&lt;value&gt; ...
-</code></pre>
+  &#34;axes&#34;: [
+    { &#34;orient&#34;: &#34;bottom&#34;, &#34;scale&#34;: &#34;xscale&#34; },
+    { &#34;orient&#34;: &#34;left&#34;, &#34;scale&#34;: &#34;yscale&#34; }
+  ],
 
-<p>This shows you how to run an activity and set the initial parameters for it.
-have special characters in your activity parameters, you may need to use single or double quotes around the affected parameter, as in &ldquo;parameter2=some value&rdquo;.</p>
+  &#34;marks&#34;: [
+    {
+      &#34;type&#34;: &#34;rect&#34;,
+      &#34;from&#34;: {&#34;data&#34;:&#34;table&#34;},
+      &#34;encode&#34;: {
+        &#34;enter&#34;: {
+          &#34;x&#34;: {&#34;scale&#34;: &#34;xscale&#34;, &#34;field&#34;: &#34;category&#34;, &#34;offset&#34;: 1},
+          &#34;width&#34;: {&#34;scale&#34;: &#34;xscale&#34;, &#34;band&#34;: 1, &#34;offset&#34;: -1},
+          &#34;y&#34;: {&#34;scale&#34;: &#34;yscale&#34;, &#34;field&#34;: &#34;amount&#34;},
+          &#34;y2&#34;: {&#34;scale&#34;: &#34;yscale&#34;, &#34;value&#34;: 0}
+        },
+        &#34;update&#34;: {
+          &#34;fill&#34;: {&#34;value&#34;: &#34;steelblue&#34;}
+        },
+        &#34;hover&#34;: {
+          &#34;fill&#34;: {&#34;value&#34;: &#34;red&#34;}
+        }
+      }
+    },
+    {
+      &#34;type&#34;: &#34;text&#34;,
+      &#34;encode&#34;: {
+        &#34;enter&#34;: {
+          &#34;align&#34;: {&#34;value&#34;: &#34;center&#34;},
+          &#34;baseline&#34;: {&#34;value&#34;: &#34;bottom&#34;},
+          &#34;fill&#34;: {&#34;value&#34;: &#34;#333&#34;}
+        },
+        &#34;update&#34;: {
+          &#34;x&#34;: {&#34;scale&#34;: &#34;xscale&#34;, &#34;signal&#34;: &#34;tooltip.category&#34;, &#34;band&#34;: 0.5},
+          &#34;y&#34;: {&#34;scale&#34;: &#34;yscale&#34;, &#34;signal&#34;: &#34;tooltip.amount&#34;, &#34;offset&#34;: -2},
+          &#34;text&#34;: {&#34;signal&#34;: &#34;tooltip.amount&#34;},
+          &#34;fillOpacity&#34;: [
+            {&#34;test&#34;: &#34;datum === tooltip&#34;, &#34;value&#34;: 0},
+            {&#34;value&#34;: 1}
+          ]
+        }
+      }
+    }
+  ]
+}
+</pre></div>
 
-<p>The activity option is, in fact, CLI sugar for scripting. It simply creates the script behind the scenes which will run the specified activities till they complete. In fact, this script snippet
-is added at the end of the current script buffer, in the order that it appears in the command line.</p>
 
-<p><strong>Running a scenario script</strong></p>
+<script type="text/javascript" src="http://docs.engineblock.io/modules/vega/inithook-vega.js"></script>
 
-<p>If you actually do want to control the EB scenario with your own script logic, you can:</p>
-
-<pre><code>java -jar eb.jar script &lt;scriptfile&gt; param=value ...
-</code></pre>
-
-<p>This starts EngineBlock in script mode. In this mode, you provide a script which will control the scenario, starting activities, changing their behavior while they are running, and stopping them as you wish. This is called a Scenario Control Script, or simply <code>control script</code> for short.</p>
-
-<p>With this mode, you can build test scenarios which are more sophisticated than a simple activity definition will allow.</p>
-
-<p>No matter how you start an EngineBlock scenario, a control script is always the outer-most level of logic.</p>
-
-<p>The scripting runtime is simply Java 8&rsquo;s Nashorn. You can do anything in your script that it allows. Furthermore, elements of the <a href="concepts.md">core runtime</a> are wired into the scripting sandbox.</p>
-
-<p>You can combine <code>activity</code> and <code>script</code> options in the same command line:</p>
-
-<pre><code>java -jar eb.jar \
-activity alias=test1 type=diag threads=2 interval=50  \
-script=script2.js \
-activity alias=test3 type=diag threads=2 interval=50 
-</code></pre>
-
-<p>The order of execution is preserved. The only caveat is that activities that are added
-in this way will be required to run completion before the scenario script exits. The point
-at which they are inserted into the script buffer will determine when they are started. The
-cycle parameter on each one will determine how many cycles it runs for before graceful exit.</p>
-
-<p><strong>Learning about activities</strong></p>
-
-<p>If you need to learn about what activity types are available in your runtime, their required parameters, etc, do this:</p>
-
-<pre><code>java -jar eb.jar --list-activity-types
-</code></pre>
-
-<p>Each activity type that is known to your runtime will be listed.</p>
-
-<p>You can also learn more about a particular activity type like this:</p>
-
-<pre><code>java -jar eb.jar help &lt;activity type&gt;
-</code></pre>
+// Vega here above</p>
 
 
 			<aside class="copyright" role="note">
@@ -498,7 +536,7 @@ cycle parameter on each one will determine how many cycles it runs for before gr
 <nav class="pagination" aria-label="Footer">
   <div class="previous">
   
-      <a href="http://docs.engineblock.io/user-guide/standard_yaml/" title="Config File Format">
+      <a href="http://docs.engineblock.io/sketches/tracking_visually/" title="Tracking Diagrams">
         <span class="direction">
           Previous
         </span>
@@ -508,7 +546,7 @@ cycle parameter on each one will determine how many cycles it runs for before gr
           </div>
           <div class="stretch">
             <div class="title">
-              Config File Format
+              Tracking Diagrams
             </div>
           </div>
         </div>
@@ -518,14 +556,14 @@ cycle parameter on each one will determine how many cycles it runs for before gr
 
   <div class="next">
   
-      <a href="http://docs.engineblock.io/sketches/tracking/" title="Cycle Tracking">
+      <a href="http://docs.engineblock.io/user-guide/" title="User Guide">
         <span class="direction">
           Next
         </span>
         <div class="page">
           <div class="stretch">
             <div class="title">
-              Cycle Tracking
+              User Guide
             </div>
           </div>
           <div class="button button-next" role="button" aria-label="Next">

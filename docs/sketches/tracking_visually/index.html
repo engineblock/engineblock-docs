@@ -73,8 +73,6 @@
   
     
     
-    <script src="http://docs.engineblock.io//modules/vega/vega.js"></script>
-    
 
     
     
@@ -283,6 +281,19 @@
 <a  title="CLI Scripting" href="http://docs.engineblock.io/user-guide/cli_scripting/">
 	
 	CLI Scripting
+</a>
+
+
+
+      
+        
+        
+
+
+
+<a  title="Config File Format" href="http://docs.engineblock.io/user-guide/standard_yaml/">
+	
+	Config File Format
 </a>
 
 
@@ -644,111 +655,6 @@ represents a succesful advance to the current position, and a failed one represe
 that the &ldquo;highest&rdquo; value was not at the right position to advance.</li>
 </ol>
 
-<p>Vega here below</p>
-
-<p>
-
-<div align="center" class="vega-text"><pre>
-{
-  &#34;$schema&#34;: &#34;https://vega.github.io/schema/vega/v3.0.json&#34;,
-  &#34;width&#34;: 400,
-  &#34;height&#34;: 200,
-  &#34;padding&#34;: 5,
-
-  &#34;data&#34;: [
-    {
-      &#34;name&#34;: &#34;table&#34;,
-      &#34;values&#34;: [
-        {&#34;category&#34;: &#34;A&#34;, &#34;amount&#34;: 28},
-        {&#34;category&#34;: &#34;B&#34;, &#34;amount&#34;: 55},
-        {&#34;category&#34;: &#34;C&#34;, &#34;amount&#34;: 43},
-        {&#34;category&#34;: &#34;D&#34;, &#34;amount&#34;: 91},
-        {&#34;category&#34;: &#34;E&#34;, &#34;amount&#34;: 81},
-        {&#34;category&#34;: &#34;F&#34;, &#34;amount&#34;: 53},
-        {&#34;category&#34;: &#34;G&#34;, &#34;amount&#34;: 19},
-        {&#34;category&#34;: &#34;H&#34;, &#34;amount&#34;: 87}
-      ]
-    }
-  ],
-
-  &#34;signals&#34;: [
-    {
-      &#34;name&#34;: &#34;tooltip&#34;,
-      &#34;value&#34;: {},
-      &#34;on&#34;: [
-        {&#34;events&#34;: &#34;rect:mouseover&#34;, &#34;update&#34;: &#34;datum&#34;},
-        {&#34;events&#34;: &#34;rect:mouseout&#34;,  &#34;update&#34;: &#34;{}&#34;}
-      ]
-    }
-  ],
-
-  &#34;scales&#34;: [
-    {
-      &#34;name&#34;: &#34;xscale&#34;,
-      &#34;type&#34;: &#34;band&#34;,
-      &#34;domain&#34;: {&#34;data&#34;: &#34;table&#34;, &#34;field&#34;: &#34;category&#34;},
-      &#34;range&#34;: &#34;width&#34;
-    },
-    {
-      &#34;name&#34;: &#34;yscale&#34;,
-      &#34;domain&#34;: {&#34;data&#34;: &#34;table&#34;, &#34;field&#34;: &#34;amount&#34;},
-      &#34;nice&#34;: true,
-      &#34;range&#34;: &#34;height&#34;
-    }
-  ],
-
-  &#34;axes&#34;: [
-    { &#34;orient&#34;: &#34;bottom&#34;, &#34;scale&#34;: &#34;xscale&#34; },
-    { &#34;orient&#34;: &#34;left&#34;, &#34;scale&#34;: &#34;yscale&#34; }
-  ],
-
-  &#34;marks&#34;: [
-    {
-      &#34;type&#34;: &#34;rect&#34;,
-      &#34;from&#34;: {&#34;data&#34;:&#34;table&#34;},
-      &#34;encode&#34;: {
-        &#34;enter&#34;: {
-          &#34;x&#34;: {&#34;scale&#34;: &#34;xscale&#34;, &#34;field&#34;: &#34;category&#34;, &#34;offset&#34;: 1},
-          &#34;width&#34;: {&#34;scale&#34;: &#34;xscale&#34;, &#34;band&#34;: 1, &#34;offset&#34;: -1},
-          &#34;y&#34;: {&#34;scale&#34;: &#34;yscale&#34;, &#34;field&#34;: &#34;amount&#34;},
-          &#34;y2&#34;: {&#34;scale&#34;: &#34;yscale&#34;, &#34;value&#34;: 0}
-        },
-        &#34;update&#34;: {
-          &#34;fill&#34;: {&#34;value&#34;: &#34;steelblue&#34;}
-        },
-        &#34;hover&#34;: {
-          &#34;fill&#34;: {&#34;value&#34;: &#34;red&#34;}
-        }
-      }
-    },
-    {
-      &#34;type&#34;: &#34;text&#34;,
-      &#34;encode&#34;: {
-        &#34;enter&#34;: {
-          &#34;align&#34;: {&#34;value&#34;: &#34;center&#34;},
-          &#34;baseline&#34;: {&#34;value&#34;: &#34;bottom&#34;},
-          &#34;fill&#34;: {&#34;value&#34;: &#34;#333&#34;}
-        },
-        &#34;update&#34;: {
-          &#34;x&#34;: {&#34;scale&#34;: &#34;xscale&#34;, &#34;signal&#34;: &#34;tooltip.category&#34;, &#34;band&#34;: 0.5},
-          &#34;y&#34;: {&#34;scale&#34;: &#34;yscale&#34;, &#34;signal&#34;: &#34;tooltip.amount&#34;, &#34;offset&#34;: -2},
-          &#34;text&#34;: {&#34;signal&#34;: &#34;tooltip.amount&#34;},
-          &#34;fillOpacity&#34;: [
-            {&#34;test&#34;: &#34;datum === tooltip&#34;, &#34;value&#34;: 0},
-            {&#34;value&#34;: 1}
-          ]
-        }
-      }
-    }
-  ]
-}
-</pre></div>
-
-
-<script type="text/javascript" src="http://docs.engineblock.io/modules/vega/inithook-vega.js"></script>
-
-Vega here above</p>
-
 
 			<aside class="copyright" role="note">
 				
@@ -786,14 +692,14 @@ Vega here above</p>
 
   <div class="next">
   
-      <a href="http://docs.engineblock.io/user-guide/" title="User Guide">
+      <a href="http://docs.engineblock.io/sketches/vegatest/" title="Vega Test">
         <span class="direction">
           Next
         </span>
         <div class="page">
           <div class="stretch">
             <div class="title">
-              User Guide
+              Vega Test
             </div>
           </div>
           <div class="button button-next" role="button" aria-label="Next">

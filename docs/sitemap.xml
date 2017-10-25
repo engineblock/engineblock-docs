@@ -17,6 +17,11 @@
   </url>
   
   <url>
+    <loc>http://docs.engineblock.io/user-guide/standard_yaml/</loc>
+    <lastmod>2017-10-24T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://docs.engineblock.io/user-guide/command_line/</loc>
     <lastmod>2017-05-19T22:09:53+00:00</lastmod>
   </url>
@@ -38,6 +43,11 @@
   
   <url>
     <loc>http://docs.engineblock.io/sketches/tracking_visually/</loc>
+    <lastmod>2017-05-19T22:09:53+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://docs.engineblock.io/sketches/vegatest/</loc>
     <lastmod>2017-05-19T22:09:53+00:00</lastmod>
   </url>
   
@@ -89,6 +99,11 @@
   <url>
     <loc>http://docs.engineblock.io/sketches/</loc>
     <lastmod>2017-05-19T21:51:26+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://docs.engineblock.io/sketches/tracking_concepts/</loc>
+    <lastmod>2017-05-19T22:09:53+00:00</lastmod>
   </url>
   
   <url>

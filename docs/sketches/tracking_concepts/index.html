@@ -9,16 +9,16 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,maximum-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=10" />
-    <title>Slot Assembly - EngineBlock</title>
+    <title>Tracking Concepts - EngineBlock</title>
     <meta name="generator" content="Hugo 0.20.7" />
 
     
     <meta name="description" content="EngineBlock Docs">
     
-    <link rel="canonical" href="http://docs.engineblock.io/historic/internals_slot_assembly/">
+    <link rel="canonical" href="http://docs.engineblock.io/sketches/tracking_concepts/">
     
 
-    <meta property="og:url" content="http://docs.engineblock.io/historic/internals_slot_assembly/">
+    <meta property="og:url" content="http://docs.engineblock.io/sketches/tracking_concepts/">
     <meta property="og:title" content="EngineBlock">
     <meta property="og:image" content="http://docs.engineblock.io/images/engineblock_128.png">
     <meta name="apple-mobile-web-app-title" content="EngineBlock">
@@ -75,6 +75,8 @@
     
 
     
+    
+    <script src="http://docs.engineblock.io//modules/viz/viz.js"></script>
     
 
     
@@ -139,7 +141,7 @@
     </div>
     <div class="stretch">
       <div class="title">
-        Slot Assembly
+        Tracking Concepts
       </div>
     </div>
 
@@ -411,75 +413,263 @@
 
 	<article class="article">
 		<div class="wrapper">
-			<h1>Slot Assembly </h1>
+			<h1>Tracking Concepts </h1>
 
 			
 
-<h1 id="this-is-superceded-with-recent-changes-and-needs-to-be-rewritten">This is superceded with recent changes and needs to be rewritten</h1>
+<p>This section is meant to clarify some of the concepts used within engineblock
+for marking results of one activity and tracking them for use by other
+activities.</p>
 
-<h2 id="it-is-currently-inaccurate-and-will-be-rewritten-shortly">It is currently inaccurate and will be rewritten shortly</h2>
+<h1 id="activities-and-cycles">Activities and Cycles</h1>
 
-<h3 id="understanding-slot-assembly">Understanding Slot Assembly</h3>
+<p>As before, all activities running within an engineblock scenario iterate
+on cycles. Whereas before, each activity would operate exclusively on
+a contiguous interval of cycles, now activities can operate on a set of
+cycles which are not contiguous. Still, the cycles must be in order.</p>
 
-<p>If you are building new ActionType implementations for EngineBlock, it can help
-to understand the creational patterns used for slot assembly.</p>
+<p>This means that the hand-off of cycle values from the core thread harness (aka
+&lsquo;motor&rsquo;) to the individual action thread must now include individual cycle data
+rather than simple interval bounds.</p>
 
-<h3 id="what-is-slot-assembly">What is Slot Assembly?</h3>
+<h1 id="cycle-results">Cycle Results</h1>
 
-<p><em>Slot assembly</em> in this context simply refers the logic that determines how to
-assemble a motor, input, and action instance together for a numbered slot within
-an activity.</p>
+<h2 id="cycle-result-format">Cycle Result Format</h2>
 
-<p>The slot assembly logic is contained within the ActivitySlotAssembler class.
-That is its sole responsibility. It was isolated in this way because it is core
-to understanding how slots are populated within an activity.</p>
+<p>The result produced by a given cycle is called the <em>cycle result</em>. It can be any
+value between 0 and 127, inclusive. Why the limit? There is a trade-off between
+flexibility and efficiency. It is unlikely that you would want more than even a
+dozen different outcomes to be handled within a specific test. If this type is
+too narrow, it can be widened in a future release.</p>
 
-<h3 id="how-does-it-work">How does it work?</h3>
+<h2 id="cycle-result-semantics">Cycle Result Semantics</h2>
 
-<p>The three primary components to a slot are the Motor, the Input, and the Action. The Motor is the Runnable for the slot&rsquo;s thread. It requires an input and an action instance. Each of the Motor, Input, and Action instances for a slot is provided by a MotorDispenser, InputDispenser, and ActionDispenser, respectively.</p>
+<p>Each activity type has its own way to interpret cycle results by default.
+Further each activity instance may have a local mapping that determines what
+different result values mean. For example, activity type A may assert that cycle
+results with value 3 <em>always</em> mean &ldquo;timed out connecting to transport&rdquo;, while
+activity type B may provide the ability to map the internal result details to a
+scenario-specific result table.</p>
 
-<p>An ActivityType implementation determines which components of an activity instance it will manage per-slot. This means that it could, if desired, provide no dispensers at all. (No MotorDispenser, no ActionDispenser, no InputDispenser) Such an implementation would do close to nothing, since the default action only logs the input value. When an ActivityType doesn&rsquo;t implement one of the three dispensers, the default implementation just uses a very basic core dispenser.</p>
+<p>In essence, Each activity type will be responsible for determining what a result
+value means, and in some cases, the individual parameters of activity instances
+may provide more filtering.</p>
 
-<p>All of the dispenser methods take a slot number as a parameter. The rest of the details for how a particular instance of a motor, input or action is created are controlled by the instance of the dispenser itself.</p>
+<h1 id="result-marking">Result Marking</h1>
 
-<h3 id="an-example">An example</h3>
+<p>Result marking is the act of recording the result value and the cycle that
+produced it. Implementations that do this are termed <em>markers</em>. Different marker
+implementations trade-off performance, data size, etc.</p>
 
-<p>Suppose you have a type FooActivityType implementing ActivityType. It implements none of the decorator interfaces. It looks like this:</p>
+<p>When an activity is configured with a marker, every cycle that is completed is
+recorded before the next available cycle is dispatched to an action.</p>
 
-<pre><code>public class FooActivityType implements ActivityType {
+<p>All result marker implementations are based around the internal cycle result
+consumer API, known as <em>CycleResultSink</em>. When a result marker implementation
+records a result, takes the common API form and stores it in an internal form.</p>
 
-  public string getName() {
-    return &quot;foo&quot;;
-  }
+<h2 id="marking-contiguous-cycle-ranges">Marking contiguous cycle ranges</h2>
 
-...
-</code></pre>
+<p>Result markers are required to coalesce their results into contiguous chunks of
+data. This serves multiple purposes, including micro-batching the marker updates
+into discrete chunks of consumable state. As such, near-time processes such as
+other activities may consume marker data as a near-time data stream.</p>
 
-<p>In this case, all of the components for each slot are provided by the core runtime and assembled into a motor to be run within the ActivityExecutor&rsquo;s thread pool.</p>
+<p>The core marker logic works this way:</p>
 
-<p>if you wanted to add an action to it, so that it does something besides just logging every 1000th cycle (as the CoreAction does), you would declare your implementation like this:</p>
+<ol>
+<li>Organize marker data (cycles and results) into linked buffering extents.</li>
+<li>Accept updates within a window, assigning them to the correct extent.</li>
+<li>Once the first extent is complete, publish it to any downstream consumers.</li>
+</ol>
 
-<pre><code>public class FooActivityType implements ActivityType {
+<p>If an update is presented for a cycle higher than that in the allowed buffering
+extents, then the tracker must block the producer until the window is open for
+that cycle number, and unblock when the appropriate extent is ready. Updates for
+already-published extents are not allowed and cause an exception to be thrown.</p>
 
-  public string getName() {
-    return &quot;foo&quot;;
-  }
+<h2 id="marking-non-contiguous-cycle-ranges">Marking non-contiguous cycle ranges</h2>
 
-  public getActionDispenser(ActivityDef activity) {
-   // return an ActionDispenser that is tailored
-   // to the ActivityDef
-   return new FrisbeeActionDispenser(activity);
-  }
+<p>Presently, marker implementations do not support marking non-contiguous cycle
+ranges. This is expected to added in the future with a slight API change.</p>
+
+<h2 id="result-data-and-marking-state">Result Data and Marking State</h2>
+
+<p>Marking implementations may keep internal stream head or other data structure
+management state as required to support the lifetime of the producing activity.
+This is separate from the marking semantics of (cycle, result) and should not be
+persisted with that data.</p>
+
+<h1 id="result-tracking">Result Tracking</h1>
+
+<p>Result tracking is the act of providing timely updates from marked result state to
+a cycle result consumer.</p>
+
+<p>Internally, all tracker implementations are based around the internal cycle
+result producer API, known as <em>CycleResultSource</em>. When a result tracker implementation
+provides a result, it reads an internal form and converts it to the common API form.</p>
+
+<h2 id="result-tracking-state">Result tracking state</h2>
+
+<p>Multiple concurrent trackers should be able to consume the
+same marker data with no logical conflicts.</p>
+
+<h1 id="marking-and-tracking-implementations">Marking and Tracking implementations</h1>
+
+<p>Because both markers and trackers act as near-time SERDES for an internal form, they
+are often found in pairs. Consider this example of an in-memory implementation:</p>
+
+
+
+<div align="center" class="viz-text"><pre>
+digraph ring {
+ rankdir=LR;
+ node[shape=box]
+ edge[dir=out]
+ state[label=&#34;ring buffer\nin memory&#34;,shape=&#34;ellipse&#34;];
+ A[label=&#34;Activity\nA&#34;];
+ B[label=&#34;Activity\nB&#34;];
+ marker[label=&#34;mem\nmarker&#34;]
+ tracker[label=&#34;mem\ntracker&#34;]
+
+ A -&gt; marker;
+ marker -&gt; state;
+ state -&gt; tracker;
+ tracker -&gt; B;
 }
-</code></pre>
+</pre></div>
+<script type="text/javascript" src="http://docs.engineblock.io/modules/viz/inithook-viz.js"></script>
 
-<p>The core runtime will find your activity type by way of its name &ldquo;foo&rdquo;, and then call the above method when it needs an action dispenser for a new activity which uses type &ldquo;foo&rdquo;, customized by the ActivityDef.</p>
 
-<p>With that ActionDispenser, the ActivityExecutor will create a new action to assign to a slot as it is started, customized by the slot number.</p>
+<h2 id="core-marker-tracker">Core Marker Tracker</h2>
 
-<p>This same pattern applies to Motors and Inputs as well.</p>
+<p>The following diagram provides a basic schematic of how the core marker tracker
+works. An atomically managed linked list of extents is kept for both the marking
+and tracking services. When the head of the marker extents chain is undefined,
+then the marker caller must block and wait for tracking to catch up and prepare
+the next extent. Likewise, when the head of the tracking extents chain is
+undefined, then the tracker caller must block and wait for the marker callers to
+catch up.</p>
 
-<p><img src="diagrams/slot_assembly.svg" alt="SlotAssembler" /></p>
+
+
+<div align="center" class="viz-text"><pre>
+digraph extents {
+    rankdir=LR;
+    node[shape=box]
+    size=&#34;8&#34;;
+    E3[shape=&#34;record&#34;,label=&#34;E3|{[13,20)}|{&lt;0&gt;0|&lt;1&gt;1|&lt;2&gt;2|&lt;3&gt;3|&lt;4&gt;4|&lt;5&gt;5|&lt;6&gt;6|&lt;7&gt;7}&#34;]
+    E4[shape=&#34;record&#34;,label=&#34;E4|{[20,27)}|{&lt;0&gt;0|&lt;1&gt;1|&lt;2&gt;2|&lt;3&gt;3|&lt;4&gt;4|&lt;5&gt;5|&lt;6&gt;6|&lt;7&gt;7}&#34;]
+    E5[shape=&#34;record&#34;,label=&#34;E5|{[27,34)}|{&lt;0&gt;0|&lt;1&gt;1|&lt;2&gt;2|&lt;3&gt;3|&lt;4&gt;4|&lt;5&gt;5|&lt;6&gt;6|&lt;7&gt;7}&#34;]
+    undefined[label=&#34;undefined&#34;]
+
+    E3 -&gt; E4 -&gt; E5 [label=&#34;next&#34;]
+    marker -&gt; E4 [label=&#34;head marking\nextent&#34;]
+    marker -&gt; undefined [style=&#34;dotted&#34;,fillcolor=&#34;none&#34;]
+
+    tracker -&gt; E3 [label=&#34;head tracking\nextent&#34;]
+    tracker -&gt; undefined [style=&#34;dotted&#34;,fillcolor=&#34;none&#34;]
+}
+</pre></div>
+<script type="text/javascript" src="http://docs.engineblock.io/modules/viz/inithook-viz.js"></script>
+
+
+<p>There are important invariants that must be maintained outside of critical sections
+in order to avoid concurrent deadlocks.</p>
+
+<ol>
+<li>At all times, either a marker or a tracker must be defined. This is seeded by
+the initializer logic, which prepares the max extents number of extents before
+marking commences.</li>
+<li>The tracker head extent will either be the oldest/lowest numbered extent or it will be null.</li>
+<li>The marker head extent will be</li>
+<li>Marking logic does not prepare new marking extents. Only trackers do that.</li>
+<li>Tracking logic does not see partially completed extents.</li>
+<li>By extension, the head of the marking and tracking chain can never be the same,
+and if both are defined, the head marker extent must be ahead of the head tracker extent.</li>
+</ol>
+
+<h2 id="examples">Examples</h2>
+
+<h3 id="initial-state">initial state</h3>
+
+
+
+<div align="center" class="viz-text"><pre>
+digraph extents {
+    rankdir=LR;
+    node[shape=box]
+    size=&#34;4&#34;;
+
+    E3 -&gt; E4 -&gt; E5
+
+    marker -&gt; E3
+    tracker -&gt; undefined
+}
+</pre></div>
+<script type="text/javascript" src="http://docs.engineblock.io/modules/viz/inithook-viz.js"></script>
+
+
+<h3 id="extent-filled">extent filled</h3>
+
+
+
+<div align="center" class="viz-text"><pre>
+digraph extents {
+    rankdir=LR;
+    node[shape=box]
+    size=&#34;4&#34;;
+
+    E3[style=&#34;bold&#34;]
+    E3 -&gt; E4 -&gt; E5
+
+    marker -&gt; E4
+    tracker -&gt; E3
+}
+</pre></div>
+<script type="text/javascript" src="http://docs.engineblock.io/modules/viz/inithook-viz.js"></script>
+
+
+<h3 id="marker-outruns-tracker">marker outruns tracker</h3>
+
+
+
+<div align="center" class="viz-text"><pre>
+digraph extents {
+    rankdir=LR;
+    node[shape=box]
+    size=&#34;4&#34;;
+
+    E3[style=&#34;bold&#34;]
+    E4[style=&#34;bold&#34;]
+    E5[style=&#34;bold&#34;]
+    E3 -&gt; E4 -&gt; E5
+
+    marker -&gt; undefined
+    tracker -&gt; E3
+}
+</pre></div>
+<script type="text/javascript" src="http://docs.engineblock.io/modules/viz/inithook-viz.js"></script>
+
+
+<h3 id="tracker-outruns-marker">tracker outruns marker</h3>
+
+
+
+<div align="center" class="viz-text"><pre>
+digraph extents {
+    rankdir=LR;
+    node[shape=box]
+    size=&#34;4&#34;;
+
+    E3 -&gt; E4 -&gt; E5
+
+    marker -&gt; E3
+    tracker -&gt; undefined
+}
+</pre></div>
+<script type="text/javascript" src="http://docs.engineblock.io/modules/viz/inithook-viz.js"></script>
+
 
 
 			<aside class="copyright" role="note">
@@ -498,7 +688,7 @@ to understanding how slots are populated within an activity.</p>
 <nav class="pagination" aria-label="Footer">
   <div class="previous">
   
-      <a href="http://docs.engineblock.io/dev-guide/scripting_extensions/" title="Scripting Extensions">
+      <a href="http://docs.engineblock.io/sketches/" title="Design Sketches">
         <span class="direction">
           Previous
         </span>
@@ -508,7 +698,7 @@ to understanding how slots are populated within an activity.</p>
           </div>
           <div class="stretch">
             <div class="title">
-              Scripting Extensions
+              Design Sketches
             </div>
           </div>
         </div>
@@ -518,14 +708,14 @@ to understanding how slots are populated within an activity.</p>
 
   <div class="next">
   
-      <a href="http://docs.engineblock.io/sketches/" title="Design Sketches">
+      <a href="http://docs.engineblock.io/dev-guide/" title="EngineBlock Dev Guide">
         <span class="direction">
           Next
         </span>
         <div class="page">
           <div class="stretch">
             <div class="title">
-              Design Sketches
+              EngineBlock Dev Guide
             </div>
           </div>
           <div class="button button-next" role="button" aria-label="Next">
