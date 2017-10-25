@@ -10,4 +10,5 @@ This section holds design sketches of some of the more esoteric design elements 
 - [tracking](tracking/)
 - [tracking, visually](tracking_visually)
 - [ring tracking](ring_tracking/)
+- [tracking concepts](tracking_concepts/)
 
