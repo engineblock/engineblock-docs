@@ -43,13 +43,13 @@ Collecting Metrics If you like to have all of your testing data in one place, th
     </item>
     
     <item>
-      <title>Config File Format</title>
+      <title>YAML Config</title>
       <link>http://docs.engineblock.io/user-guide/standard_yaml/</link>
       <pubDate>Tue, 24 Oct 2017 00:00:00 +0000</pubDate>
       
       <guid>http://docs.engineblock.io/user-guide/standard_yaml/</guid>
-      <description>In the EB 2.* and newer versions, a uniform YAML configuration format is provided that makes it easy to use for any activity that requires statements, tags, parameters and data bindings. That format is described here.
-There are two parts to this documentation. The first part is a description of the document format itself, with some notes on semantics and usage. The second part is a guide for programmers for using the API to load the format.</description>
+      <description>In the EB 2.* and newer versions, a standard YAML configuration format is provided that makes it easy to use for any activity that requires statements, tags, parameters and data bindings. In practice, any useful activity types have needed these. This section describes the standard YAML format and how to use it.
+For developers, a guide for using the API to read this format is in the dev guide.</description>
     </item>
     
     <item>
