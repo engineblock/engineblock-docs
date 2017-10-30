@@ -9,16 +9,16 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,maximum-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=10" />
-    <title>Diag ActivityType - EngineBlock</title>
+    <title>YAML Config API - EngineBlock</title>
     <meta name="generator" content="Hugo 0.20.7" />
 
     
     <meta name="description" content="EngineBlock Docs">
     
-    <link rel="canonical" href="http://docs.engineblock.io/dev-guide/annotated_diag/">
+    <link rel="canonical" href="http://docs.engineblock.io/dev-guide/standard_yam_devl/">
     
 
-    <meta property="og:url" content="http://docs.engineblock.io/dev-guide/annotated_diag/">
+    <meta property="og:url" content="http://docs.engineblock.io/dev-guide/standard_yam_devl/">
     <meta property="og:title" content="EngineBlock">
     <meta property="og:image" content="http://docs.engineblock.io/images/engineblock_128.png">
     <meta name="apple-mobile-web-app-title" content="EngineBlock">
@@ -139,7 +139,7 @@
     </div>
     <div class="stretch">
       <div class="title">
-        Diag ActivityType
+        YAML Config API
       </div>
     </div>
 
@@ -359,14 +359,11 @@
 
 
 
-<a class="current" title="Diag ActivityType" href="http://docs.engineblock.io/dev-guide/annotated_diag/">
+<a  title="Diag ActivityType" href="http://docs.engineblock.io/dev-guide/annotated_diag/">
 	
 	Diag ActivityType
 </a>
 
-
-<ul id="scrollspy">
-</ul>
 
 
       
@@ -401,11 +398,14 @@
 
 
 
-<a  title="YAML Config API" href="http://docs.engineblock.io/dev-guide/standard_yam_devl/">
+<a class="current" title="YAML Config API" href="http://docs.engineblock.io/dev-guide/standard_yam_devl/">
 	
 	YAML Config API
 </a>
 
+
+<ul id="scrollspy">
+</ul>
 
 
       
@@ -427,227 +427,61 @@
 
 	<article class="article">
 		<div class="wrapper">
-			<h1>Diag ActivityType </h1>
+			<h1>YAML Config API </h1>
 
 			
 
-<p>If you take all the code chunks from this document and concatenate them
-together, you&rsquo;ll have &lsquo;diag&rsquo;, one of the in-build activity types for
-EngineBlock.</p>
+<p>In the EB 2.* and newer versions, a standard YAML configuration format is
+provided that makes it easy to use for any activity that requires statements,
+tags, parameters and data bindings.  This section describes how to use it as a
+developer*. Developers should already be familiar with the user guide for the
+YAML config format first.</p>
 
-<p>First, we annotate our ActivityType implementation, name DiagActivityType, with
-the @AutoService annotation. This is a simple way to manage your ServiceLoader
-configurations. For more information, see
-<a href="https://github.com/google/auto/tree/master/servicehttps://github.com/google/auto/tree/master/service">AutoService</a>.</p>
+<h2 id="simple-usage">Simple Usage</h2>
 
-<pre><code>@AutoService(ActivityType.class)
+<pre><code>StrInterpolater interpolator = new StrInterpolater(activityDef);
+String yaml_loc = activityDef.getParams().getOptionalString(&quot;yaml&quot;).orElse(&quot;default&quot;);
+StmtsDocList sdl = StatementsLoader.load(logger, yaml_loc, interp, &quot;activities&quot;);
 </code></pre>
 
-<h3 id="diagactivitytype-is-an-activitytype">DiagActivityType is an ActivityType</h3>
+<p>This loads the yaml at file path <em>yaml_loc</em>, while transforming template variables
+with the interpolator, searching in the current directory and in the &ldquo;activities&rdquo;
+subdirectory, and logging all diagnostics.</p>
 
-<p>Let&rsquo;s implement an ActivityType. Actually, let&rsquo;s make it useful for something
-besides default behavior. Let&rsquo;s also implement ActionDispenserProvider.</p>
+<p>What you do next depends on the activity type. Typically, an activity will instantiate
+an SequencePlanner to establish an operation ordering. See the <em>stdout</em> activity type
+for an example of this.</p>
 
-<pre><code>public class DiagActivityType implements ActivityType {
-</code></pre>
+<h2 id="implementation-notes">Implementation Notes</h2>
 
-<p>The ActivityType interface uses default methods for the <em>&hellip;DispenserProvider</em>
-methods. Most ActivityType implementations will only need ActionDispenser(&hellip;).</p>
+<p>The getter methods on this API are intended to provide statements. Thus, all
+access to bindings, params, or tags is provided via the StmtDef type.
+It is possible to get these as aggregations at the block or doc level for activity
+types that can make meaningful use of these as aggregations points. However,
+it is usually sufficient to simply access the StmtDef iterator methods, as all
+binding, tag, and param values are templated and overridden automatically for you.
+within the API.</p>
 
-<h3 id="diagactivitytype-has-a-name">DiagActivityType has a name</h3>
+<h2 id="on-bindings-usage">On Bindings Usage</h2>
 
-<p>Each ActivityType implementation must provide a simple name by which it is known
-at runtime. When the available activity types are discovered at runtime, it is
-an error for more than one to have the same name.</p>
+<p>It is important to not instantiate or call bindings that are not expected to be
+used by the user. This means that your statement form should use named anchors
+for each and every binding that will be activated, <em>or</em> a clear contract with
+the user should be expressed in the documentation for how bindings will be
+resolved to statements.</p>
 
-<pre><code>
-    @Override
-    public String getName() {
-        return &quot;diag&quot;;
-    }
+<h2 id="named-anchors">Named Anchors</h2>
 
-</code></pre>
+<p>The format of named anchors varies by activity type. There are some conventions
+that can be used in order to maintain a more uniform user experience:</p>
 
-<h3 id="actiondispenser-method">ActionDispenser method</h3>
-
-<p>We need to provide our own type of action for <em>diag</em> in order to make it useful.
-getActionDispenser(&hellip;) will be called exactly once per activity instance. The
-ActionDispenser that we provide here (per activity instance) will be used to
-create the per-thread actions for each per-thread Runnable (aka Motor). The
-ActivityDef is also our first chance to specialize the behavior of the
-ActivityType. This means that your primary input into the control of an
-activity&rsquo;s behavior is this activity definition. If you want your ActivityType
-to do something configurable, this is how you do it.</p>
-
-<pre><code>    @Override
-    public ActionDispenser getActionDispenser(ActivityDef activity) {
-        return new DiagActionDispenser(activity);
-    }
-}
-</code></pre>
-
-<p>Now, on to the implementation of the DiagActionDispenser we just saw above.</p>
-
-<p>This implementation does little, but what it does is important. First, it
-remembers the ActivityDef that goes with the activity instance. This is intended
-to be the initializer data for the activity instance. Second, it simply provides
-an Action when asked. Now we see the second opportunity to specialize the
-behavior of the Action, around the slot number.</p>
-
-<p>Whether we want it or not, the slot number is available to us. Notice that the
-DiagAction itself is taking the slot number and the activity. We&rsquo;ll explain why
-further down.</p>
-
-<pre><code>public class DiagActionDispenser implements ActionDispenser {
-    private ActivityDef activity;
-
-    public DiagActionDispenser(ActivityDef activity) {
-        this.activity = activity;
-    }
-
-    @Override
-    public Action getAction(int slot) {
-        return new DiagAction(slot, activity);
-    }
-}
-</code></pre>
-
-<h4 id="a-note-on-instances-and-scoping">A note on instances and scoping</h4>
-
-<p>It may be the case that your Action implementation is thread-safe, and that you
-want to just share the same instance across all Runnables in your running
-activity. In that case, you&rsquo;d keep a local instance of a DiagAction and simply
-initialize and return it as needed. However, most often you&rsquo;ll want thread to
-have some thread-local state, and you&rsquo;ll simply use the slot number for
-diagnostic and logging purposes. This implementation does the latter.</p>
-
-<p>The picture is different when you are talking about Inputs. It is often useful
-to have a common stream of input for many threads, such as when you want to
-meter the rate of processing over some number of inputs. In this case, a simple
-atomically accessed and incremented long does the job well. But, in order to
-meter or rate-limit the set of threads, you need them to use the same input. The
-input is your control and measurement point. In this case, you would simply
-re-use the same input for all slots.</p>
-
-<p>Motors work exactly the same way. The naming of the interfaces for Motors,
-Inputs, and Actions is consistent throughout, so hopefully that makes the API
-easier to understand and use.</p>
-
-<p>This allows for a degree of flexibility in mapping motors, inputs, and action to
-slot numbers. You can create a ActivityType that shares none of these components
-between threads for an activity, or one that shares all of the across threads
-for an activity, or anything in between. The most common recipe is: one input
-per activity and one motor and action per thread reading from this input.</p>
-
-<h3 id="diagaction">DiagAction</h3>
-
-<p>Now, on to the substance of this activity type, the Action implementation.</p>
-
-<pre><code>public class DiagAction implements Action, ActivityDefObserver {
-    private final static Logger logger = LoggerFactory.getLogger(DiagAction.class);
-</code></pre>
-
-<p>DiagAction is also an ActivityDefObserver. This is how an activity is able to be
-informed when any of it&rsquo;s parameters are modified while it is running. We also
-have the usual Logger in play.</p>
-
-<p>Now, the local state:</p>
-
-<pre><code>    private ActivityDef activity;
-    private int slot;
-    private long lastUpdate;
-    private long quantizedInterval;
-</code></pre>
-
-<p>ActivityDef and slot number are remembered. lastUpdate and quantizedInterval are
-used by DiagAction in order to know when to report.</p>
-
-<p>The basic purpose of diag is to provide a simple ActivityType that can be used
-for testing and diagnostics. To do that, its action simply logs the input value
-at some configured interval. It also demonstrates a couple of basic EngineBlock
-patterns:</p>
-
-<ol>
-<li>Sharing work across threads</li>
-<li>Dynamically adjusting when the activity definition is modified.</li>
-</ol>
-
-<p>A more detailed explaination of diag&rsquo;s behavior goes like this:</p>
-
-<p>A logline for the input value is reported at every configured &lsquo;interval&rsquo;, in
-milliseconds. The time between the scheduled reporting time and the actual
-reporting time is also reported as &lsquo;delay&rsquo;. All threads take a turn reporting
-the interval.</p>
-
-<p>In order to support this behavior, when the activity (and its actions) are
-initialized, each Action computes a time interval which would put it in the
-right place on the reporting schedule. This method is updateReportTime(), as
-seen in the constructor:</p>
-
-<pre><code>    public DiagAction(int slot, ActivityDef activity) {
-        this.activity = activity;
-        this.slot = slot;
-
-        updateReportTime();
-    }
-
-</code></pre>
-
-<p>Some helper methods make updateReportTime and the math around time offsets easier to read.</p>
-
-<pre><code>    private void updateReportTime() {
-        lastUpdate = System.currentTimeMillis() - calculateOffset(slot, activity);
-        quantizedInterval = calculateInterval(activity);
-        logger.debug(&quot;updating report time for slot:&quot; + slot + &quot;, def:&quot; + activity + &quot; to &quot; + quantizedInterval);
-    }
-
-    private long calculateOffset(long timeslot, ActivityDef activity) {
-        long updateInterval = activity.getParams().getLongOrDefault(&quot;interval&quot;, 100L);
-        long offset = calculateInterval(activity) - (updateInterval * timeslot);
-        return offset;
-    }
-
-    private long calculateInterval(ActivityDef activity) {
-        long updateInterval = activity.getParams().getLongOrDefault(&quot;interval&quot;, 100L);
-        int threads = activity.getThreads();
-        return updateInterval * threads;
-    }
-</code></pre>
-
-<p>This is where we read the activity def values. For diag, <em>interval</em> is a useful
-parameter in the activity definition. The default is 100, of unset.</p>
-
-<p>It is true that the code could be optimized more around performance or
-terseness, but clarity and correctness are more important here.</p>
-
-<h3 id="diagaction-implements-action">DiagAction implements Action</h3>
-
-<p>As an Action, we must accept input:</p>
-
-<pre><code>    @Override
-    public void accept(long value) {
-        long now = System.currentTimeMillis();
-        if ((now - lastUpdate) &gt; quantizedInterval) {
-
-            logger.info(&quot;diag action, input=&quot; + value + &quot;, report delay=&quot; + ((now - lastUpdate) - quantizedInterval));
-            lastUpdate += quantizedInterval;
-        }
-    }
-</code></pre>
-
-<p>This is simply a loop that reads input and throws it away unless it is time to
-report. If it is time to report, we mark the time in lastUpdate.</p>
-
-<h3 id="diagaction-implements-activitydefobserver">DiagAction implements ActivityDefObserver</h3>
-
-<pre><code>    @Override
-    public void onActivityDefUpdate(ActivityDef activity) {
-        updateReportTime();
-    }
-}
-</code></pre>
-
-<p>This is all there is to making an activity react to real-time changes in the activity definition.</p>
+<ul>
+<li>String interpolation should use single curly braces when there are no local
+conventions.</li>
+<li>Named anchors in prepared statements or other DB activity types should simply
+add a name to the existing place holder, to be filtered out by the activity type
+before being passed to the lower level driver.</li>
+</ul>
 
 
 			<aside class="copyright" role="note">
@@ -666,7 +500,7 @@ report. If it is time to report, we mark the time in lastUpdate.</p>
 <nav class="pagination" aria-label="Footer">
   <div class="previous">
   
-      <a href="http://docs.engineblock.io/user-guide/cli_scripting/" title="CLI Scripting">
+      <a href="http://docs.engineblock.io/user-guide/standard_yaml/" title="YAML Config">
         <span class="direction">
           Previous
         </span>
@@ -676,7 +510,7 @@ report. If it is time to report, we mark the time in lastUpdate.</p>
           </div>
           <div class="stretch">
             <div class="title">
-              CLI Scripting
+              YAML Config
             </div>
           </div>
         </div>
@@ -686,14 +520,14 @@ report. If it is time to report, we mark the time in lastUpdate.</p>
 
   <div class="next">
   
-      <a href="http://docs.engineblock.io/dev-guide/contributing/" title="Project Structure">
+      <a href="http://docs.engineblock.io/user-guide/command_line/" title="Command Line">
         <span class="direction">
           Next
         </span>
         <div class="page">
           <div class="stretch">
             <div class="title">
-              Project Structure
+              Command Line
             </div>
           </div>
           <div class="button button-next" role="button" aria-label="Next">

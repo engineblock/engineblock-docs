@@ -23,6 +23,16 @@ License EngineBlock is licensed under the Apache License, version 2.0. If you wi
     </item>
     
     <item>
+      <title>YAML Config API</title>
+      <link>http://docs.engineblock.io/dev-guide/standard_yam_devl/</link>
+      <pubDate>Tue, 24 Oct 2017 00:00:00 +0000</pubDate>
+      
+      <guid>http://docs.engineblock.io/dev-guide/standard_yam_devl/</guid>
+      <description>In the EB 2.* and newer versions, a standard YAML configuration format is provided that makes it easy to use for any activity that requires statements, tags, parameters and data bindings. This section describes how to use it as a developer*. Developers should already be familiar with the user guide for the YAML config format first.
+Simple Usage StrInterpolater interpolator = new StrInterpolater(activityDef); String yaml_loc = activityDef.getParams().getOptionalString(&amp;quot;yaml&amp;quot;).orElse(&amp;quot;default&amp;quot;); StmtsDocList sdl = StatementsLoader.</description>
+    </item>
+    
+    <item>
       <title>Activity Internals</title>
       <link>http://docs.engineblock.io/dev-guide/activity_internals/</link>
       <pubDate>Fri, 19 May 2017 22:09:53 +0000</pubDate>
