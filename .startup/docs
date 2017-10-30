@@ -4,7 +4,7 @@ IP=${IP#addr:}
 
 if [ ! -x /usr/bin/hugo ]
 then
- HUGO_VERSION=0.20.7
+ HUGO_VERSION=0.30.2
  #HUGO_VERSION=0.19
  DL_SUFFIX=Linux-64bit
  INNER_SUFFIX=linux_amd64
