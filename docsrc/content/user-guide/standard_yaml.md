@@ -14,10 +14,6 @@ provided that makes it easy to use for any activity that requires statements,
 tags, parameters and data bindings. In practice, any useful activity types have
 needed these. This section describes the standard YAML format and how to use it.
 
-{{< note >}}
-For developers, a guide for using the API to read this format is in the dev guide.
-{{< /note >}}
-
 A valid config file for an activity consists of statements, parameters for those
 statements, bindings for the data to use with those statements, and tags for
 selecting statements for an activity. In essence, the config format is *all about
