@@ -86,8 +86,8 @@ supported as a core concept. You can add a bindings section like this:
 
 Notice that bindings are represented as a map. The bindings above *mostly* match
 up with the named anchors in the statement list above. There is one extra
-binding, but this is ok. If a binding were named in the statement that was not
-defined, an error would occur.
+binding, but this is ok. However, if the statement included named anchors for which no
+binding was defined, an error would occur.
 
 {{< note >}}
 This is important for activity type designers to observe: When statement bindings
@@ -165,31 +165,31 @@ templates, but one of the had no anchors.
 
 On more minor but important detail is that the fourth binding *delta* was not
 referenced directly in the statements. Since the statements did not pair up an
-anchor with this binding name, it was not used. No values were generated. This
-is how activities are expected to work when they are implemented correctly. This
-means that the bindings themselves are templates for data generation, only to be
-used when necessary.
+anchor with this binding name, it was not used. No values were generated for it.
+This is how activities are expected to work when they are implemented correctly.
+This means that the bindings themselves are templates for data generation, only
+to be used when necessary.
 
 ## Params
 
-As with the bindings, a params section can be added at the same level, providing
-additional parameters to be used with all the statements provided. Again, this
-is an example of modifying or otherwise creating a specific type of statement, but
-always in a way specific to the activity type. As such, params don't really do
-much on their own, although they have the same basic map syntax as bindings:
+As with the bindings, a params section can be added at the same level, setting
+additional parameters to be used with statements. Again, this is an example of
+modifying or otherwise creating a specific type of statement, but always in a
+way specific to the activity type. Params can be thought of as statement
+properties. As such, params don't really do much on their own, although they
+have the same basic map syntax as bindings:
 
     params:
      ratio: 1
 
 ## Tags
 
-Tags are used to mark and filter groups of statements for controlling different
-types of scenario execution.
+Tags are used to mark and filter groups of statements for controlling which ones
+get used in a given scenario:
 
     tags:
      name:foxtrot
-    statements:
-     - "I'm alive!"
+     unit: bravo
 
 ### Tag Filtering
 
@@ -213,6 +213,7 @@ A demonstration...
     [test]$ cat > stdout-test.yaml
     tags:
      name: foxtrot
+     unit: bravo
     statements:
      - "I'm alive!\n"
 
@@ -247,11 +248,13 @@ A demonstration...
 
 ## Blocks
 
-All the basic primitives describe above (names, statements, bindings, params, tags) can be used
-to describe and parameterize a set of statements in a yaml document. Sometimes you need to
-structure your statements in a more sophisticated way. You might want to do this if you have
-a set of common statement forms or parameters that need to apply to many statements, or perhaps
-if you have several *different* groups of statements that need to be configured independently.
+All the basic primitives described above (names, statements, bindings, params,
+tags) can be used to describe and parameterize a set of statements in a yaml
+document. In some scenarios, however, you may need to structure your statements
+in a more sophisticated way. You might want to do this if you have a set of
+common statement forms or parameters that need to apply to many statements, or
+perhaps if you have several *different* groups of statements that need to be
+configured independently.
 
 This is where blocks become useful:
 
@@ -291,7 +294,9 @@ that document, unless specifically overridden within a given block.
 The YAML spec allows for multiple yaml documents to be concatenated in the
 same file with a separator:
 
+~~~
    ---
+~~~
 
 This offers an additional convenience when configuring activities. If you want
 to parameterize or tag some a set of statements with their own bindings, params,
@@ -347,4 +352,9 @@ value. For example:
     [test]$ ./eb run type=stdout yaml=stdout-test cycles=1 linetoprint="THIS IS IT"
     THIS IS IT
 
+## Summary
+
+That's all you need to know to start using the new format! As you can see, the
+minimal requirements for this format are pretty light. At the same time, the
+level of sophistication can increase as needed for more advanced cases.
 
