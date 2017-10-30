@@ -1,6 +1,6 @@
 ---
 date: 2017-10-24T00:00:00
-title: Config File Format
+title: YAML Config
 weight: 12
 menu:
   main:
@@ -9,155 +9,342 @@ menu:
     weight: 22
 ---
 
-In the EB 2.* and newer versions, a uniform YAML configuration format is
-provided that makes it easy to use for any activity that requires
-statements, tags, parameters and data bindings. That format is described here.
+In the EB 2.* and newer versions, a standard YAML configuration format is
+provided that makes it easy to use for any activity that requires statements,
+tags, parameters and data bindings. In practice, any useful activity types have
+needed these. This section describes the standard YAML format and how to use it.
 
-There are two parts to this documentation. The first part is a description of
-the document format itself, with some notes on semantics and usage. The second
-part is a guide for programmers for using the API to load the format. That part will
-be in the dev guide.
+{{< note >}}
+For developers, a guide for using the API to read this format is in the dev guide.
+{{< /note >}}
 
-## Format
+A valid config file for an activity consists of statements, parameters for those
+statements, bindings for the data to use with those statements, and tags for
+selecting statements for an activity. In essence, the config format is *all about
+configuring statements*. Every other element in the config format is in some way
+modifying or otherwise helping create statements to be used in an activity.
 
-A valid config file for an activity consists of
+## Names
 
-1. One or more documents, separated by '---', each containing:
-   0. an optional document name, under a *name* field.
-   1. zero or more tags, under a *tags* section, in key-value format
-   2. optional parameters, under a *params* section, in key-value format
-   3. optional data bindings, under a *bindings* section, in key-value format.
-   4. optional statements, under a *statements* section, list format.
-   5. zero or more blocks, under a *blocks* section, in block list format, each having:
-     0. an optional block name, under a *name* field.
-     1. zero or more tags, under a *tags* section, in key-value format
-     2. optional parameters, under a *params* section, in key-value format
-     3. optional data bindings, under a *bindings* section, in key-value format.
-     4. optional statements, under a *statements* section, list format.
+Everything in this format can have a name:
 
-This is essentially a nested template format. An example:
+    name: test42
 
-    name: simple-csv-example
+If a name is not provided, then one is automatically created. It is not important to
+name things except for documentation or metric naming purposes.
+
+## Statements
+
+Statements are provided as a list. For example:
+
     statements:
-     - {alpha},{beta},{gamma}
+     - "This a statement."
+     - "The file format doesn't know how statements will be used."
+     - "submit job {job} on queue {queue} with options {options};"
+
+This is a valid yaml in and of itself. It may not be valid for a particular
+activity type, but that is up to each activity type to decide. Further each
+activity type determines what a statement means, and how it will be used. The
+format is merely concerned with structure and very general semantics.
+
+Sometimes, you want to specify the text of a statement in different ways. Since
+statements are strings, the simplest way for small statements is in double
+quotes as shown above. If you need to express a much longer statement with
+special characters and newlines, then you can use YAML's literal block notation
+(signaled by the '|' character) to do so:
+
+    statements:
+     - |
+      This is a statement, and the file format doesn't
+      know how statements will be used!
+     - |
+      submit job {alpha} on queue {beta} with options {gamma};
+
+Notice that the block starts on the following line after the pipe symbol. This
+is a very popular form in practice because it treats the whole block exactly as
+it is shown, except for the initial indentations, which are removed.
+
+Statements in this format can be raw statements, statement templates, or
+anything that is appropriate for the specific activity type they are being used
+with. Generally, the statements should be thought of as a statement form that
+you want to use in your activity -- something that has place holders for data
+bindings. These place holders are called *named anchors*. The second line above
+is an example of a statement template, with anchors that can be replaced by
+data for each cycle of an activity.
+
+## Bindings
+
+Procedural data generation is now built-in to the EngineBlock runtime by way of
+the [Virtual DataSet](http://virtdata.io/) library. Thus, bindings are now
+supported as a core concept. You can add a bindings section like this:
+
     bindings:
      alpha: Identity()
      beta: NumberNameToString()
-     gamma Combinations('0-9A-F;0-9;A-Z;_pro;')
+     gamma: Combinations('0-9A-F;0-9;A-Z;_;p;r;o;')
+     delta: WeightedStrings(one:1;six:6;three:3;)
 
-This is just a simple example. Sometimes this is all you need. The uniform
-configuration format is designed to scale up and down in complexity depending
-on whether you need a sophisticated configuration or something very simple like
-the above.
+Notice that bindings are represented as a map. The bindings above *mostly* match
+up with the named anchors in the statement list above. There is one extra
+binding, but this is ok. If a binding were named in the statement that was not
+defined, an error would occur.
 
-No matter what, the whole YAML format is about configuring statements or other
-operations to be used in an activity. The statement syntax that you will use
-will depend on the ActivityType that you are using it with. This generalization
-applies as well to tags, params, and bindings. In general, testing requires
-statements, statement parameters, and data bindings. We add to these the
-concepts of blocks and tags.
+{{< note >}}
+This is important for activity type designers to observe: When statement bindings
+are paired with statements, a binding should not be used directly unless it is
+paired with a matching anchor name in the statement. This allows activity and
+scenario designers to keep a library of data binding recipes in their
+configurations without incurring the cost of extraneous binding evaluations.
+{{</note >}}
 
-## Blocks
+Still, the above statement block is a valid config file. It may or may not be
+valid for a given activity type. The 'stdout' activity will synthesize a
+statement template from the provided bindings if needed, so this is valid:
 
-As stated above, the real purpose of this format is to make it easy to configure
-statements. That means that the tags, params, and bindings are all really
-statement properties, yet statements are provided in list form. How do we map
-the params, tags, and bindings to them? The simple rule is that any tag,
-binding, or param that is defined at the same level as the statement applies
-directly to it. If there are 40 statements in a block, and 3 params in that
-block, then those 3 params will be associated directly with each of those 40
-statements.
+    [test]$ cat > stdout-test.yaml
+        bindings:
+         alpha: Identity()
+         beta: NumberNameToString()
+         gamma: Combinations('0-9A-F;0-9;A-Z;_;p;r;o;')
+         delta: WeightedStrings(one:1;six:6;three:3;)
 
-However, this is not the full story. Statements occur in list form, with no
-internal structure for an individual set of tag, param, or binding data. If you
-need to have this type of control for a given statement, where other statements
-do not share its configuration, then use blocks. Any tags, params, or bindings
-that are defined at the block level will apply to all statements in that block.
+    [test]$ ./eb run type=stdout yaml=stdout-test cycles=10
+    0,zero,00A_pro,six
+    1,one,00B_pro,six
+    2,two,00C_pro,three
+    3,three,00D_pro,three
+    4,four,00E_pro,six
+    5,five,00F_pro,six
+    6,six,00G_pro,six
+    7,seven,00H_pro,six
+    8,eight,00I_pro,six
+    9,nine,00J_pro,six
 
-Any tags, params, or bindings that are defined at the document level will,
-also apply to all statements within that document, unless there is one of the
-same name already assigned within a given statement's block.
+If you combine the statement section and the bindings sections above into one
+activity yaml, you get a slightly different result, as the bindings apply
+to the statements that are provided:
 
-## Detailed Examples
+    [test]$ cat > stdout-test.yaml
+    statements:
+     - |
+      This is a statement, and the file format doesn't
+      know how statements will be used!
+     - |
+      submit job {alpha} on queue {beta} with options {gamma};
+    bindings:
+     alpha: Identity()
+     beta: NumberNameToString()
+     gamma: Combinations('0-9A-F;0-9;A-Z;_;p;r;o;')
+     delta: WeightedStrings(one:1;six:6;three:3;)
 
-Here is a more thorough example with some blocks:
+    [test]$ ./eb run type=stdout yaml=stdout-test cycles=10
+    This is a statement, and the file format doesn't
+    know how statements will be used!
+    submit job 1 on queue one with options 00B_pro;
+    This is a statement, and the file format doesn't
+    know how statements will be used!
+    submit job 3 on queue three with options 00D_pro;
+    This is a statement, and the file format doesn't
+    know how statements will be used!
+    submit job 5 on queue five with options 00F_pro;
+    This is a statement, and the file format doesn't
+    know how statements will be used!
+    submit job 7 on queue seven with options 00H_pro;
+    This is a statement, and the file format doesn't
+    know how statements will be used!
+    submit job 9 on queue nine with options 00J_pro;
 
-    name: mixed-csv-example
+There are a few things to notice here. First, the statements that are executed
+are automatically alternated between. If you had 10 different statements listed,
+they would all get their turn with 10 cycles. Since there were two, each was run
+5 times.
+
+Also, the statement that had named anchors acted as a template, whereas the
+other one was evaluated just as it was. In fact, they were both treated as
+templates, but one of the had no anchors.
+
+On more minor but important detail is that the fourth binding *delta* was not
+referenced directly in the statements. Since the statements did not pair up an
+anchor with this binding name, it was not used. No values were generated. This
+is how activities are expected to work when they are implemented correctly. This
+means that the bindings themselves are templates for data generation, only to be
+used when necessary.
+
+## Params
+
+As with the bindings, a params section can be added at the same level, providing
+additional parameters to be used with all the statements provided. Again, this
+is an example of modifying or otherwise creating a specific type of statement, but
+always in a way specific to the activity type. As such, params don't really do
+much on their own, although they have the same basic map syntax as bindings:
+
     params:
      ratio: 1
-    blocks:
-     - name: low-ratio
-       statements:
-        - test1-{alpha},{beta},{gamma}
-        - test2-{alpha},{gamma},{beta}
-       bindings:
-        alpha: Combinations('b;l;o;c;k;1;-;COMBINATIONS;');
-     - name: high-ratio
-       params:
-        ratio: 9
-       statements:
-        - test3-{beta},{alpha},{gamma}
-        - test4-{beta},{gamma},{alpha}
-       bindings:
-        alpha: Combinations('b;l;o;c;k;2;-;COMBINATIONS;');
-    bindings:
-     beta: NumberNameToString()
-     gamma Combinations('0-9A-F;0-9;A-Z;_pro;')
-
-This example allows us to show the practical value of blocks.
-Blocks are both a grouping mechanism as well as an inheritance mechanism.
-
-In this case, we see four statements, notated as test1, test2, test3, and test4.
-
-We also see that the block with name 'low-ratio' has no ratio param assigned.
-As such, it will take the defaults from the document, "1" in this case.
-Being a "statement configuration" format, this means that the statements
-test1 and test2 *have* ratio: 1. In contrast, the block named 'high-ratio' has
-its own set of params. The ratio param overrides the doc value in this case, so
-test3 and test4 *have* ratio: 9. This exact logic applies to the other types
-of configuration elements.
 
 ## Tags
 
 Tags are used to mark and filter groups of statements for controlling different
-types of scenario execution. As such, they extend the command line syntax with
-the ability to match statements that have certain tag properties:
+types of scenario execution.
 
-1. A given tag name is defined
-2. A given tag name is defined and its value is something specific
-3. A given tag name is defined and its value matches a pattern
+    tags:
+     name:foxtrot
+    statements:
+     - "I'm alive!"
 
 ### Tag Filtering
 
-A simple tag filtering form is used across all tags. Examples of the above, respectively,
-are:
+The tag filters provide a flexible set of conventions for filtering tagged statements.
+Tag filters are usually provided as an activity parameter when an activity is launched.
+The rules for tag filtering are:
 
-    tags=keyname1
+1. If no tag filter is specified, then the statement matches.
+2. A tag name predicate like <code>tags=name</code> asserts the presence of a specific
+   tag name, regardless of its value.
+3. A tag value predicate like <code>tags=name:foxtrot</code>asserts the presence of
+   a specific tag name and a specific value for it.
+4. A tag pattern predicate like <code>tags='nam.*'</code> asserts the presence of a
+   specific tag name and a value that matches the provided regular expression.
+5. Tag predicates are joined by *and* when more than one is provided -- If any predicate
+   fails to match a tagged element, then the whole tag filtering expression fails
+   to match.
 
-    tags=keyname2:value2
+A demonstration...
 
-    tags='keyname3:.*matchme'
+    [test]$ cat > stdout-test.yaml
+    tags:
+     name: foxtrot
+    statements:
+     - "I'm alive!\n"
 
-Each of these examples only shows one of the tag matching forms. It is possible to combine
-these into compound tag filters. In this case, they are conjugated with an implied *and*.
-For example, "tags='keyname1,keyname3:.*matchme'" will only match statements that have a tag
-named keyname1 and a tag named keyname3 with a value that ends with 'matchme'.
+    # no tag filter matches any
+    [test]$ ./eb run type=stdout yaml=stdout-test
+    I'm alive!
 
-## Params
+    # tag name assertion matches
+    [test]$ ./eb run type=stdout yaml=stdout-test tags=name
+    I'm alive!
 
-Configuration Params are simple string-string maps of configuration parameters that are
-contextual to the activity type. An example would be whether a statement should be prepared
-or not. It is up to the ActivityType designer to document the params for each driver type.
+    # tag name assertion does not match
+    [test]$ ./eb run type=stdout yaml=stdout-test tags=name2
+    02:25:28.158 [scenarios:001] ERROR i.e.activities.stdout.StdoutActivity - Unable to create a stdout statement if you have no active statements or bindings configured.
 
-## Bindings
+    # tag value assertion does not match
+    [test]$ ./eb run type=stdout yaml=stdout-test tags=name:bravo
+    02:25:42.584 [scenarios:001] ERROR i.e.activities.stdout.StdoutActivity - Unable to create a stdout statement if you have no active statements or bindings configured.
 
-Data Bindings are the standard way of assigning a procedural data generation recipe to
-be used with statements (operations) within an activity.
+    #tag value assertion matches
+    [test]$ ./eb run type=stdout yaml=stdout-test tags=name:foxtrot
+    I'm alive!
 
-Bindings can safely be set at the doc level or the block level for re-use by
-statements. Statements within a given activity type should only call the
-bindings for data generation when each binding is used by name. Because of this,
-it is generally safe to define as superset of binding recipes at the doc level
-with each statement pulling in values as needed. Consider the bindings as a menu
-of data streams, with each statement pulling data from those streams only where
-specified by named anchors.
+    # tag pattern assertion matches
+    [test]$ ./eb run type=stdout yaml=stdout-test tags=name:'fox.*'
+    I'm alive!
+
+    #tag pattern assertion does not match
+    [test]$ ./eb run type=stdout yaml=stdout-test tags=name:'tango.*'
+    02:26:05.149 [scenarios:001] ERROR i.e.activities.stdout.StdoutActivity - Unable to create a stdout statement if you have no active statements or bindings configured.
+
+
+## Blocks
+
+All the basic primitives describe above (names, statements, bindings, params, tags) can be used
+to describe and parameterize a set of statements in a yaml document. Sometimes you need to
+structure your statements in a more sophisticated way. You might want to do this if you have
+a set of common statement forms or parameters that need to apply to many statements, or perhaps
+if you have several *different* groups of statements that need to be configured independently.
+
+This is where blocks become useful:
+
+    [test]$ cat > stdout-test.yaml
+    bindings:
+     alpha: Identity()
+     beta: Combinations('u;n;u;s;e;d;')
+    blocks:
+     - statements:
+       - "{alpha},{beta}\n"
+       bindings:
+        beta: Combinations('b;l;o;c;k;1;-;COMBINATIONS;')
+     - statements:
+       - "{alpha},{beta}\n"
+       bindings:
+        beta: Combinations('b;l;o;c;k;2;-;COMBINATIONS;')
+
+    [test]$ ./eb run type=stdout yaml=stdout-test cycles=10
+    0,block1-C
+    1,block2-O
+    2,block1-M
+    3,block2-B
+    4,block1-I
+    5,block2-N
+    6,block1-A
+    7,block2-T
+    8,block1-I
+    9,block2-O
+
+This shows a couple of important features of blocks. All blocks inherit defaults
+for bindings, params, and tags from the root document level. Any of these values
+that are defined at the base document level apply to all blocks contained in
+that document, unless specifically overridden within a given block.
+
+## Multi-Docs
+
+The YAML spec allows for multiple yaml documents to be concatenated in the
+same file with a separator:
+
+   ---
+
+This offers an additional convenience when configuring activities. If you want
+to parameterize or tag some a set of statements with their own bindings, params,
+or tags, but alongside another set of uniquely configured statements, you need
+only put them in separate logical documents, separated by a triple-dash.
+For example:
+
+    [test]$ cat > stdout-test.yaml
+    bindings:
+     docval: WeightedStrings('doc1.1:1;doc1.2:2;')
+    statements:
+     - "doc1.form1 {docval}\n"
+     - "doc1.form2 {docval}\n"
+    ---
+    bindings:
+     numname: NumberNameToString()
+    statements:
+     - "doc2.number {numname}\n"
+
+    [test]$ ./eb run type=stdout yaml=stdout-test cycles=10
+    doc1.form1 doc1.1
+    doc1.form2 doc1.2
+    doc2.number two
+    doc1.form1 doc1.2
+    doc1.form2 doc1.1
+    doc2.number five
+    doc1.form1 doc1.2
+    doc1.form2 doc1.2
+    doc2.number eight
+    doc1.form1 doc1.1
+
+## Template Params
+
+All EngineBlock YAML formats support a parameter macro format that applies before
+YAML processing starts. It is a basic macro facility that allows named
+anchors to be placed in the document as a whole:
+
+    <<varname:defaultval>>
+
+In this example, the name of the parameter is <code>varname</code>. It is given a default
+value of <code>defaultval</code>. If an activity parameter named *varname* is provided, as
+in <code>varname=barbaz</code>, then this whole expression including the double angle
+brackets will be replaced with <code>barbaz</code>. If none is provided then the default
+value. For example:
+
+    [test]$ cat > stdout-test.yaml
+    statements:
+     - "<<linetoprint:MISSING>>\n"
+
+    [test]$ ./eb run type=stdout yaml=stdout-test cycles=1
+    MISSING
+
+    [test]$ ./eb run type=stdout yaml=stdout-test cycles=1 linetoprint="THIS IS IT"
+    THIS IS IT
+
+
