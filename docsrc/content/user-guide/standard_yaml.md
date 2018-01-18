@@ -20,15 +20,6 @@ selecting statements for an activity. In essence, the config format is *all abou
 configuring statements*. Every other element in the config format is in some way
 modifying or otherwise helping create statements to be used in an activity.
 
-## Names
-
-Everything in this format can have a name:
-
-    name: test42
-
-If a name is not provided, then one is automatically created. It is not important to
-name things except for documentation or metric naming purposes.
-
 ## Statements
 
 Statements are provided as a list. For example:
@@ -68,6 +59,12 @@ bindings. These place holders are called *named anchors*. The second line above
 is an example of a statement template, with anchors that can be replaced by
 data for each cycle of an activity.
 
+There is a variety of ways to represent block statements, with folding, without,
+with the newline removed, with it retained, with trailing newlines trimmed or not,
+and so forth. For a more comprehensive guide on the YAML conventions regarding
+multi-line blocks, see
+[YAML Spec 1.2, Chapter 8, Block Styles](http://www.yaml.org/spec/1.2/spec.html#Block)
+
 ## Bindings
 
 Procedural data generation is now built-in to the EngineBlock runtime by way of
@@ -103,6 +100,7 @@ statement template from the provided bindings if needed, so this is valid:
          beta: NumberNameToString()
          gamma: Combinations('0-9A-F;0-9;A-Z;_;p;r;o;')
          delta: WeightedStrings(one:1;six:6;three:3;)
+    # EOF (control-D in your terminal)
 
     [test]$ ./eb run type=stdout yaml=stdout-test cycles=10
     0,zero,00A_pro,six
@@ -132,6 +130,7 @@ to the statements that are provided:
      beta: NumberNameToString()
      gamma: Combinations('0-9A-F;0-9;A-Z;_;p;r;o;')
      delta: WeightedStrings(one:1;six:6;three:3;)
+    # EOF (control-D in your terminal)
 
     [test]$ ./eb run type=stdout yaml=stdout-test cycles=10
     This is a statement, and the file format doesn't
@@ -212,6 +211,7 @@ A demonstration...
      unit: bravo
     statements:
      - "I'm alive!\n"
+    # EOF (control-D in your terminal)
 
     # no tag filter matches any
     [test]$ ./eb run type=stdout yaml=stdout-test
@@ -267,6 +267,7 @@ This is where blocks become useful:
        - "{alpha},{beta}\n"
        bindings:
         beta: Combinations('b;l;o;c;k;2;-;COMBINATIONS;')
+    # EOF (control-D in your terminal)
 
     [test]$ ./eb run type=stdout yaml=stdout-test cycles=10
     0,block1-C
@@ -311,6 +312,7 @@ For example:
      numname: NumberNameToString()
     statements:
      - "doc2.number {numname}\n"
+    # EOF (control-D in your terminal)
 
     [test]$ ./eb run type=stdout yaml=stdout-test cycles=10
     doc1.form1 doc1.1
@@ -341,6 +343,7 @@ value. For example:
     [test]$ cat > stdout-test.yaml
     statements:
      - "<<linetoprint:MISSING>>\n"
+    # EOF (control-D in your terminal)
 
     [test]$ ./eb run type=stdout yaml=stdout-test cycles=1
     MISSING
@@ -348,8 +351,39 @@ value. For example:
     [test]$ ./eb run type=stdout yaml=stdout-test cycles=1 linetoprint="THIS IS IT"
     THIS IS IT
 
-## Semantics
+## Naming Things
 
+Docs, Blocks, and Statements can all have names:
+
+    name: doc1
+    blocks:
+     - name: block1
+       statements:
+       - statement1
+       - stmt2-- statement2
+       - stmt3> statement3
+       - "stmt4: statement4"
+       - --stmt5-- This statement will have a prefixed name based on the block name..
+    ---
+    name: doc2
+    ...
+
+This provides a layered naming scheme for the statements themselves. Since
+statements are provided as a list within blocks, inline prefix names are
+supported as shown above. It is not usually important to name things except for
+documentation or metric naming purposes.
+
+### Automatic Naming
+
+If no names are provided, then names are automatically created for blocks and
+statements. Statements assigned at the document level are assigned to
+"block0". All other statements are named with the format `doc#--block#--stmt#`.
+For example, the full name of statement1 above would be `doc1--block1--stmt2`.
+
+When naming statements directly using any of `word-- ...`, `"word: ..."`, or `word> ...`
+conventions, the statements are named without the block prefix. In order to retain
+the block prefix (or the doc--block prefix in the case of a named document), simply
+prefix the statement name with a double hyphen, as in the `--stmt5--` example above.
 
 ## Summary
 
