@@ -13,6 +13,25 @@
     
     
     <item>
+      <title>Tracking Concepts</title>
+      <link>http://docs.engineblock.io/sketches/tracking_concepts/</link>
+      <pubDate>Fri, 19 May 2017 22:09:53 +0000</pubDate>
+      
+      <guid>http://docs.engineblock.io/sketches/tracking_concepts/</guid>
+      <description>This section is meant to clarify some of the concepts used within engineblock for marking results of one activity and tracking them for use by other activities.
+Activities and Cycles As before, all activities running within an engineblock scenario iterate on cycles. Whereas before, each activity would operate exclusively on a contiguous interval of cycles, now activities can operate on a set of cycles which are not contiguous. Still, the cycles must be in order.</description>
+    </item>
+    
+    <item>
+      <title>Activity Design Template</title>
+      <link>http://docs.engineblock.io/sketches/activity_design_template/</link>
+      <pubDate>Fri, 19 May 2017 22:09:53 +0000</pubDate>
+      
+      <guid>http://docs.engineblock.io/sketches/activity_design_template/</guid>
+      <description>  digraph tracking { graph [splines=polyline,overlap=orthoxy]; rankdir=LR; node[shape=&amp;#34;box&amp;#34;] { rank=source; idle; } idle-&amp;gt;runphase runphase -&amp;gt; tryphase record_phase -&amp;gt; idle; subgraph cluster_error { label=&amp;#34;error flow&amp;#34; record_error; handle_error; } subgraph cluster_success { label=&amp;#34;success flow&amp;#34; success; record_success; } tryphase-&amp;gt; success-&amp;gt; record_success; tryphase-&amp;gt; handle_error -&amp;gt; record_error; record_error -&amp;gt; tryphase; record_success,record_error -&amp;gt; record_phase; }     digraph disposition { rankdir=TB; node[shape=box] cycle-&amp;gt;try_next_phase; subgraph cluster_cycle { record_cycle; try_next_phase; finish_cycle; label=&amp;#34;cycle execution&amp;#34;; maybe_continue_cycle; subgraph cluster_phase { label=&amp;#34;phase execution&amp;#34; try_phase; record_phase; subgraph cluster_phase_error { label=&amp;#34;exception&amp;#34;; error; record_error; maybe_retry_phase; } subgraph cluster_phase_success { label=&amp;#34;normal&amp;#34;; success; record_success; } } try_next_phase -&amp;gt; try_phase; try_phase -&amp;gt; success -&amp;gt; record_success -&amp;gt; record_phase -&amp;gt; maybe_continue_cycle; maybe_continue_cycle -&amp;gt; try_next_phase; try_phase -&amp;gt; error -&amp;gt; record_error -&amp;gt; maybe_retry_phase -&amp;gt; record_phase; maybe_retry_phase -&amp;gt; try_phase; maybe_continue_cycle -&amp;gt; record_cycle -&amp;gt; finish_cycle; } }   </description>
+    </item>
+    
+    <item>
       <title>Cycle Tracking</title>
       <link>http://docs.engineblock.io/sketches/tracking/</link>
       <pubDate>Fri, 19 May 2017 22:09:53 +0000</pubDate>
@@ -71,16 +90,6 @@ Scenario: A -&amp;gt; B  digraph sys1 { rankdir=LR; node[shape=box] edge[dir=out
       <guid>http://docs.engineblock.io/sketches/</guid>
       <description>This section holds design sketches of some of the more esoteric design elements of EngineBlock.
  scripting_histograms tracking tracking, visually ring tracking tracking concepts  </description>
-    </item>
-    
-    <item>
-      <title>Tracking Concepts</title>
-      <link>http://docs.engineblock.io/sketches/tracking_concepts/</link>
-      <pubDate>Fri, 19 May 2017 22:09:53 +0000</pubDate>
-      
-      <guid>http://docs.engineblock.io/sketches/tracking_concepts/</guid>
-      <description>This section is meant to clarify some of the concepts used within engineblock for marking results of one activity and tracking them for use by other activities.
-Activities and Cycles As before, all activities running within an engineblock scenario iterate on cycles. Whereas before, each activity would operate exclusively on a contiguous interval of cycles, now activities can operate on a set of cycles which are not contiguous. Still, the cycles must be in order.</description>
     </item>
     
   </channel>

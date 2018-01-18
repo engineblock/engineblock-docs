@@ -9,16 +9,16 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,maximum-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=10" />
-    <title>Vega Test - EngineBlock</title>
+    <title>Activity Design Template - EngineBlock</title>
     <meta name="generator" content="Hugo 0.20.7" />
 
     
     <meta name="description" content="EngineBlock Docs">
     
-    <link rel="canonical" href="http://docs.engineblock.io/sketches/vegatest/">
+    <link rel="canonical" href="http://docs.engineblock.io/sketches/activity_design_template/">
     
 
-    <meta property="og:url" content="http://docs.engineblock.io/sketches/vegatest/">
+    <meta property="og:url" content="http://docs.engineblock.io/sketches/activity_design_template/">
     <meta property="og:title" content="EngineBlock">
     <meta property="og:image" content="http://docs.engineblock.io/images/engineblock_128.png">
     <meta name="apple-mobile-web-app-title" content="EngineBlock">
@@ -73,10 +73,10 @@
   
     
     
-    <script src="http://docs.engineblock.io//modules/vega/vega.js"></script>
-    
 
     
+    
+    <script src="http://docs.engineblock.io//modules/viz/viz.js"></script>
     
 
     
@@ -141,7 +141,7 @@
     </div>
     <div class="stretch">
       <div class="title">
-        Vega Test
+        Activity Design Template
       </div>
     </div>
 
@@ -426,111 +426,93 @@
 
 	<article class="article">
 		<div class="wrapper">
-			<h1>Vega Test </h1>
+			<h1>Activity Design Template </h1>
 
-			<p>// Vega here below
+			
+
+<div align="center" class="viz-text"><pre>
+digraph tracking {
+  graph [splines=polyline,overlap=orthoxy];
+  rankdir=LR;
+  node[shape=&#34;box&#34;]
+
+  { rank=source; idle; }
+
+  idle-&gt;runphase
+  runphase -&gt; tryphase
+  record_phase -&gt; idle;
 
 
-<div align="center" class="vega-text"><pre>
-{
-  &#34;$schema&#34;: &#34;https://vega.github.io/schema/vega/v3.0.json&#34;,
-  &#34;width&#34;: 400,
-  &#34;height&#34;: 200,
-  &#34;padding&#34;: 5,
+ subgraph cluster_error {
+  label=&#34;error flow&#34;
+  record_error;
+  handle_error;
+ }
 
-  &#34;data&#34;: [
-    {
-      &#34;name&#34;: &#34;table&#34;,
-      &#34;values&#34;: [
-        {&#34;category&#34;: &#34;A&#34;, &#34;amount&#34;: 28},
-        {&#34;category&#34;: &#34;B&#34;, &#34;amount&#34;: 55},
-        {&#34;category&#34;: &#34;C&#34;, &#34;amount&#34;: 43},
-        {&#34;category&#34;: &#34;D&#34;, &#34;amount&#34;: 91},
-        {&#34;category&#34;: &#34;E&#34;, &#34;amount&#34;: 81},
-        {&#34;category&#34;: &#34;F&#34;, &#34;amount&#34;: 53},
-        {&#34;category&#34;: &#34;G&#34;, &#34;amount&#34;: 19},
-        {&#34;category&#34;: &#34;H&#34;, &#34;amount&#34;: 87}
-      ]
-    }
-  ],
+ subgraph cluster_success {
+  label=&#34;success flow&#34;
+  success;
+  record_success;
+ }
 
-  &#34;signals&#34;: [
-    {
-      &#34;name&#34;: &#34;tooltip&#34;,
-      &#34;value&#34;: {},
-      &#34;on&#34;: [
-        {&#34;events&#34;: &#34;rect:mouseover&#34;, &#34;update&#34;: &#34;datum&#34;},
-        {&#34;events&#34;: &#34;rect:mouseout&#34;,  &#34;update&#34;: &#34;{}&#34;}
-      ]
-    }
-  ],
+    tryphase-&gt; success-&gt; record_success;
+    tryphase-&gt; handle_error -&gt; record_error;
+    record_error -&gt; tryphase;
+    record_success,record_error -&gt; record_phase;
 
-  &#34;scales&#34;: [
-    {
-      &#34;name&#34;: &#34;xscale&#34;,
-      &#34;type&#34;: &#34;band&#34;,
-      &#34;domain&#34;: {&#34;data&#34;: &#34;table&#34;, &#34;field&#34;: &#34;category&#34;},
-      &#34;range&#34;: &#34;width&#34;
-    },
-    {
-      &#34;name&#34;: &#34;yscale&#34;,
-      &#34;domain&#34;: {&#34;data&#34;: &#34;table&#34;, &#34;field&#34;: &#34;amount&#34;},
-      &#34;nice&#34;: true,
-      &#34;range&#34;: &#34;height&#34;
-    }
-  ],
-
-  &#34;axes&#34;: [
-    { &#34;orient&#34;: &#34;bottom&#34;, &#34;scale&#34;: &#34;xscale&#34; },
-    { &#34;orient&#34;: &#34;left&#34;, &#34;scale&#34;: &#34;yscale&#34; }
-  ],
-
-  &#34;marks&#34;: [
-    {
-      &#34;type&#34;: &#34;rect&#34;,
-      &#34;from&#34;: {&#34;data&#34;:&#34;table&#34;},
-      &#34;encode&#34;: {
-        &#34;enter&#34;: {
-          &#34;x&#34;: {&#34;scale&#34;: &#34;xscale&#34;, &#34;field&#34;: &#34;category&#34;, &#34;offset&#34;: 1},
-          &#34;width&#34;: {&#34;scale&#34;: &#34;xscale&#34;, &#34;band&#34;: 1, &#34;offset&#34;: -1},
-          &#34;y&#34;: {&#34;scale&#34;: &#34;yscale&#34;, &#34;field&#34;: &#34;amount&#34;},
-          &#34;y2&#34;: {&#34;scale&#34;: &#34;yscale&#34;, &#34;value&#34;: 0}
-        },
-        &#34;update&#34;: {
-          &#34;fill&#34;: {&#34;value&#34;: &#34;steelblue&#34;}
-        },
-        &#34;hover&#34;: {
-          &#34;fill&#34;: {&#34;value&#34;: &#34;red&#34;}
-        }
-      }
-    },
-    {
-      &#34;type&#34;: &#34;text&#34;,
-      &#34;encode&#34;: {
-        &#34;enter&#34;: {
-          &#34;align&#34;: {&#34;value&#34;: &#34;center&#34;},
-          &#34;baseline&#34;: {&#34;value&#34;: &#34;bottom&#34;},
-          &#34;fill&#34;: {&#34;value&#34;: &#34;#333&#34;}
-        },
-        &#34;update&#34;: {
-          &#34;x&#34;: {&#34;scale&#34;: &#34;xscale&#34;, &#34;signal&#34;: &#34;tooltip.category&#34;, &#34;band&#34;: 0.5},
-          &#34;y&#34;: {&#34;scale&#34;: &#34;yscale&#34;, &#34;signal&#34;: &#34;tooltip.amount&#34;, &#34;offset&#34;: -2},
-          &#34;text&#34;: {&#34;signal&#34;: &#34;tooltip.amount&#34;},
-          &#34;fillOpacity&#34;: [
-            {&#34;test&#34;: &#34;datum === tooltip&#34;, &#34;value&#34;: 0},
-            {&#34;value&#34;: 1}
-          ]
-        }
-      }
-    }
-  ]
 }
 </pre></div>
+<script type="text/javascript" src="http://docs.engineblock.io/modules/viz/inithook-viz.js"></script>
 
 
-<script type="text/javascript" src="http://docs.engineblock.io/modules/vega/inithook-vega.js"></script>
+<p>
 
-// Vega here above</p>
+<div align="center" class="viz-text"><pre>
+
+digraph disposition {
+  rankdir=TB;
+  node[shape=box]
+
+  cycle-&gt;try_next_phase;
+  subgraph cluster_cycle {
+
+    record_cycle;
+    try_next_phase;
+    finish_cycle;
+
+    label=&#34;cycle execution&#34;;
+      maybe_continue_cycle;
+
+
+
+    subgraph cluster_phase {
+      label=&#34;phase execution&#34;
+      try_phase;
+      record_phase;
+
+      subgraph cluster_phase_error {
+       label=&#34;exception&#34;;
+       error; record_error; maybe_retry_phase;
+      }
+
+      subgraph cluster_phase_success {
+       label=&#34;normal&#34;;
+       success;
+       record_success;
+      }
+  }
+  try_next_phase -&gt; try_phase;
+  try_phase -&gt; success -&gt; record_success -&gt; record_phase -&gt; maybe_continue_cycle;
+  maybe_continue_cycle -&gt; try_next_phase;
+  try_phase -&gt; error -&gt; record_error -&gt; maybe_retry_phase -&gt; record_phase;
+  maybe_retry_phase -&gt; try_phase;
+  maybe_continue_cycle -&gt; record_cycle -&gt; finish_cycle;
+
+  }
+}
+</pre></div>
+<script type="text/javascript" src="http://docs.engineblock.io/modules/viz/inithook-viz.js"></script>
+</p>
 
 
 			<aside class="copyright" role="note">
@@ -549,7 +531,7 @@
 <nav class="pagination" aria-label="Footer">
   <div class="previous">
   
-      <a href="http://docs.engineblock.io/sketches/tracking_visually/" title="Tracking Diagrams">
+      <a href="http://docs.engineblock.io/dev-guide/standard_yam_devl/" title="YAML Config API">
         <span class="direction">
           Previous
         </span>
@@ -559,7 +541,7 @@
           </div>
           <div class="stretch">
             <div class="title">
-              Tracking Diagrams
+              YAML Config API
             </div>
           </div>
         </div>
@@ -569,14 +551,14 @@
 
   <div class="next">
   
-      <a href="http://docs.engineblock.io/user-guide/" title="User Guide">
+      <a href="http://docs.engineblock.io/user-guide/command_line/" title="Command Line">
         <span class="direction">
           Next
         </span>
         <div class="page">
           <div class="stretch">
             <div class="title">
-              User Guide
+              Command Line
             </div>
           </div>
           <div class="button button-next" role="button" aria-label="Next">

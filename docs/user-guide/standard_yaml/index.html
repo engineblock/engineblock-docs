@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,maximum-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=10" />
     <title>YAML Config - EngineBlock</title>
-    <meta name="generator" content="Hugo 0.30.2" />
+    <meta name="generator" content="Hugo 0.20.7" />
 
     
     <meta name="description" content="EngineBlock Docs">
@@ -442,16 +442,6 @@ selecting statements for an activity. In essence, the config format is <em>all a
 configuring statements</em>. Every other element in the config format is in some way
 modifying or otherwise helping create statements to be used in an activity.</p>
 
-<h2 id="names">Names</h2>
-
-<p>Everything in this format can have a name:</p>
-
-<pre><code>name: test42
-</code></pre>
-
-<p>If a name is not provided, then one is automatically created. It is not important to
-name things except for documentation or metric naming purposes.</p>
-
 <h2 id="statements">Statements</h2>
 
 <p>Statements are provided as a list. For example:</p>
@@ -493,6 +483,12 @@ bindings. These place holders are called <em>named anchors</em>. The second line
 is an example of a statement template, with anchors that can be replaced by
 data for each cycle of an activity.</p>
 
+<p>There is a variety of ways to represent block statements, with folding, without,
+with the newline removed, with it retained, with trailing newlines trimmed or not,
+and so forth. For a more comprehensive guide on the YAML conventions regarding
+multi-line blocks, see
+<a href="http://www.yaml.org/spec/1.2/spec.html#Block">YAML Spec 1.2, Chapter 8, Block Styles</a></p>
+
 <h2 id="bindings">Bindings</h2>
 
 <p>Procedural data generation is now built-in to the EngineBlock runtime by way of
@@ -530,6 +526,7 @@ statement template from the provided bindings if needed, so this is valid:</p>
      beta: NumberNameToString()
      gamma: Combinations('0-9A-F;0-9;A-Z;_;p;r;o;')
      delta: WeightedStrings(one:1;six:6;three:3;)
+# EOF (control-D in your terminal)
 
 [test]$ ./eb run type=stdout yaml=stdout-test cycles=10
 0,zero,00A_pro,six
@@ -560,6 +557,7 @@ bindings:
  beta: NumberNameToString()
  gamma: Combinations('0-9A-F;0-9;A-Z;_;p;r;o;')
  delta: WeightedStrings(one:1;six:6;three:3;)
+# EOF (control-D in your terminal)
 
 [test]$ ./eb run type=stdout yaml=stdout-test cycles=10
 This is a statement, and the file format doesn't
@@ -628,7 +626,7 @@ The rules for tag filtering are:</p>
 <li>If no tag filter is specified, then the statement matches.</li>
 <li>A tag name predicate like <code>tags=name</code> asserts the presence of a specific
 tag name, regardless of its value.</li>
-<li>A tag value predicate like <code>tags=name:foxtrot</code>asserts the presence of
+<li>A tag value predicate like <code>tags=name:foxtrot</code> asserts the presence of
 a specific tag name and a specific value for it.</li>
 <li>A tag pattern predicate like <code>tags=&lsquo;nam.*&rsquo;</code> asserts the presence of a
 specific tag name and a value that matches the provided regular expression.</li>
@@ -645,6 +643,7 @@ tags:
  unit: bravo
 statements:
  - &quot;I'm alive!\n&quot;
+# EOF (control-D in your terminal)
 
 # no tag filter matches any
 [test]$ ./eb run type=stdout yaml=stdout-test
@@ -700,6 +699,7 @@ blocks:
    - &quot;{alpha},{beta}\n&quot;
    bindings:
     beta: Combinations('b;l;o;c;k;2;-;COMBINATIONS;')
+# EOF (control-D in your terminal)
 
 [test]$ ./eb run type=stdout yaml=stdout-test cycles=10
 0,block1-C
@@ -744,6 +744,7 @@ bindings:
  numname: NumberNameToString()
 statements:
  - &quot;doc2.number {numname}\n&quot;
+# EOF (control-D in your terminal)
 
 [test]$ ./eb run type=stdout yaml=stdout-test cycles=10
 doc1.form1 doc1.1
@@ -776,6 +777,7 @@ value. For example:</p>
 <pre><code>[test]$ cat &gt; stdout-test.yaml
 statements:
  - &quot;&lt;&lt;linetoprint:MISSING&gt;&gt;\n&quot;
+# EOF (control-D in your terminal)
 
 [test]$ ./eb run type=stdout yaml=stdout-test cycles=1
 MISSING
@@ -783,6 +785,41 @@ MISSING
 [test]$ ./eb run type=stdout yaml=stdout-test cycles=1 linetoprint=&quot;THIS IS IT&quot;
 THIS IS IT
 </code></pre>
+
+<h2 id="naming-things">Naming Things</h2>
+
+<p>Docs, Blocks, and Statements can all have names:</p>
+
+<pre><code>name: doc1
+blocks:
+ - name: block1
+   statements:
+   - statement1
+   - stmt2-- statement2
+   - stmt3&gt; statement3
+   - &quot;stmt4: statement4&quot;
+   - --stmt5-- This statement will have a prefixed name based on the block name..
+---
+name: doc2
+...
+</code></pre>
+
+<p>This provides a layered naming scheme for the statements themselves. Since
+statements are provided as a list within blocks, inline prefix names are
+supported as shown above. It is not usually important to name things except for
+documentation or metric naming purposes.</p>
+
+<h3 id="automatic-naming">Automatic Naming</h3>
+
+<p>If no names are provided, then names are automatically created for blocks and
+statements. Statements assigned at the document level are assigned to
+&ldquo;block0&rdquo;. All other statements are named with the format <code>doc#--block#--stmt#</code>.
+For example, the full name of statement1 above would be <code>doc1--block1--stmt2</code>.</p>
+
+<p>When naming statements directly using any of <code>word-- ...</code>, <code>&quot;word: ...&quot;</code>, or <code>word&gt; ...</code>
+conventions, the statements are named without the block prefix. In order to retain
+the block prefix (or the doc&ndash;block prefix in the case of a named document), simply
+prefix the statement name with a double hyphen, as in the <code>--stmt5--</code> example above.</p>
 
 <h2 id="summary">Summary</h2>
 
@@ -793,7 +830,7 @@ level of sophistication can increase as needed for more advanced cases.</p>
 
 			<aside class="copyright" role="note">
 				
-				&copy; 2017 APL 2.0 &ndash;
+				&copy; 2018 APL 2.0 &ndash;
 				
 				Documentation built with
 				<a href="https://www.gohugo.io" target="_blank">Hugo</a>
