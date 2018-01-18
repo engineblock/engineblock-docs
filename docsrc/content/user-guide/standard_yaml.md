@@ -196,7 +196,7 @@ The rules for tag filtering are:
 1. If no tag filter is specified, then the statement matches.
 2. A tag name predicate like <code>tags=name</code> asserts the presence of a specific
    tag name, regardless of its value.
-3. A tag value predicate like <code>tags=name:foxtrot</code>asserts the presence of
+3. A tag value predicate like <code>tags=name:foxtrot</code> asserts the presence of
    a specific tag name and a specific value for it.
 4. A tag pattern predicate like <code>tags='nam.*'</code> asserts the presence of a
    specific tag name and a value that matches the provided regular expression.
@@ -347,6 +347,9 @@ value. For example:
 
     [test]$ ./eb run type=stdout yaml=stdout-test cycles=1 linetoprint="THIS IS IT"
     THIS IS IT
+
+## Semantics
+
 
 ## Summary
 
