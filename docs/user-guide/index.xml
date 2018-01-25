@@ -48,8 +48,18 @@ Collecting Metrics If you like to have all of your testing data in one place, th
       <pubDate>Tue, 24 Oct 2017 00:00:00 +0000</pubDate>
       
       <guid>http://docs.engineblock.io/user-guide/standard_yaml/</guid>
-      <description>In the EB 2.* and newer versions, a standard YAML configuration format is provided that makes it easy to use for any activity that requires statements, tags, parameters and data bindings. In practice, any useful activity types have needed these. This section describes the standard YAML format and how to use it.
+      <description>In the EngineBlock 2.* and newer versions, a standard YAML configuration format is provided that makes it easy to use for any activity that requires statements, tags, parameters and data bindings. In practice, any useful activity types have needed these. This section describes the standard YAML format and how to use it.
 A valid config file for an activity consists of statements, parameters for those statements, bindings for the data to use with those statements, and tags for selecting statements for an activity.</description>
+    </item>
+    
+    <item>
+      <title>YAML Config Errors</title>
+      <link>http://docs.engineblock.io/user-guide/standard_yaml_errors/</link>
+      <pubDate>Tue, 24 Oct 2017 00:00:00 +0000</pubDate>
+      
+      <guid>http://docs.engineblock.io/user-guide/standard_yaml_errors/</guid>
+      <description>This page describes errors that you might see if you have a YAML loading issue, and what you can do to fix them.
+Statement Loading Because the standard YAML format supports a variety of convenient formats for statement definitions, it can sometimes be difficult to know what the user intended to do specifically. The following is a brief description of how YAML statements are loaded, and can help explain why some of the errors below may occur.</description>
     </item>
     
     <item>

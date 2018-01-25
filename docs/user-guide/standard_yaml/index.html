@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,maximum-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=10" />
     <title>YAML Config - EngineBlock</title>
-    <meta name="generator" content="Hugo 0.20.7" />
+    <meta name="generator" content="Hugo 0.31" />
 
     
     <meta name="description" content="EngineBlock Docs">
@@ -320,6 +320,19 @@
 
 
       
+        
+        
+
+
+
+<a  title="YAML Config Errors" href="http://docs.engineblock.io/user-guide/standard_yaml_errors/">
+	
+	YAML Config Errors
+</a>
+
+
+
+      
     </ul>
   
 </li>
@@ -362,6 +375,19 @@
 
 
 
+<a  title="Contributing" href="http://docs.engineblock.io/dev-guide/contributing/">
+	
+	Contributing
+</a>
+
+
+
+      
+        
+        
+
+
+
 <a  title="Diag ActivityType" href="http://docs.engineblock.io/dev-guide/annotated_diag/">
 	
 	Diag ActivityType
@@ -375,7 +401,7 @@
 
 
 
-<a  title="Project Structure" href="http://docs.engineblock.io/dev-guide/contributing/">
+<a  title="Project Structure" href="http://docs.engineblock.io/dev-guide/project_structure/">
 	
 	Project Structure
 </a>
@@ -431,7 +457,7 @@
 
 			
 
-<p>In the EB 2.* and newer versions, a standard YAML configuration format is
+<p>In the EngineBlock 2.* and newer versions, a standard YAML configuration format is
 provided that makes it easy to use for any activity that requires statements,
 tags, parameters and data bindings. In practice, any useful activity types have
 needed these. This section describes the standard YAML format and how to use it.</p>
@@ -444,50 +470,20 @@ modifying or otherwise helping create statements to be used in an activity.</p>
 
 <h2 id="statements">Statements</h2>
 
-<p>Statements are provided as a list. For example:</p>
+<p>Statements are the single most important part of a YAML config:</p>
 
-<pre><code>statements:
- - &quot;This a statement.&quot;
- - &quot;The file format doesn't know how statements will be used.&quot;
- - &quot;submit job {job} on queue {queue} with options {options};&quot;
+<pre><code class="language-yaml"># a single statement
+statement: a single statement body
 </code></pre>
 
-<p>This is a valid yaml in and of itself. It may not be valid for a particular
-activity type, but that is up to each activity type to decide. Further each
-activity type determines what a statement means, and how it will be used. The
-format is merely concerned with structure and very general semantics.</p>
+<p>This is a valid YAML in and of itself. It may not be valid for a particular
+activity type, but that is up to each activity type to decide. That is because
+the contents of the YAML will matter to each activity type in a different way.
+Thus, each activity type determines what a statement means, and how it will be
+used. The format is merely concerned with structure and very general semantics.</p>
 
-<p>Sometimes, you want to specify the text of a statement in different ways. Since
-statements are strings, the simplest way for small statements is in double
-quotes as shown above. If you need to express a much longer statement with
-special characters and newlines, then you can use YAML&rsquo;s literal block notation
-(signaled by the &lsquo;|&rsquo; character) to do so:</p>
-
-<pre><code>statements:
- - |
-  This is a statement, and the file format doesn't
-  know how statements will be used!
- - |
-  submit job {alpha} on queue {beta} with options {gamma};
-</code></pre>
-
-<p>Notice that the block starts on the following line after the pipe symbol. This
-is a very popular form in practice because it treats the whole block exactly as
-it is shown, except for the initial indentations, which are removed.</p>
-
-<p>Statements in this format can be raw statements, statement templates, or
-anything that is appropriate for the specific activity type they are being used
-with. Generally, the statements should be thought of as a statement form that
-you want to use in your activity &ndash; something that has place holders for data
-bindings. These place holders are called <em>named anchors</em>. The second line above
-is an example of a statement template, with anchors that can be replaced by
-data for each cycle of an activity.</p>
-
-<p>There is a variety of ways to represent block statements, with folding, without,
-with the newline removed, with it retained, with trailing newlines trimmed or not,
-and so forth. For a more comprehensive guide on the YAML conventions regarding
-multi-line blocks, see
-<a href="http://www.yaml.org/spec/1.2/spec.html#Block">YAML Spec 1.2, Chapter 8, Block Styles</a></p>
+<p>In the example above, the statement is automatically named according to its
+location within the YAML document.</p>
 
 <h2 id="bindings">Bindings</h2>
 
@@ -495,7 +491,7 @@ multi-line blocks, see
 the <a href="http://virtdata.io/">Virtual DataSet</a> library. Thus, bindings are now
 supported as a core concept. You can add a bindings section like this:</p>
 
-<pre><code>bindings:
+<pre><code class="language-yaml">bindings:
  alpha: Identity()
  beta: NumberNameToString()
  gamma: Combinations('0-9A-F;0-9;A-Z;_;p;r;o;')
@@ -520,7 +516,7 @@ configurations without incurring the cost of extraneous binding evaluations.</p>
 valid for a given activity type. The &lsquo;stdout&rsquo; activity will synthesize a
 statement template from the provided bindings if needed, so this is valid:</p>
 
-<pre><code>[test]$ cat &gt; stdout-test.yaml
+<pre><code class="language-text">[test]$ cat &gt; stdout-test.yaml
     bindings:
      alpha: Identity()
      beta: NumberNameToString()
@@ -545,7 +541,7 @@ statement template from the provided bindings if needed, so this is valid:</p>
 activity yaml, you get a slightly different result, as the bindings apply
 to the statements that are provided:</p>
 
-<pre><code>[test]$ cat &gt; stdout-test.yaml
+<pre><code class="language-text">[test]$ cat &gt; stdout-test.yaml
 statements:
  - |
   This is a statement, and the file format doesn't
@@ -602,16 +598,19 @@ way specific to the activity type. Params can be thought of as statement
 properties. As such, params don&rsquo;t really do much on their own, although they
 have the same basic map syntax as bindings:</p>
 
-<pre><code>params:
+<pre><code class="language-yaml">params:
  ratio: 1
 </code></pre>
+
+<p>As with statements, it is up to each activity type to interpret params in a
+useful way.</p>
 
 <h2 id="tags">Tags</h2>
 
 <p>Tags are used to mark and filter groups of statements for controlling which ones
 get used in a given scenario:</p>
 
-<pre><code>tags:
+<pre><code class="language-yaml">tags:
  name:foxtrot
  unit: bravo
 </code></pre>
@@ -628,7 +627,7 @@ The rules for tag filtering are:</p>
 tag name, regardless of its value.</li>
 <li>A tag value predicate like <code>tags=name:foxtrot</code> asserts the presence of
 a specific tag name and a specific value for it.</li>
-<li>A tag pattern predicate like <code>tags=&lsquo;nam.*&rsquo;</code> asserts the presence of a
+<li>A tag pattern predicate like <code>tags=name:&lsquo;fox.*&rsquo;</code> asserts the presence of a
 specific tag name and a value that matches the provided regular expression.</li>
 <li>Tag predicates are joined by <em>and</em> when more than one is provided &ndash; If any predicate
 fails to match a tagged element, then the whole tag filtering expression fails
@@ -637,7 +636,7 @@ to match.</li>
 
 <p>A demonstration&hellip;</p>
 
-<pre><code>[test]$ cat &gt; stdout-test.yaml
+<pre><code class="language-text">[test]$ cat &gt; stdout-test.yaml
 tags:
  name: foxtrot
  unit: bravo
@@ -686,7 +685,7 @@ configured independently.</p>
 
 <p>This is where blocks become useful:</p>
 
-<pre><code>[test]$ cat &gt; stdout-test.yaml
+<pre><code class="language-text">[test]$ cat &gt; stdout-test.yaml
 bindings:
  alpha: Identity()
  beta: Combinations('u;n;u;s;e;d;')
@@ -719,12 +718,146 @@ for bindings, params, and tags from the root document level. Any of these values
 that are defined at the base document level apply to all blocks contained in
 that document, unless specifically overridden within a given block.</p>
 
+<h2 id="more-statements">More Statements</h2>
+
+<h3 id="statement-sequences">Statement Sequences</h3>
+
+<p>To provide a degree of flexibility to the user for statement definitions,
+multiple statements may be provided together as a sequence.</p>
+
+<pre><code class="language-yaml"># a list of statements
+statements:
+ - &quot;This a statement.&quot;
+ - &quot;The file format doesn't know how statements will be used.&quot;
+ - &quot;submit job {job} on queue {queue} with options {options};&quot;
+
+# an ordered map of statements by name
+statements:
+ name1: statement one
+ name2: &quot;statement two&quot;
+</code></pre>
+
+<p>In the first sequence form, automatic statement naming occurs. In the last form,
+each statement has a name provided as a key. The only difference between these
+two forms is that the names are provided automatically in the first.</p>
+
+<h3 id="statement-delimiting">Statement Delimiting</h3>
+
+<p>Sometimes, you want to specify the text of a statement in different ways. Since
+statements are strings, the simplest way for small statements is in double
+quotes. If you need to express a much longer statement with special characters
+an newlines, then you can use YAML&rsquo;s literal block notation (signaled by the &lsquo;|&rsquo;
+character) to do so:</p>
+
+<pre><code class="language-yaml">statements:
+ - |
+  This is a statement, and the file format doesn't
+  know how statements will be used!
+ - |
+  submit job {alpha} on queue {beta} with options {gamma};
+</code></pre>
+
+<p>Notice that the block starts on the following line after the pipe symbol. This
+is a very popular form in practice because it treats the whole block exactly as
+it is shown, except for the initial indentations, which are removed.</p>
+
+<p>Statements in this format can be raw statements, statement templates, or
+anything that is appropriate for the specific activity type they are being used
+with. Generally, the statements should be thought of as a statement form that
+you want to use in your activity &ndash; something that has place holders for data
+bindings. These place holders are called <em>named anchors</em>. The second line above
+is an example of a statement template, with anchors that can be replaced by data
+for each cycle of an activity.</p>
+
+<p>There is a variety of ways to represent block statements, with folding, without,
+with the newline removed, with it retained, with trailing newlines trimmed or
+not, and so forth. For a more comprehensive guide on the YAML conventions
+regarding multi-line blocks, see <a href="http://www.yaml.org/spec/1.2/spec.html#Block">YAML Spec 1.2, Chapter 8, Block
+Styles</a></p>
+
+<h3 id="statement-overrides">Statement Overrides</h3>
+
+<p>In addition to the basic statement forms explained above in <a href="#statement-sequences">Statement
+Sequences</a>, there is another called a <em>statement config map</em>:</p>
+
+<pre><code class="language-yaml"># a list of statement config maps
+statements:
+ - name: name1
+   stmt: statement one
+ - name: name2
+   stmt: statement two
+</code></pre>
+
+<p>This is the most flexible configuration format at the statement level, however
+it is also the most verbose. Because this format names each property of the
+statement, it allows for other properties to be defined at this level as well.
+This includes all of the previously described configuration elements: bindings,
+params, and tags. A detailed example follows:</p>
+
+<pre><code class="language-yaml">statements:
+ - name: foostmt
+   stmt: &quot;{alpha},{beta}\n&quot;
+   bindings:
+    beta: Combinations('COMBINATIONS;')
+   params:
+    parm1: pvalue1
+   tags:
+    tag1: tvalue1
+   freeparam3: a value, as if it were assigned under the params block.
+</code></pre>
+
+<p>In this case, the values for <code>bindings</code>, <code>params</code>, and <code>tags</code> take precedence,
+overriding those set by the enclosing block or document or activity when the
+names match. Additionally, parameters called <strong>free parameters</strong> are allowed here,
+such as <code>freeparam3</code>. These are simply values that get assigned to the params
+map once all other processing has completed.</p>
+
+<p>It is possible to mix the <strong><code>&lt;name&gt;: &lt;statement&gt;</code></strong> form as above in the
+example for mapping statement by name, so long as some specific rules are
+followed. An example, which is equivalent to the above:</p>
+
+<pre><code class="language-yaml">statements:
+ - foostmt: &quot;{alpha},{beta}\n&quot;
+   parm1: pvalue1
+   bindings:
+    beta: Combinations('COMBINATIONS;')
+   tags:
+    tag1: tvalue1
+</code></pre>
+
+<p>In the example above, <code>parm1: pvalue</code> is known as a free parameter, and is
+simply short-hand for setting values in the params map for the statement.</p>
+
+<p>In this case, you must avoid using both the name property and the initial
+<strong><code>&lt;name&gt;: &lt;statement&gt;</code></strong> together. Doing so will cause an error to be thrown.
+Further, it is not possible to detect when the user has combined both the
+<strong><code>&lt;name&gt;: &lt;statement&gt;</code></strong> form and the <strong><code>stmt: &lt;statement&gt;</code></strong>, so use caution
+when mixing forms.</p>
+
+<p>It is indeed possible to use any of the three list/map statement forms within
+each entry of a statement list:</p>
+
+<pre><code class="language-yaml">statements:
+ - first statement body
+ - second: second statement body
+ - third: third statement body
+   freeparam1: freeparamvalue1
+   tags:
+    type: preload
+ - name: statement4
+   stmt: fourth statement body
+</code></pre>
+
+<p>The above is valid EngineBlock YAML, although a reader would need to know about
+the rules explained above in order to really make sense of it. For most cases,
+it is best to follow one format convention.</p>
+
 <h2 id="multi-docs">Multi-Docs</h2>
 
 <p>The YAML spec allows for multiple yaml documents to be concatenated in the
 same file with a separator:</p>
 
-<pre><code>   ---
+<pre><code class="language-yaml">---
 </code></pre>
 
 <p>This offers an additional convenience when configuring activities. If you want
@@ -733,7 +866,7 @@ or tags, but alongside another set of uniquely configured statements, you need
 only put them in separate logical documents, separated by a triple-dash.
 For example:</p>
 
-<pre><code>[test]$ cat &gt; stdout-test.yaml
+<pre><code class="language-text">[test]$ cat &gt; stdout-test.yaml
 bindings:
  docval: WeightedStrings('doc1.1:1;doc1.2:2;')
 statements:
@@ -745,7 +878,6 @@ bindings:
 statements:
  - &quot;doc2.number {numname}\n&quot;
 # EOF (control-D in your terminal)
-
 [test]$ ./eb run type=stdout yaml=stdout-test cycles=10
 doc1.form1 doc1.1
 doc1.form2 doc1.2
@@ -765,7 +897,7 @@ doc1.form1 doc1.1
 YAML processing starts. It is a basic macro facility that allows named
 anchors to be placed in the document as a whole:</p>
 
-<pre><code>&lt;&lt;varname:defaultval&gt;&gt;
+<pre><code class="language-text">&lt;&lt;varname:defaultval&gt;&gt;
 </code></pre>
 
 <p>In this example, the name of the parameter is <code>varname</code>. It is given a default
@@ -774,7 +906,7 @@ in <code>varname=barbaz</code>, then this whole expression including the double 
 brackets will be replaced with <code>barbaz</code>. If none is provided then the default
 value. For example:</p>
 
-<pre><code>[test]$ cat &gt; stdout-test.yaml
+<pre><code class="language-text">[test]$ cat &gt; stdout-test.yaml
 statements:
  - &quot;&lt;&lt;linetoprint:MISSING&gt;&gt;\n&quot;
 # EOF (control-D in your terminal)
@@ -786,40 +918,35 @@ MISSING
 THIS IS IT
 </code></pre>
 
+<p>If an empty value is desired by default, then simply use an empty string in your template,
+like <code>&lt;&lt;varname:&gt;&gt;</code>.</p>
+
 <h2 id="naming-things">Naming Things</h2>
 
 <p>Docs, Blocks, and Statements can all have names:</p>
 
-<pre><code>name: doc1
+<pre><code class="language-yaml">name: doc1
 blocks:
  - name: block1
    statements:
-   - statement1
-   - stmt2-- statement2
-   - stmt3&gt; statement3
-   - &quot;stmt4: statement4&quot;
-   - --stmt5-- This statement will have a prefixed name based on the block name..
+   - stmt1: statement1
+   - name: st2
+     stmt: statement2
 ---
 name: doc2
 ...
 </code></pre>
 
-<p>This provides a layered naming scheme for the statements themselves. Since
-statements are provided as a list within blocks, inline prefix names are
-supported as shown above. It is not usually important to name things except for
-documentation or metric naming purposes.</p>
+<p>This provides a layered naming scheme for the statements themselves. It is not
+usually important to name things except for documentation or metric naming
+purposes.</p>
 
 <h3 id="automatic-naming">Automatic Naming</h3>
 
 <p>If no names are provided, then names are automatically created for blocks and
 statements. Statements assigned at the document level are assigned to
 &ldquo;block0&rdquo;. All other statements are named with the format <code>doc#--block#--stmt#</code>.
-For example, the full name of statement1 above would be <code>doc1--block1--stmt2</code>.</p>
-
-<p>When naming statements directly using any of <code>word-- ...</code>, <code>&quot;word: ...&quot;</code>, or <code>word&gt; ...</code>
-conventions, the statements are named without the block prefix. In order to retain
-the block prefix (or the doc&ndash;block prefix in the case of a named document), simply
-prefix the statement name with a double hyphen, as in the <code>--stmt5--</code> example above.</p>
+For example, the full name of statement1 above would be <code>doc1--block1--stmt1</code>.</p>
 
 <h2 id="summary">Summary</h2>
 

@@ -13,16 +13,6 @@
     
     
     <item>
-      <title>Tracking Concepts</title>
-      <link>http://docs.engineblock.io/sketches/tracking_concepts/</link>
-      <pubDate>Fri, 19 May 2017 22:09:53 +0000</pubDate>
-      
-      <guid>http://docs.engineblock.io/sketches/tracking_concepts/</guid>
-      <description>This section is meant to clarify some of the concepts used within engineblock for marking results of one activity and tracking them for use by other activities.
-Activities and Cycles As before, all activities running within an engineblock scenario iterate on cycles. Whereas before, each activity would operate exclusively on a contiguous interval of cycles, now activities can operate on a set of cycles which are not contiguous. Still, the cycles must be in order.</description>
-    </item>
-    
-    <item>
       <title>Activity Design Template</title>
       <link>http://docs.engineblock.io/sketches/activity_design_template/</link>
       <pubDate>Fri, 19 May 2017 22:09:53 +0000</pubDate>
@@ -90,6 +80,16 @@ Scenario: A -&amp;gt; B  digraph sys1 { rankdir=LR; node[shape=box] edge[dir=out
       <guid>http://docs.engineblock.io/sketches/</guid>
       <description>This section holds design sketches of some of the more esoteric design elements of EngineBlock.
  scripting_histograms tracking tracking, visually ring tracking tracking concepts  </description>
+    </item>
+    
+    <item>
+      <title>Tracking Concepts</title>
+      <link>http://docs.engineblock.io/sketches/tracking_concepts/</link>
+      <pubDate>Fri, 19 May 2017 22:09:53 +0000</pubDate>
+      
+      <guid>http://docs.engineblock.io/sketches/tracking_concepts/</guid>
+      <description>This section is meant to clarify some of the concepts used within engineblock for marking results of one activity and tracking them for use by other activities.
+Activities and Cycles As before, all activities running within an engineblock scenario iterate on cycles. Whereas before, each activity would operate exclusively on a contiguous interval of cycles, now activities can operate on a set of cycles which are not contiguous. Still, the cycles must be in order.</description>
     </item>
     
   </channel>

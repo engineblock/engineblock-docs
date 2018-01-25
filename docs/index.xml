@@ -48,7 +48,7 @@ Collecting Metrics If you like to have all of your testing data in one place, th
       <pubDate>Tue, 24 Oct 2017 00:00:00 +0000</pubDate>
       
       <guid>http://docs.engineblock.io/user-guide/standard_yaml/</guid>
-      <description>In the EB 2.* and newer versions, a standard YAML configuration format is provided that makes it easy to use for any activity that requires statements, tags, parameters and data bindings. In practice, any useful activity types have needed these. This section describes the standard YAML format and how to use it.
+      <description>In the EngineBlock 2.* and newer versions, a standard YAML configuration format is provided that makes it easy to use for any activity that requires statements, tags, parameters and data bindings. In practice, any useful activity types have needed these. This section describes the standard YAML format and how to use it.
 A valid config file for an activity consists of statements, parameters for those statements, bindings for the data to use with those statements, and tags for selecting statements for an activity.</description>
     </item>
     
@@ -60,6 +60,16 @@ A valid config file for an activity consists of statements, parameters for those
       <guid>http://docs.engineblock.io/dev-guide/standard_yam_devl/</guid>
       <description>In the EB 2.* and newer versions, a standard YAML configuration format is provided that makes it easy to use for any activity that requires statements, tags, parameters and data bindings. This section describes how to use it as a developer*. Developers should already be familiar with the user guide for the YAML config format first.
 Simple Usage StrInterpolater interpolator = new StrInterpolater(activityDef); String yaml_loc = activityDef.getParams().getOptionalString(&amp;quot;yaml&amp;quot;).orElse(&amp;quot;default&amp;quot;); StmtsDocList sdl = StatementsLoader.</description>
+    </item>
+    
+    <item>
+      <title>YAML Config Errors</title>
+      <link>http://docs.engineblock.io/user-guide/standard_yaml_errors/</link>
+      <pubDate>Tue, 24 Oct 2017 00:00:00 +0000</pubDate>
+      
+      <guid>http://docs.engineblock.io/user-guide/standard_yaml_errors/</guid>
+      <description>This page describes errors that you might see if you have a YAML loading issue, and what you can do to fix them.
+Statement Loading Because the standard YAML format supports a variety of convenient formats for statement definitions, it can sometimes be difficult to know what the user intended to do specifically. The following is a brief description of how YAML statements are loaded, and can help explain why some of the errors below may occur.</description>
     </item>
     
     <item>
@@ -172,6 +182,16 @@ For more basic setup and sequencing needs, you can achive a fair degree of flexi
     </item>
     
     <item>
+      <title>Contributing</title>
+      <link>http://docs.engineblock.io/dev-guide/contributing/</link>
+      <pubDate>Fri, 19 May 2017 22:09:53 +0000</pubDate>
+      
+      <guid>http://docs.engineblock.io/dev-guide/contributing/</guid>
+      <description>Conduct It&amp;rsquo;s simple really. Everything in the Open Code of Conduct applies here. If, after reading that, you are unclear, then please pick another project to work on. The maintainers will not hesitate to enforce a code of conduct.
+License EngineBlock is licensed under the Apache License, version 2.0. If you wish to contribute your code to this project, you must be willing to use this license. All code contributed here is presumed to be licensed automatically as such.</description>
+    </item>
+    
+    <item>
       <title>Diag ActivityType</title>
       <link>http://docs.engineblock.io/dev-guide/annotated_diag/</link>
       <pubDate>Fri, 19 May 2017 22:09:53 +0000</pubDate>
@@ -180,16 +200,6 @@ For more basic setup and sequencing needs, you can achive a fair degree of flexi
       <description>If you take all the code chunks from this document and concatenate them together, you&amp;rsquo;ll have &amp;lsquo;diag&amp;rsquo;, one of the in-build activity types for EngineBlock.
 First, we annotate our ActivityType implementation, name DiagActivityType, with the @AutoService annotation. This is a simple way to manage your ServiceLoader configurations. For more information, see AutoService.
 @AutoService(ActivityType.class)  DiagActivityType is an ActivityType Let&amp;rsquo;s implement an ActivityType. Actually, let&amp;rsquo;s make it useful for something besides default behavior.</description>
-    </item>
-    
-    <item>
-      <title>Project Structure</title>
-      <link>http://docs.engineblock.io/dev-guide/contributing/</link>
-      <pubDate>Fri, 19 May 2017 22:09:53 +0000</pubDate>
-      
-      <guid>http://docs.engineblock.io/dev-guide/contributing/</guid>
-      <description>Conduct It&amp;rsquo;s simple really. Everything in the Open Code of Conduct applies here. If, after reading that, you are unclear, then please pick another project to work on. The maintainers will not hesitate to enforce a code of conduct.
-License EngineBlock is licensed under the Apache License, version 2.0. If you wish to contribute your code to this project, you must be willing to use this license. All code contributed here is presumed to be licensed automatically as such.</description>
     </item>
     
     <item>

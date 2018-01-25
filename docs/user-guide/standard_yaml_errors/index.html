@@ -9,16 +9,16 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,maximum-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=10" />
-    <title>Ring Tracking - EngineBlock</title>
+    <title>YAML Config Errors - EngineBlock</title>
     <meta name="generator" content="Hugo 0.31" />
 
     
     <meta name="description" content="EngineBlock Docs">
     
-    <link rel="canonical" href="http://docs.engineblock.io/sketches/ring_tracking/">
+    <link rel="canonical" href="http://docs.engineblock.io/user-guide/standard_yaml_errors/">
     
 
-    <meta property="og:url" content="http://docs.engineblock.io/sketches/ring_tracking/">
+    <meta property="og:url" content="http://docs.engineblock.io/user-guide/standard_yaml_errors/">
     <meta property="og:title" content="EngineBlock">
     <meta property="og:image" content="http://docs.engineblock.io/images/engineblock_128.png">
     <meta name="apple-mobile-web-app-title" content="EngineBlock">
@@ -76,13 +76,8 @@
 
     
     
-    <script src="http://docs.engineblock.io//modules/viz/viz.js"></script>
-    
 
     
-    
-    <script src="http://docs.engineblock.io//modules/flowchart/raphael.js"></script>
-    <script src="http://docs.engineblock.io//modules/flowchart/flowchart-latest.js"></script>
     
 
     
@@ -144,7 +139,7 @@
     </div>
     <div class="stretch">
       <div class="title">
-        Ring Tracking
+        YAML Config Errors
       </div>
     </div>
 
@@ -327,11 +322,14 @@
 
 
 
-<a  title="YAML Config Errors" href="http://docs.engineblock.io/user-guide/standard_yaml_errors/">
+<a class="current" title="YAML Config Errors" href="http://docs.engineblock.io/user-guide/standard_yaml_errors/">
 	
 	YAML Config Errors
 </a>
 
+
+<ul id="scrollspy">
+</ul>
 
 
       
@@ -455,175 +453,143 @@
 
 	<article class="article">
 		<div class="wrapper">
-			<h1>Ring Tracking </h1>
+			<h1>YAML Config Errors </h1>
 
 			
 
-<p>This schematic is an attempt to explain a very basic pattern. It really is a
-simple pattern, but it sometimes helps to have visuals to get newer users
-grounded in the concepts.</p>
+<p>This page describes errors that you might see if you have a YAML loading issue, and what
+you can do to fix them.</p>
 
-<h2 id="why-ring-tracking">Why Ring Tracking?</h2>
+<h1 id="statement-loading">Statement Loading</h1>
 
-<p>The tracking mechanisms in EngineBlock serve two purposes:</p>
+<p>Because the standard YAML format supports a variety of convenient formats for statement
+definitions, it can sometimes be difficult to know what the user intended to do specifically.
+The following is a brief description of how YAML statements are loaded, and can help explain
+why some of the errors below may occur.</p>
 
-<ol>
-<li>To coordinate cycle number dispatch between collaborating activities.</li>
-<li>To coordinate cycle result values between enhanced activities that know how to use them, or for intermediate cycle number filters that scrutinize the result codes provided by an upstream activity.</li>
-</ol>
+<h2 id="yaml-statement-forms">YAML Statement Forms</h2>
 
-<p>Since both of these need to sometimes support multiple values being dispatched
-per iteration, the existing concurrent primitives like blocking queues, etc.
-don&rsquo;t suffice. We need to allow upstream activities to mark result codes without
-serial blocking when possible, and we need to let downstream activities consume
-values with as little blocking as possible.</p>
+<h3 id="a-single-statement">a single statement</h3>
 
-<p>That said, the goals are generally to avoid locks and use atomics where
-possible, falling back to locking modes only where absolutely necessary. Ring
-Tracking is a basic ring-buffer approach that allows for the marking and reading
-of tracking data between two collaborating activities.</p>
+<p>If the statement value is a single string, it is taken as the only statement in the block:</p>
 
-<p>Ring Tracking</p>
+<pre><code>statements: my only statement
+</code></pre>
 
+<h3 id="a-list-of-statements">a list of statements</h3>
 
+<p>If the statement value is a list of strings, then each one is taken as a statement, and default
+statement naming occurs with names in the form <code>stmt+index</code>, starting with index 1, within the block.</p>
 
-<div align="center" class="viz-text"><pre>
-digraph ringtracking {
- node[fontsize=10,shape=circle];
- 
- subgraph buffer {
-  title=&#34;buffer&#34;; label=&#34;buffer&#34;; labeljust=&#34;l&#34;; labelloc=&#34;top&#34;;
-  comment=&#34;foo&#34;;
-  ranksep=0.1; rank=same; edge[color=&#34;blue&#34;]; node[color=&#34;blue&#34;; fontcolor=&#34;blue&#34;;];
-  legend0[shape=&#34;none&#34;; label=&#34;bufferpos&#34;] legend0-&gt;0[arrowhead=&#34;none&#34;;style=&#34;dotted&#34;];
-  0-&gt;1-&gt;2-&gt;3-&gt;4-&gt;5-&gt;6-&gt;0
- }
- subgraph cycle {
-  title=&#34;cycle&#34;;
-  ranksep=0.1;rank=same;edge[color=&#34;orange&#34;];node[color=&#34;orange&#34;;fontcolor=&#34;orange&#34;;];
-  legend1[shape=&#34;none&#34;; label=&#34;cyclenum&#34;;]; legend1-&gt;18[arrowhead=&#34;none&#34;;style=&#34;dotted&#34;]
-  18[label=&#34;...&#34;] 26[label=&#34;...&#34;] 19[label=&#34;-1&#34;]
-  20[tooltip=&#34;pending&#34;,color=&#34;black&#34;,fontcolor=&#34;black&#34;]
-  25[tooltip=&#34;marking&#34;,color=&#34;black&#34;,fontcolor=&#34;black&#34;]
-  18-&gt;19-&gt;20-&gt;21-&gt;22-&gt;23-&gt;24-&gt;25-&gt;26
- }
- subgraph values {
-  ranksep=0.1; rank=same; node[color=&#34;yellow&#34;,shape=&#34;circle&#34;]; edge[color=&#34;yellow&#34;];
-  node[label=&#34;0&#34;] v1[label=&#34;0&#34;] v2[label=&#34;1&#34;] v3[label=&#34;101&#34;] v4 v5 v6
-  v7[label=&#34;3&#34;]
-  edge[arrowhead=&#34;none&#34;] v1-&gt;v2-&gt;v3-&gt;v4-&gt;v5-&gt;v6-&gt;v7
-  
- }
+<pre><code>statements:
+ - first statement
+ - second statement
+</code></pre>
 
- subgraph pointers {
-  node[shape=&#34;box&#34;,rank=same] edge[arrowhead=&#34;none&#34;]
-  pending-&gt;1 marking-&gt;6
- }
- 
- subgraph links {
-  19-&gt;v1 20-&gt;v2 21-&gt;v3 22-&gt;v4 23-&gt;v5 24-&gt;v6 25-&gt;v7
-  0-&gt;19 1-&gt;20 2-&gt;21 3-&gt;22 4-&gt;23 5-&gt;24 6-&gt;25
- }
+<h3 id="a-map-of-statements-by-name">a map of statements by name</h3>
 
-}
-</pre></div>
-<script type="text/javascript" src="http://docs.engineblock.io/modules/viz/inithook-viz.js"></script>
+<p>If the statement value is a map, then each key-value entry is taken as a name-statement tuple:</p>
 
+<pre><code>statements:
+ s1: first statement
+ s2: second statement
+</code></pre>
 
-<p><font color="blue">
-The bufferpos level shows the actual offset within the cycle
-result buffer, in blue. In this example, the buffer can only hold eight
-positions. The buffer logically wraps back around.
-</font></p>
+<h3 id="a-list-of-statement-config-maps">a list of statement config maps</h3>
 
-<p><font color="orange"> The cyclenum level shows the buffer position translated to
-a sub interval of a larger cycle range. The cycle range could be any positive
-interval within the bounds of 0 and Long.MAX_VALUE. The cycle positions do not
-wrap as the buffer does, but each active cycle position corresponds to one
-buffer position. </font></p>
+<p>Finally, if the statement value is a list of maps, each entry is taken as a statement configuration map,
+having all the flexibility of the other standard YAML levels, but with a few caveats around
+reserved property names. For details on how this works, see the standard yaml documentation.</p>
 
-<p>The pending and marking pointers show the current position of the next read and
-write, respectively. The number of available cycles to dispatch atomically is
-equal to the difference between the marking position and the pending position.
-When marking==pending, no cycles are available.</p>
+<pre><code>statements:
+ - stmt: first statement
+   name: mystmtname
+ - a-name: second statement
+</code></pre>
 
-<p>The pending and marking positions are tracked in terms of cycles, not buffer
-position. All buffer positions derived from the cycle number using buffer size
-modulo. Still, the important invariants are enforced on the cycle level,
-preventing andy under or over ranging on the buffer.</p>
+<p>It is in the last example that most errors can occur, due to the need to recognize reserved property names
+while also allowing for the name-statement tuple form as in the &lsquo;map of statements by name&rsquo; example above.
+In this mode, the first non-reserved property name is taken as the name, and the associated value as the
+statement. All other non-reserved property names are taken as parameters as if they were put into a <code>params</code>
+block.</p>
 
-<h3 id="marking-cycle-values">Marking Cycle Values</h3>
+<h1 id="exception-glossary">Exception Glossary</h1>
 
+<h2 id="undefined-name-statement-tuple">Undefined Name-Statement Tuple</h2>
 
+<p>This exception is thrown when the statement body is not found in a statement definition
+in any of the supported formats. For example, the following block will cause an error:</p>
 
-<div align="center" class="flowchart-text"><pre>
-st=&gt;start: Start
-rangecheck=&gt;subroutine: rangecheck
-awaitmarkable=&gt;subroutine: await
- markable
-windowfull=&gt;condition: Window Full?
-docas=&gt;subroutine: calculate &amp; 
- apply CAS
-casapplied=&gt;condition: CAS applied?
-signalreadable=&gt;subroutine: Notify
- readable
-en=&gt;end: End
+<pre><code>statements:
+ - name: statement-foo
+   params:
+    aparam: avalue
+</code></pre>
 
+<p>This is because <code>name</code> and <code>params</code> are reserved property names &ndash; removed from the list of name-value
+pairs before free parameters are read. If the statement is not defined before free parameters
+are read, then the first free parameter is taken as the name and statement in <code>name: statement</code> form.</p>
 
-st-&gt;windowfull
-windowfull(yes,right)-&gt;awaitmarkable
-awaitmarkable(right)-&gt;windowfull
-windowfull(no)-&gt;docas-&gt;casapplied(yes)-&gt;signalreadable-&gt;en
-casapplied(no)-&gt;windowfull
-</pre></div>
+<p>To correct this error, supply a statement property in the map, or simply replace the <code>name: statement-foo</code> entry
+with a <code>statement-foo: statement body</code> at the top of the map:</p>
 
+<p>Either of these will work:</p>
 
-<script type="text/javascript" src="http://docs.engineblock.io/modules/flowchart/inithook-flowchart.js"></script>
+<pre><code>statements:
+ - name: statement-foo
+   stmt: statement body
+   params:
+    aparam: avalue
 
+statements:
+ - statement-foo: statement body
+   params:
+    aparam: avalue
+</code></pre>
 
-<p>When a reader requests a number of cycle values, it first checks whether or not
-there is a sufficient range between the current pending and marking values. If
-so, it calculates the CAS operation needed in order atomically move the pending
-pointer up by the size of the request (stride). If this operation succeeds, then
-a cycle segment is created from the marked values in the range between the
-previous pending and marking pointers <em>after</em> the pending value is updated.
-Because this could possibly create a buffering race condition, the buffer is
-required to be large enough to prevent a full wrap-around between the data read
-by pending threads and the marker data written by marking threads.</p>
+<p>In both cases, it is clear to the loader where the statement body should come from, and what (if any) explicit
+naming should occur.</p>
 
-<p>When the read operation succeeds, markers who were waiting on a &ldquo;can write&rdquo;
-semaphore are signalled by the reader thread before returning to the caller.</p>
+<h2 id="redefined-name-statement-tuple">Redefined Name-Statement Tuple</h2>
 
-<p>If this read operation fails, the check is repeated and the process attempted
-again. This process repeats until either advancing the pending marker succeeds, or the
-precondition check fails. If the precondition check fails, (there are not enough
-data to fulfill the request) then the reader blocks on a semaphore awaiting a
-notification from a marker.</p>
+<p>This exception is thrown when the statement name is defined in multiple ways. This is an explicit exception
+to avoid possible ambiguity about which value the user intended. For example, the following statements
+definition will cause an error:</p>
 
-<p>When a marker attempts to mark a cycle, it checks whether or not the pending
-position is advanced sufficiently to allow the marker window to shift. If so,
-the values are marked and the window shifted. Readers awaiting a &ldquo;can read&rdquo;
-signal are also notified. If not, the marker enters a similar retry cycle to
-that of the reader, blocking on a &ldquo;can write&rdquo; condition.</p>
+<pre><code>statements:
+ - name: name1
+   name2: statement body
+</code></pre>
 
-<p>As a sanity check condition, all values are initialized to -1 when the marker window moves over them. Values behind the marker window are still active for reads. This means that the buffer size is required to be at least 2x the marker window size in order to avoid a wrap-around race condition. Further, the marker window must be at least a large as the largest stride that may be requested.</p>
+<p>This is an error because the statement is not defined before free parameters are read, and the <code>name: statement</code>
+form includes a second definition for the statement name. In order to correct this, simply remove the separate
+<code>name</code> entry, or use the <code>stmt</code> property to explicitly set the statement body. Either of these will work:</p>
 
-<h3 id="invariants">Invariants</h3>
+<pre><code>statements:
+ - name2: statement body
 
-<ol>
-<li>buffer size &gt; window size * 2</li>
-<li>marker position &lt;= pending position + window size</li>
-<li>0 &lt;= min &lt; max &lt;= Long.MAX_VALUE</li>
-<li>min &lt;= pending &lt;= marking &lt;= max</li>
-</ol>
+statements:
+ - name: name1
+   stmt: statement body
+</code></pre>
 
-<h3 id="errors">Errors</h3>
+<p>In both cases, there is only one name defined for the statement according to the supported formats.</p>
 
-<ol>
-<li>Requesting a stride larger than the window size</li>
-<li>Marking a cycle prior to pending</li>
-<li>Unable to CAS from -1 to cycle value</li>
-</ol>
+<h2 id="yaml-parsing-error">YAML Parsing Error</h2>
+
+<p>This exception is thrown when the YAML format is not recognizable by the YAML parser. If you are not
+working from examples that are known to load cleanly, then please review your document for correctness
+according to the [YAML Specification]().</p>
+
+<p>If you are sure that the YAML should load, then please <a href="https://github.com/engineblock/engineblock/issues/new?labels=bug">submit a bug report</a>
+ with details on the type of YAML file you are trying to load.</p>
+
+<h2 id="yaml-construction-error">YAML Construction Error</h2>
+
+<p>This exception is thrown when the YAML was loaded, but the configuration object was not able to be constructed
+from the in-memory YAML document. If this error occurs, it may be a bug in the YAML loader implementation.
+Please <a href="https://github.com/engineblock/engineblock/issues/new?labels=bug">submit a bug report</a> with details
+on the type of YAML file you are trying to load.</p>
 
 
 			<aside class="copyright" role="note">
@@ -642,7 +608,7 @@ that of the reader, blocking on a &ldquo;can write&rdquo; condition.</p>
 <nav class="pagination" aria-label="Footer">
   <div class="previous">
   
-      <a href="http://docs.engineblock.io/sketches/tracking/" title="Cycle Tracking">
+      <a href="http://docs.engineblock.io/dev-guide/standard_yam_devl/" title="YAML Config API">
         <span class="direction">
           Previous
         </span>
@@ -652,7 +618,7 @@ that of the reader, blocking on a &ldquo;can write&rdquo; condition.</p>
           </div>
           <div class="stretch">
             <div class="title">
-              Cycle Tracking
+              YAML Config API
             </div>
           </div>
         </div>
@@ -662,14 +628,14 @@ that of the reader, blocking on a &ldquo;can write&rdquo; condition.</p>
 
   <div class="next">
   
-      <a href="http://docs.engineblock.io/sketches/scripting_histograms/" title="Scripting Histograms">
+      <a href="http://docs.engineblock.io/sketches/activity_design_template/" title="Activity Design Template">
         <span class="direction">
           Next
         </span>
         <div class="page">
           <div class="stretch">
             <div class="title">
-              Scripting Histograms
+              Activity Design Template
             </div>
           </div>
           <div class="button button-next" role="button" aria-label="Next">
