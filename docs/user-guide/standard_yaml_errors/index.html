@@ -460,62 +460,9 @@
 <p>This page describes errors that you might see if you have a YAML loading issue, and what
 you can do to fix them.</p>
 
-<h1 id="statement-loading">Statement Loading</h1>
+<h2 id="diagnostic-guide">Diagnostic Guide</h2>
 
-<p>Because the standard YAML format supports a variety of convenient formats for statement
-definitions, it can sometimes be difficult to know what the user intended to do specifically.
-The following is a brief description of how YAML statements are loaded, and can help explain
-why some of the errors below may occur.</p>
-
-<h2 id="yaml-statement-forms">YAML Statement Forms</h2>
-
-<h3 id="a-single-statement">a single statement</h3>
-
-<p>If the statement value is a single string, it is taken as the only statement in the block:</p>
-
-<pre><code>statements: my only statement
-</code></pre>
-
-<h3 id="a-list-of-statements">a list of statements</h3>
-
-<p>If the statement value is a list of strings, then each one is taken as a statement, and default
-statement naming occurs with names in the form <code>stmt+index</code>, starting with index 1, within the block.</p>
-
-<pre><code>statements:
- - first statement
- - second statement
-</code></pre>
-
-<h3 id="a-map-of-statements-by-name">a map of statements by name</h3>
-
-<p>If the statement value is a map, then each key-value entry is taken as a name-statement tuple:</p>
-
-<pre><code>statements:
- s1: first statement
- s2: second statement
-</code></pre>
-
-<h3 id="a-list-of-statement-config-maps">a list of statement config maps</h3>
-
-<p>Finally, if the statement value is a list of maps, each entry is taken as a statement configuration map,
-having all the flexibility of the other standard YAML levels, but with a few caveats around
-reserved property names. For details on how this works, see the standard yaml documentation.</p>
-
-<pre><code>statements:
- - stmt: first statement
-   name: mystmtname
- - a-name: second statement
-</code></pre>
-
-<p>It is in the last example that most errors can occur, due to the need to recognize reserved property names
-while also allowing for the name-statement tuple form as in the &lsquo;map of statements by name&rsquo; example above.
-In this mode, the first non-reserved property name is taken as the name, and the associated value as the
-statement. All other non-reserved property names are taken as parameters as if they were put into a <code>params</code>
-block.</p>
-
-<h1 id="exception-glossary">Exception Glossary</h1>
-
-<h2 id="undefined-name-statement-tuple">Undefined Name-Statement Tuple</h2>
+<h3 id="undefined-name-statement-tuple">Undefined Name-Statement Tuple</h3>
 
 <p>This exception is thrown when the statement body is not found in a statement definition
 in any of the supported formats. For example, the following block will cause an error:</p>
@@ -550,7 +497,7 @@ statements:
 <p>In both cases, it is clear to the loader where the statement body should come from, and what (if any) explicit
 naming should occur.</p>
 
-<h2 id="redefined-name-statement-tuple">Redefined Name-Statement Tuple</h2>
+<h3 id="redefined-name-statement-tuple">Redefined Name-Statement Tuple</h3>
 
 <p>This exception is thrown when the statement name is defined in multiple ways. This is an explicit exception
 to avoid possible ambiguity about which value the user intended. For example, the following statements
@@ -575,7 +522,7 @@ statements:
 
 <p>In both cases, there is only one name defined for the statement according to the supported formats.</p>
 
-<h2 id="yaml-parsing-error">YAML Parsing Error</h2>
+<h3 id="yaml-parsing-error">YAML Parsing Error</h3>
 
 <p>This exception is thrown when the YAML format is not recognizable by the YAML parser. If you are not
 working from examples that are known to load cleanly, then please review your document for correctness
@@ -584,7 +531,7 @@ according to the [YAML Specification]().</p>
 <p>If you are sure that the YAML should load, then please <a href="https://github.com/engineblock/engineblock/issues/new?labels=bug">submit a bug report</a>
  with details on the type of YAML file you are trying to load.</p>
 
-<h2 id="yaml-construction-error">YAML Construction Error</h2>
+<h3 id="yaml-construction-error">YAML Construction Error</h3>
 
 <p>This exception is thrown when the YAML was loaded, but the configuration object was not able to be constructed
 from the in-memory YAML document. If this error occurs, it may be a bug in the YAML loader implementation.

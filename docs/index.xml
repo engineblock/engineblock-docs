@@ -69,7 +69,8 @@ Simple Usage StrInterpolater interpolator = new StrInterpolater(activityDef); St
       
       <guid>http://docs.engineblock.io/user-guide/standard_yaml_errors/</guid>
       <description>This page describes errors that you might see if you have a YAML loading issue, and what you can do to fix them.
-Statement Loading Because the standard YAML format supports a variety of convenient formats for statement definitions, it can sometimes be difficult to know what the user intended to do specifically. The following is a brief description of how YAML statements are loaded, and can help explain why some of the errors below may occur.</description>
+Diagnostic Guide Undefined Name-Statement Tuple This exception is thrown when the statement body is not found in a statement definition in any of the supported formats. For example, the following block will cause an error:
+statements: - name: statement-foo params: aparam: avalue  This is because name and params are reserved property names &amp;ndash; removed from the list of name-value pairs before free parameters are read.</description>
     </item>
     
     <item>
