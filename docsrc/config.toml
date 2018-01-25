@@ -20,7 +20,7 @@ canonifyurls = true
 	favicon = "/images/engineblock_32.png"
 
 	# permalink = "#"
-
+	
 [params.palette]
     primary = "grey"
     accent  = "teal"

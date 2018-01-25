@@ -1,11 +1,11 @@
 ---
 date: 2017-05-19T22:09:53
-title: Project Structure
+title: Contributing
 weight: 32
 menu:
   main:
     parent: Dev Guide
-    identifier: Project Structure
+    identifier: Contributing
     weight: 12
 ---
 
