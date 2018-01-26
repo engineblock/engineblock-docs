@@ -387,33 +387,40 @@ statements:
     tag1: tvalue1
 ```
 
-In the example above, `parm1: pvalue` is known as a free parameter, and is
-simply short-hand for setting values in the params map for the statement.
-
 In this case, you must avoid using both the name property and the initial
 **`<name>: <statement>`** together. Doing so will cause an error to be thrown.
 Further, it is not possible to detect when the user has combined both the
 **`<name>: <statement>`** form and the **`stmt: <statement>`**, so use caution
 when mixing forms.
 
-It is indeed possible to use any of the three list/map statement forms within
-each entry of a statement list:
+As explained above, `parm1: pvalue` is as a *free parameter*, and is
+simply short-hand for setting values in the params map for the statement.
+
+### Per-Statement Format
+
+It is indeed possible to use any of the three statement formats within
+each entry of a statement sequence:
 
 ```yaml
 statements:
  - first statement body
  - second: second statement body
- - third: third statement body
+ - name: statement3
+   stmt: third statement body
+ - forth: fourth statement body
    freeparam1: freeparamvalue1
    tags:
     type: preload
- - name: statement4
-   stmt: fourth statement body
 ```
 
-The above is valid EngineBlock YAML, although a reader would need to know about
-the rules explained above in order to really make sense of it. For most cases,
-it is best to follow one format convention.
+Specifically, the first statement is a simple statement body, the second is a
+named statement (via free param `<name>: statement` form), the third is a
+statement config map, and the fourth is a combination of the previous two.
+
+The above is valid EngineBlock YAML, although a reader would need
+to know about the rules explained above in order to really make sense of it. For
+most cases, it is best to follow one format convention, but there is flexibility
+for overrides and naming when you need it.
 
 ## Multi-Docs
 
