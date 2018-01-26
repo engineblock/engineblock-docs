@@ -71,7 +71,7 @@ These activity parameters are understood by all activities:
 
 **targetrate** - The number of ops per second to limit the workload to.
 
-**linkinput** - The name of another activity, whois input will govern the speed
+**linkinput** - The name of another activity, who's input will govern the speed
                 of an activity.
 
 ### Activity Modifiers

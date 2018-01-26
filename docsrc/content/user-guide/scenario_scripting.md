@@ -6,7 +6,7 @@ menu:
   main:
     parent: User Guide
     identifier: scripting
-    weight: 22
+    weight: 25
 ---
 
 ## Motive
@@ -87,7 +87,7 @@ All histograms reset on snapshot, automatically keeping all data until you
 report the snapshot or access the snapshot via scripting. (see below).
 
 The metric types that use histograms have been replaced with nicer version for
-scripting. You dont' have to do anything differently in your reporter config to
+scripting. You don't have to do anything differently in your reporter config to
 use them. However, if you need to use the enhanced versions in your local
 scripting, you can. This means that Timer and Histogram types are enchanced. If
 you do not use the scripting extensions, then you will automatically get the
@@ -128,10 +128,9 @@ stop all activities.
 
 ## Strategies
 
-You can use EngineBlock in the classic form with _activity
-&lt;param&gt;=&lt;value&gt; ..._ command line syntax. There are reasons,
-however, that you will sometimes want customize and modify your scripts
-directly, such as:
+You can use EngineBlock in the classic form with `run type=<type> param=value
+...` command line syntax. There are reasons, however, that you will sometimes
+want customize and modify your scripts directly, such as:
 
 - permute test variables to cover many sub-conditions in a test
 - automatically adjust load factors to identify the nominal capacity of a system
@@ -140,9 +139,10 @@ directly, such as:
 
 ## Script Input & Output
 
-Internal buffers are kept for _stdin_, _stdout_, and _stderr_. These are logged
-to the logfile upon script completion, with markers showing the timestamp and
-file descriptor (stdin, stdout, or stderr) that each line was recorded from.
+Internal buffers are kept for _stdin_, _stdout_, and _stderr_ for the scenario
+script execution. These are logged to the logfile upon script completion, with
+markers showing the timestamp and file descriptor (stdin, stdout, or stderr)
+that each line was recorded from.
 
 ## External Docs
 - [Java Platform, Standard Edition Nashorn User's Guide (Java 8)](https://docs.oracle.com/javase/8/docs/technotes/guides/scripting/nashorn/api.html)

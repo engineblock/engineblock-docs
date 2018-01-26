@@ -50,7 +50,7 @@ Pause the scenario script for this many milliseconds. This is useful for control
 
 ### script &lt;script file&gt;
 
-Add the contents of the named file to the script buffer.
+Add the contents of the named file to the scenario script buffer.
 
 # An example CLI script
 
