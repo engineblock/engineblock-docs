@@ -825,32 +825,39 @@ followed. An example, which is equivalent to the above:</p>
     tag1: tvalue1
 </code></pre>
 
-<p>In the example above, <code>parm1: pvalue</code> is known as a free parameter, and is
-simply short-hand for setting values in the params map for the statement.</p>
-
 <p>In this case, you must avoid using both the name property and the initial
 <strong><code>&lt;name&gt;: &lt;statement&gt;</code></strong> together. Doing so will cause an error to be thrown.
 Further, it is not possible to detect when the user has combined both the
 <strong><code>&lt;name&gt;: &lt;statement&gt;</code></strong> form and the <strong><code>stmt: &lt;statement&gt;</code></strong>, so use caution
 when mixing forms.</p>
 
-<p>It is indeed possible to use any of the three list/map statement forms within
-each entry of a statement list:</p>
+<p>As explained above, <code>parm1: pvalue</code> is as a <em>free parameter</em>, and is
+simply short-hand for setting values in the params map for the statement.</p>
+
+<h3 id="per-statement-format">Per-Statement Format</h3>
+
+<p>It is indeed possible to use any of the three statement formats within
+each entry of a statement sequence:</p>
 
 <pre><code class="language-yaml">statements:
  - first statement body
  - second: second statement body
- - third: third statement body
+ - name: statement3
+   stmt: third statement body
+ - forth: fourth statement body
    freeparam1: freeparamvalue1
    tags:
     type: preload
- - name: statement4
-   stmt: fourth statement body
 </code></pre>
 
-<p>The above is valid EngineBlock YAML, although a reader would need to know about
-the rules explained above in order to really make sense of it. For most cases,
-it is best to follow one format convention.</p>
+<p>Specifically, the first statement is a simple statement body, the second is a
+named statement (via free param <code>&lt;name&gt;: statement</code> form), the third is a
+statement config map, and the fourth is a combination of the previous two.</p>
+
+<p>The above is valid EngineBlock YAML, although a reader would need
+to know about the rules explained above in order to really make sense of it. For
+most cases, it is best to follow one format convention, but there is flexibility
+for overrides and naming when you need it.</p>
 
 <h2 id="multi-docs">Multi-Docs</h2>
 
