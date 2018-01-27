@@ -67,3 +67,22 @@ The phase timer starts just before the cycle action is called within each thread
 and ends immediately after it returns. It also measures the "full cycle" of a
 single cycle when multi-phase actions are not part of an activity.
 
+## Metrics Visually
+
+### Basic Activity Types
+
+For single-phase (basic) activity types, the following diagram describes
+accurately the scope of the core metrics.  While the phases timer *is* active in
+this scenario, it is effectively the same as the cycle timer, so they are
+combined in the diagram for the sake of simplicity.
+
+<img src="/diagrams/eb_iterates_cycles.svg" width="50%" align="center"></img>
+
+### Multi-Phase Activity Types
+
+The picture get slightly more detailed for actions that can support multiple phases.
+The initial phase is called as runCycle(), and additional phases are called as runPhase().
+
+<img src="/diagrams/eb_iterates_phases.svg" width="50%" align="center"></img>
+
+
