@@ -9,16 +9,16 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,maximum-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=10" />
-    <title>Building ActivityTypes - EngineBlock</title>
+    <title>Standard Metrics - EngineBlock</title>
     <meta name="generator" content="Hugo 0.31" />
 
     
     <meta name="description" content="EngineBlock Docs">
     
-    <link rel="canonical" href="http://docs.engineblock.io/dev-guide/building_activities/">
+    <link rel="canonical" href="http://docs.engineblock.io/user-guide/standard_metrics/">
     
 
-    <meta property="og:url" content="http://docs.engineblock.io/dev-guide/building_activities/">
+    <meta property="og:url" content="http://docs.engineblock.io/user-guide/standard_metrics/">
     <meta property="og:title" content="EngineBlock">
     <meta property="og:image" content="http://docs.engineblock.io/images/engineblock_128.png">
     <meta name="apple-mobile-web-app-title" content="EngineBlock">
@@ -139,7 +139,7 @@
     </div>
     <div class="stretch">
       <div class="title">
-        Building ActivityTypes
+        Standard Metrics
       </div>
     </div>
 
@@ -322,11 +322,14 @@
 
 
 
-<a  title="Standard Metrics" href="http://docs.engineblock.io/user-guide/standard_metrics/">
+<a class="current" title="Standard Metrics" href="http://docs.engineblock.io/user-guide/standard_metrics/">
 	
 	Standard Metrics
 </a>
 
+
+<ul id="scrollspy">
+</ul>
 
 
       
@@ -372,14 +375,11 @@
 
 
 
-<a class="current" title="Building ActivityTypes" href="http://docs.engineblock.io/dev-guide/building_activities/">
+<a  title="Building ActivityTypes" href="http://docs.engineblock.io/dev-guide/building_activities/">
 	
 	Building ActivityTypes
 </a>
 
-
-<ul id="scrollspy">
-</ul>
 
 
       
@@ -466,63 +466,87 @@
 
 	<article class="article">
 		<div class="wrapper">
-			<h1>Building ActivityTypes </h1>
+			<h1>Standard Metrics </h1>
 
 			
 
-<h2 id="requirements">Requirements</h2>
+<p>Engineblock comes with a set of standard metrics that will be part of every
+activity type. Each activity type enhances the metrics available by adding their
+own metrics with the engineblock APIs. This section explains what the standard
+metrics are, and how to interpret them.</p>
+
+<h3 id="read-input">read-input</h3>
+
+<p>Within engineblock, a data stream provider called an <em>Input</em> is responsible for
+providing the actual cycle number that will be used by consumer threads. Because
+different <em>Input</em> implementations may perform differently, a separate metric is
+provided to track the performance in terms of client-side overhead. The
+<strong>read-input</strong> metric is a timer that only measured the time it takes
+for a given activity thread to read the input value, nothing more.</p>
+
+<h3 id="strides">strides</h3>
+
+<p>A stride represents the work-unit for a thread within engineblock. It allows
+a set of cycles to be logically grouped together for purposes of optimization &ndash;
+or in some cases &ndash; to simulate realistic client-side behavior over
+multiple operations. The stride is the number of cycles that will be allocated
+to each thread before it starts iterating on them.</p>
+
+<p>The <strong>strides</strong> timer measures the time each stride takes, including all
+cycles within the stride. It starts measuring time before the cycle starts,
+and stops measuring after the last cycle in the stride has run.</p>
+
+<h3 id="cycles">cycles</h3>
+
+<p>Within engineblock, each logical iteration of a statement is handled within a
+distinct cycle. A cycle represents an iteration of a workload. This corresponds
+to a single operation executed according to some statement definition.</p>
+
+<p>The <strong>cycles</strong> metric is a timer that starts counting at the start of a cycle,
+before any specific activity behavior has control. It stops timing once the
+logical cycle is complete. This includes and additional phases that are executed
+by multi-phase actions.</p>
+
+<h3 id="phases">phases</h3>
+
+<p>Some activity types can support multiple phases. Each time a cycle is executed
+within an activity thread, it executes at least one phase. For activity types
+which do not explicitly support multiple phases per action, the cycle execution
+is still counted as a phase. They measure nearly the same thing in that case.</p>
+
+<p>While it is up to each activity type to determine what a phase is good for,
+some common reasons to use phases include:</p>
 
 <ul>
-<li>Java 8</li>
-<li>Maven</li>
+<li>async eventing</li>
+<li>multi-page operations</li>
+<li>long-running state management</li>
 </ul>
 
-<h2 id="building-new-activity-types">Building new Activity Types</h2>
+<p>Refer to the respective activity type documentation to see what phases mean for
+your activity.</p>
 
-<ol>
-<li>Add the engineblock API to your project via Maven:</li>
-</ol>
+<p>The phase timer starts just before the cycle action is called within each thread,
+and ends immediately after it returns. It also measures the &ldquo;full cycle&rdquo; of a
+single cycle when multi-phase actions are not part of an activity.</p>
 
-<pre><code>&lt;dependency&gt;
-  &lt;groupId&gt;io.engineblock&lt;/groupId&gt;
-  &lt;artifactId&gt;eb-api&lt;/artifactId&gt;
-  &lt;version&gt;1.0.17&lt;/version&gt;
-  &lt;type&gt;pom&lt;/type&gt;
-&lt;/dependency&gt;
-</code></pre>
+<h2 id="metrics-visually">Metrics Visually</h2>
 
-<ol>
-<li>Implement the ActivityType interface. Use the [Annotated Diag ActivityType] as a reference point as needed.</li>
-<li>Add your new ActivityType implementation to the EngineBlock classpath.</li>
-<li>File Issues against the <a href="http://github.com/engineblock/engineblock/issues">EngineBlock Project</a> for any doc or API enhancements that you need.</li>
-</ol>
+<h3 id="basic-activity-types">Basic Activity Types</h3>
 
-<h2 id="working-directly-on-engineblock">Working directly on engineblock</h2>
+<p>For single-phase (basic) activity types, the following diagram describes
+accurately the scope of the core metrics.  While the phases timer <em>is</em> active in
+this scenario, it is effectively the same as the cycle timer, so they are
+combined in the diagram for the sake of simplicity.</p>
 
-<p>You can download and locally build EngineBlock. Do this if you want contribute
-or otherwise experiment with the EngineBlock code base.</p>
+<p><img src="http://docs.engineblock.io/diagrams/eb_iterates_cycles.svg" width="50%" align="center"></img></p>
 
-<ol>
-<li><p>Get the source:</p>
+<h3 id="multi-phase-activity-types">Multi-Phase Activity Types</h3>
 
-<pre><code>git clone http://github.com/engineblock/engineblock.git
-</code></pre></li>
+<p>The picture get slightly more detailed for actions that can support multiple phases.
+The initial phase is called as runCycle(), and additional phases are called as runPhase().</p>
 
-<li><p>Build and install locally:</p>
-
-<pre><code>pushd engineblock # assumes bash
-mvn clean install
-</code></pre></li>
-</ol>
-
-<p>This will install the engineblock artifacts to your local <em>~/.m2/repository</em>.</p>
-
-<h2 id="using-activitytypes">Using ActivityTypes</h2>
-
-<p>There are a couple ways you can use your new ActivityTypes  with the EB runtime.
-You can mix and match these as needed. The most common way to integrate your
-ActivityTypes with the engineblock core is with Maven, but the details on thi
-will vary by environment.</p>
+<p><img src="http://docs.engineblock.io/diagrams/eb_iterates_phases.svg" width="50%" align="center"></img></p>
 
 
 			<aside class="copyright" role="note">
@@ -541,7 +565,7 @@ will vary by environment.</p>
 <nav class="pagination" aria-label="Footer">
   <div class="previous">
   
-      <a href="http://docs.engineblock.io/dev-guide/activity_internals/" title="Activity Internals">
+      <a href="http://docs.engineblock.io/user-guide/scenario_scripting/" title="Scenario Scripting">
         <span class="direction">
           Previous
         </span>
@@ -551,7 +575,7 @@ will vary by environment.</p>
           </div>
           <div class="stretch">
             <div class="title">
-              Activity Internals
+              Scenario Scripting
             </div>
           </div>
         </div>
@@ -561,14 +585,14 @@ will vary by environment.</p>
 
   <div class="next">
   
-      <a href="http://docs.engineblock.io/user-guide/cli_scripting/" title="CLI Scripting">
+      <a href="http://docs.engineblock.io/user-guide/using_metrics/" title="Using Metrics">
         <span class="direction">
           Next
         </span>
         <div class="page">
           <div class="stretch">
             <div class="title">
-              CLI Scripting
+              Using Metrics
             </div>
           </div>
           <div class="button button-next" role="button" aria-label="Next">

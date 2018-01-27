@@ -8,27 +8,22 @@
   </url>
   
   <url>
-    <loc>http://docs.engineblock.io/user-guide/metrics/</loc>
+    <loc>http://docs.engineblock.io/user-guide/scenario_scripting/</loc>
     <lastmod>2017-05-19T21:52:57+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://docs.engineblock.io/user-guide/scripting/</loc>
+    <loc>http://docs.engineblock.io/user-guide/standard_metrics/</loc>
     <lastmod>2017-05-19T21:52:57+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://docs.engineblock.io/user-guide/standard_yaml/</loc>
-    <lastmod>2017-10-24T00:00:00+00:00</lastmod>
+    <loc>http://docs.engineblock.io/user-guide/using_metrics/</loc>
+    <lastmod>2017-05-19T21:52:57+00:00</lastmod>
   </url>
   
   <url>
     <loc>http://docs.engineblock.io/dev-guide/standard_yam_devl/</loc>
-    <lastmod>2017-10-24T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://docs.engineblock.io/user-guide/standard_yaml_errors/</loc>
     <lastmod>2017-10-24T00:00:00+00:00</lastmod>
   </url>
   
@@ -110,6 +105,16 @@
   <url>
     <loc>http://docs.engineblock.io/historic/internals_slot_assembly/</loc>
     <lastmod>2017-05-19T22:09:53+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://docs.engineblock.io/user-guide/standard_yaml/</loc>
+    <lastmod>2017-10-24T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://docs.engineblock.io/user-guide/standard_yaml_errors/</loc>
+    <lastmod>2017-10-24T00:00:00+00:00</lastmod>
   </url>
   
   <url>

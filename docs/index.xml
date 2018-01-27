@@ -24,32 +24,33 @@ Activity A scenario can have multiple activities. Each activity runs independent
     </item>
     
     <item>
-      <title>Metrics</title>
-      <link>http://docs.engineblock.io/user-guide/metrics/</link>
-      <pubDate>Fri, 19 May 2017 21:52:57 +0000</pubDate>
-      
-      <guid>http://docs.engineblock.io/user-guide/metrics/</guid>
-      <description>Unit of Measure All metrics collected from activities are recorded in nanoseconds and ops per second. All histograms are recorded with 4 digits of precision using HDR histograms.
-Collecting Metrics If you like to have all of your testing data in one place, then you may be interested in reporting your measurements to a monitoring system. For this, EB includes a Metrics Library. Graphite reporting is baked in as the default reporter.</description>
-    </item>
-    
-    <item>
       <title>Scenario Scripting</title>
-      <link>http://docs.engineblock.io/user-guide/scripting/</link>
+      <link>http://docs.engineblock.io/user-guide/scenario_scripting/</link>
       <pubDate>Fri, 19 May 2017 21:52:57 +0000</pubDate>
       
-      <guid>http://docs.engineblock.io/user-guide/scripting/</guid>
+      <guid>http://docs.engineblock.io/user-guide/scenario_scripting/</guid>
       <description>Motive The EngineBlock runtime is a combination of a scripting sandbox and a workload execution machine. This is not accidental. With this particular arrangement, it should be possible to build sophisticated tests across a variety of scenarios. In particular, logic which can observe and react to the system under test can be powerful. With this approach, it becomes possible to break away from the conventional run-interpret-adjust cycle which is all too often done by human hands.</description>
     </item>
     
     <item>
-      <title>YAML Config</title>
-      <link>http://docs.engineblock.io/user-guide/standard_yaml/</link>
-      <pubDate>Tue, 24 Oct 2017 00:00:00 +0000</pubDate>
+      <title>Standard Metrics</title>
+      <link>http://docs.engineblock.io/user-guide/standard_metrics/</link>
+      <pubDate>Fri, 19 May 2017 21:52:57 +0000</pubDate>
       
-      <guid>http://docs.engineblock.io/user-guide/standard_yaml/</guid>
-      <description>In the EngineBlock 2.* and newer versions, a standard YAML configuration format is provided that makes it easy to use for any activity that requires statements, tags, parameters and data bindings. In practice, any useful activity types have needed these. This section describes the standard YAML format and how to use it.
-A valid config file for an activity consists of statements, parameters for those statements, bindings for the data to use with those statements, and tags for selecting statements for an activity.</description>
+      <guid>http://docs.engineblock.io/user-guide/standard_metrics/</guid>
+      <description>Engineblock comes with a set of standard metrics that will be part of every activity type. Each activity type enhances the metrics available by adding their own metrics with the engineblock APIs. This section explains what the standard metrics are, and how to interpret them.
+read-input Within engineblock, a data stream provider called an Input is responsible for providing the actual cycle number that will be used by consumer threads.</description>
+    </item>
+    
+    <item>
+      <title>Using Metrics</title>
+      <link>http://docs.engineblock.io/user-guide/using_metrics/</link>
+      <pubDate>Fri, 19 May 2017 21:52:57 +0000</pubDate>
+      
+      <guid>http://docs.engineblock.io/user-guide/using_metrics/</guid>
+      <description>Unit of Measure All metrics collected from activities are recorded in nanoseconds and ops per second. All histograms are recorded with 4 digits of precision using HDR histograms.
+Metric Outputs Metrics from a scenario run can be gathered in multiple ways:
+ In the log output In CSV files In HDR histogram logs In Histogram Stats logs (CSV) To a monitoring system via graphite  These forms may be combined and used in combination.</description>
     </item>
     
     <item>
@@ -60,17 +61,6 @@ A valid config file for an activity consists of statements, parameters for those
       <guid>http://docs.engineblock.io/dev-guide/standard_yam_devl/</guid>
       <description>In the EB 2.* and newer versions, a standard YAML configuration format is provided that makes it easy to use for any activity that requires statements, tags, parameters and data bindings. This section describes how to use it as a developer*. Developers should already be familiar with the user guide for the YAML config format first.
 Simple Usage StrInterpolater interpolator = new StrInterpolater(activityDef); String yaml_loc = activityDef.getParams().getOptionalString(&amp;quot;yaml&amp;quot;).orElse(&amp;quot;default&amp;quot;); StmtsDocList sdl = StatementsLoader.</description>
-    </item>
-    
-    <item>
-      <title>YAML Config Errors</title>
-      <link>http://docs.engineblock.io/user-guide/standard_yaml_errors/</link>
-      <pubDate>Tue, 24 Oct 2017 00:00:00 +0000</pubDate>
-      
-      <guid>http://docs.engineblock.io/user-guide/standard_yaml_errors/</guid>
-      <description>This page describes errors that you might see if you have a YAML loading issue, and what you can do to fix them.
-Diagnostic Guide Undefined Name-Statement Tuple This exception is thrown when the statement body is not found in a statement definition in any of the supported formats. For example, the following block will cause an error:
-statements: - name: statement-foo params: aparam: avalue  This is because name and params are reserved property names &amp;ndash; removed from the list of name-value pairs before free parameters are read.</description>
     </item>
     
     <item>
@@ -231,6 +221,25 @@ Firstly, there is a parent for each of the modules. In Maven parlance, you can t
       <guid>http://docs.engineblock.io/historic/internals_slot_assembly/</guid>
       <description>This is superceded with recent changes and needs to be rewritten It is currently inaccurate and will be rewritten shortly Understanding Slot Assembly If you are building new ActionType implementations for EngineBlock, it can help to understand the creational patterns used for slot assembly.
 What is Slot Assembly? Slot assembly in this context simply refers the logic that determines how to assemble a motor, input, and action instance together for a numbered slot within an activity.</description>
+    </item>
+    
+    <item>
+      <title>YAML Config</title>
+      <link>http://docs.engineblock.io/user-guide/standard_yaml/</link>
+      <pubDate>Tue, 24 Oct 2017 00:00:00 +0000</pubDate>
+      
+      <guid>http://docs.engineblock.io/user-guide/standard_yaml/</guid>
+      <description>In the EngineBlock 2.* and newer versions, a standard YAML configuration format is provided that makes it easy to use for any activity that requires statements, tags, parameters and data bindings. In practice, any useful activity types have needed these. This section describes the standard YAML format and how to use it.
+A valid config file for an activity consists of statements, parameters for those statements, bindings for the data to use with those statements, and tags for selecting statements for an activity.</description>
+    </item>
+    
+    <item>
+      <title>YAML Config Errors</title>
+      <link>http://docs.engineblock.io/user-guide/standard_yaml_errors/</link>
+      <pubDate>Tue, 24 Oct 2017 00:00:00 +0000</pubDate>
+      
+      <guid>http://docs.engineblock.io/user-guide/standard_yaml_errors/</guid>
+      <description></description>
     </item>
     
     <item>

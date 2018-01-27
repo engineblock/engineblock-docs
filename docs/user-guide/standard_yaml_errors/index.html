@@ -283,32 +283,6 @@
 
 
 
-<a  title="Metrics" href="http://docs.engineblock.io/user-guide/metrics/">
-	
-	Metrics
-</a>
-
-
-
-      
-        
-        
-
-
-
-<a  title="Scenario Scripting" href="http://docs.engineblock.io/user-guide/scripting/">
-	
-	Scenario Scripting
-</a>
-
-
-
-      
-        
-        
-
-
-
 <a  title="YAML Config" href="http://docs.engineblock.io/user-guide/standard_yaml/">
 	
 	YAML Config
@@ -330,6 +304,45 @@
 
 <ul id="scrollspy">
 </ul>
+
+
+      
+        
+        
+
+
+
+<a  title="Using Metrics" href="http://docs.engineblock.io/user-guide/using_metrics/">
+	
+	Using Metrics
+</a>
+
+
+
+      
+        
+        
+
+
+
+<a  title="Standard Metrics" href="http://docs.engineblock.io/user-guide/standard_metrics/">
+	
+	Standard Metrics
+</a>
+
+
+
+      
+        
+        
+
+
+
+<a  title="Scenario Scripting" href="http://docs.engineblock.io/user-guide/scenario_scripting/">
+	
+	Scenario Scripting
+</a>
+
 
 
       
@@ -457,88 +470,6 @@
 
 			
 
-<p>This page describes errors that you might see if you have a YAML loading issue, and what
-you can do to fix them.</p>
-
-<h2 id="diagnostic-guide">Diagnostic Guide</h2>
-
-<h3 id="undefined-name-statement-tuple">Undefined Name-Statement Tuple</h3>
-
-<p>This exception is thrown when the statement body is not found in a statement definition
-in any of the supported formats. For example, the following block will cause an error:</p>
-
-<pre><code>statements:
- - name: statement-foo
-   params:
-    aparam: avalue
-</code></pre>
-
-<p>This is because <code>name</code> and <code>params</code> are reserved property names &ndash; removed from the list of name-value
-pairs before free parameters are read. If the statement is not defined before free parameters
-are read, then the first free parameter is taken as the name and statement in <code>name: statement</code> form.</p>
-
-<p>To correct this error, supply a statement property in the map, or simply replace the <code>name: statement-foo</code> entry
-with a <code>statement-foo: statement body</code> at the top of the map:</p>
-
-<p>Either of these will work:</p>
-
-<pre><code>statements:
- - name: statement-foo
-   stmt: statement body
-   params:
-    aparam: avalue
-
-statements:
- - statement-foo: statement body
-   params:
-    aparam: avalue
-</code></pre>
-
-<p>In both cases, it is clear to the loader where the statement body should come from, and what (if any) explicit
-naming should occur.</p>
-
-<h3 id="redefined-name-statement-tuple">Redefined Name-Statement Tuple</h3>
-
-<p>This exception is thrown when the statement name is defined in multiple ways. This is an explicit exception
-to avoid possible ambiguity about which value the user intended. For example, the following statements
-definition will cause an error:</p>
-
-<pre><code>statements:
- - name: name1
-   name2: statement body
-</code></pre>
-
-<p>This is an error because the statement is not defined before free parameters are read, and the <code>name: statement</code>
-form includes a second definition for the statement name. In order to correct this, simply remove the separate
-<code>name</code> entry, or use the <code>stmt</code> property to explicitly set the statement body. Either of these will work:</p>
-
-<pre><code>statements:
- - name2: statement body
-
-statements:
- - name: name1
-   stmt: statement body
-</code></pre>
-
-<p>In both cases, there is only one name defined for the statement according to the supported formats.</p>
-
-<h3 id="yaml-parsing-error">YAML Parsing Error</h3>
-
-<p>This exception is thrown when the YAML format is not recognizable by the YAML parser. If you are not
-working from examples that are known to load cleanly, then please review your document for correctness
-according to the [YAML Specification]().</p>
-
-<p>If you are sure that the YAML should load, then please <a href="https://github.com/engineblock/engineblock/issues/new?labels=bug">submit a bug report</a>
- with details on the type of YAML file you are trying to load.</p>
-
-<h3 id="yaml-construction-error">YAML Construction Error</h3>
-
-<p>This exception is thrown when the YAML was loaded, but the configuration object was not able to be constructed
-from the in-memory YAML document. If this error occurs, it may be a bug in the YAML loader implementation.
-Please <a href="https://github.com/engineblock/engineblock/issues/new?labels=bug">submit a bug report</a> with details
-on the type of YAML file you are trying to load.</p>
-
-
 			<aside class="copyright" role="note">
 				
 				&copy; 2018 APL 2.0 &ndash;
@@ -555,7 +486,7 @@ on the type of YAML file you are trying to load.</p>
 <nav class="pagination" aria-label="Footer">
   <div class="previous">
   
-      <a href="http://docs.engineblock.io/dev-guide/standard_yam_devl/" title="YAML Config API">
+      <a href="http://docs.engineblock.io/user-guide/standard_yaml/" title="YAML Config">
         <span class="direction">
           Previous
         </span>
@@ -565,7 +496,7 @@ on the type of YAML file you are trying to load.</p>
           </div>
           <div class="stretch">
             <div class="title">
-              YAML Config API
+              YAML Config
             </div>
           </div>
         </div>
@@ -575,14 +506,14 @@ on the type of YAML file you are trying to load.</p>
 
   <div class="next">
   
-      <a href="http://docs.engineblock.io/sketches/activity_design_template/" title="Activity Design Template">
+      <a href="http://docs.engineblock.io/sketches/" title="Design Sketches">
         <span class="direction">
           Next
         </span>
         <div class="page">
           <div class="stretch">
             <div class="title">
-              Activity Design Template
+              Design Sketches
             </div>
           </div>
           <div class="button button-next" role="button" aria-label="Next">

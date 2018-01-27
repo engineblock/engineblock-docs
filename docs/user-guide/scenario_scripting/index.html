@@ -9,16 +9,16 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,maximum-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=10" />
-    <title>Metrics - EngineBlock</title>
+    <title>Scenario Scripting - EngineBlock</title>
     <meta name="generator" content="Hugo 0.31" />
 
     
     <meta name="description" content="EngineBlock Docs">
     
-    <link rel="canonical" href="http://docs.engineblock.io/user-guide/metrics/">
+    <link rel="canonical" href="http://docs.engineblock.io/user-guide/scenario_scripting/">
     
 
-    <meta property="og:url" content="http://docs.engineblock.io/user-guide/metrics/">
+    <meta property="og:url" content="http://docs.engineblock.io/user-guide/scenario_scripting/">
     <meta property="og:title" content="EngineBlock">
     <meta property="og:image" content="http://docs.engineblock.io/images/engineblock_128.png">
     <meta name="apple-mobile-web-app-title" content="EngineBlock">
@@ -139,7 +139,7 @@
     </div>
     <div class="stretch">
       <div class="title">
-        Metrics
+        Scenario Scripting
       </div>
     </div>
 
@@ -283,35 +283,6 @@
 
 
 
-<a class="current" title="Metrics" href="http://docs.engineblock.io/user-guide/metrics/">
-	
-	Metrics
-</a>
-
-
-<ul id="scrollspy">
-</ul>
-
-
-      
-        
-        
-
-
-
-<a  title="Scenario Scripting" href="http://docs.engineblock.io/user-guide/scripting/">
-	
-	Scenario Scripting
-</a>
-
-
-
-      
-        
-        
-
-
-
 <a  title="YAML Config" href="http://docs.engineblock.io/user-guide/standard_yaml/">
 	
 	YAML Config
@@ -330,6 +301,48 @@
 	YAML Config Errors
 </a>
 
+
+
+      
+        
+        
+
+
+
+<a  title="Using Metrics" href="http://docs.engineblock.io/user-guide/using_metrics/">
+	
+	Using Metrics
+</a>
+
+
+
+      
+        
+        
+
+
+
+<a  title="Standard Metrics" href="http://docs.engineblock.io/user-guide/standard_metrics/">
+	
+	Standard Metrics
+</a>
+
+
+
+      
+        
+        
+
+
+
+<a class="current" title="Scenario Scripting" href="http://docs.engineblock.io/user-guide/scenario_scripting/">
+	
+	Scenario Scripting
+</a>
+
+
+<ul id="scrollspy">
+</ul>
 
 
       
@@ -453,95 +466,159 @@
 
 	<article class="article">
 		<div class="wrapper">
-			<h1>Metrics </h1>
+			<h1>Scenario Scripting </h1>
 
 			
 
-<h2 id="unit-of-measure">Unit of Measure</h2>
+<h2 id="motive">Motive</h2>
 
-<p>All metrics collected from activities are recorded in nanoseconds and ops per second. All histograms are recorded with 4 digits of precision using HDR histograms.</p>
+<p>The EngineBlock runtime is a combination of a scripting sandbox and a workload
+execution machine. This is not accidental. With this particular arrangement, it
+should be possible to build sophisticated tests across a variety of scenarios.
+In particular, logic which can observe and react to the system under test can be
+powerful. With this approach, it becomes possible to break away from the
+conventional run-interpret-adjust cycle which is all too often done by human
+hands.</p>
 
-<h2 id="collecting-metrics">Collecting Metrics</h2>
+<h2 id="machinery-controls-instruments">Machinery, Controls &amp; Instruments</h2>
 
-<p>If you like to have all of your testing data in one place, then you may be interested in reporting your measurements to a monitoring system. For this, EB includes a <a href="https://github.com/dropwizard/metrics">Metrics Library</a>. Graphite reporting is baked in as the default reporter.</p>
+<p>All of the heavy lifting is left to Java and the core EngineBlock runtime. This
+includes the iterative workloads that are meant to test the target system. This
+is combined with a control layer which is provided by Nashorn in Java 8. This
+division of responsibility allows the high-level test logic to be &ldquo;script&rdquo; and
+the low-level activity logic to be &ldquo;machinery&rdquo;.  While the scenario script has
+the most control, it also is the least busy relative to activity workloads. The
+net effect is that you have the efficiency of the iterative test loads in
+conjunction with the expressivity of an open-ended scripting sandbox.</p>
 
-<p>In order to enable graphite reporting, use one of these options formats:</p>
+<p>Essentially, the ActivityType drivers are meant to handle the workload-specific
+machinery. They also provide dynamic control points and parameters which special
+to that activity type. This exposes a full feedback loop between a running
+scenario script and the activities that it runs. The scenario is free to read
+the performance metrics from a running activity and make changes to it on the
+fly.</p>
 
-<pre><code>    --report-graphite-to &lt;host&gt;
-    --report-graphite-to &lt;host&gt;:&lt;port&gt;
-</code></pre>
+<p>Here is a view of what is below the line, separate from the scripting sandbox,
+and what is hoisted up into the scripting sandbox.</p>
 
-<h2 id="metrics-scripting">Metrics &amp; Scripting</h2>
+<p><img src="http://docs.engineblock.io/diagrams/artandmachinery.png" alt="ScriptingEngine" /></p>
 
-<p>There are enhancements to the metrics bundled with EngineBlock to support advanced scripting. See the <a href="http://docs.engineblock.io/user-guide/scripting/#enhanced-metrics-for-scripting">Advanced Metrics for Scripting</a> in the scripting guide for more details.</p>
+<h2 id="scripting-environment">Scripting Environment</h2>
 
-<h2 id="metric-naming">Metric Naming</h2>
+<p>The EngineBlock scripting environment is provided by Nashorn, with slight
+modifications meant to streamline understanding and usage.</p>
 
-<h4 id="prefix">Prefix</h4>
+<p>The modification are:</p>
 
-<p>Core metrics use the prefix <em>engineblock</em> by default. You can override this with the &ndash;metrics-prefix option:</p>
+<ul>
+<li>Active Bindings, control variables which, when assigned to, cause an immediate
+change in the behavior of the runtime. Each of the variables
+below is pre-wired into each script environment.
 
-<pre><code>--metrics-prefix myclient.group5
-</code></pre>
+<ul>
+<li><strong>scenario</strong> - (read+write) - This is the <strong>Scenario Controller</strong> object
+which manages the activity executors in the runtime.</li>
+<li><strong>activities.&lt;activity alias&gt;.&lt;paramname&gt;</strong> -
+(read+write) - Every parameter which is assigned to in this map will
+cause a synchronous notification to the execution runtime, including
+the respective activity (identified by &lt;activity alias&gt;) if it has
+been implemented to react.</li>
+<li><strong>metrics</strong>.&lt;activity alias&gt;.&lt;metric name&gt; - (read-only) - Each
+activity exposes its metrics to the scenario scripting sandbox. In order to
+see these, use the command line option that dumps metrics names.</li>
+</ul></li>
+</ul>
 
-<h4 id="identifiers">Identifiers</h4>
+<p>Interaction with the EB runtime and the activities therein is made easy by the
+above variables and objects. When an assignment is made to any of these
+variables, the changes are propagated to internal listeners. For changes to
+<em>threads</em>, the thread pool responsible for the affected activity adjusts the
+number of active threads (AKA slots). Other changes are further propagated
+directly to the thread harness (motor) and to each interested input and action.
+Assignment to the <em>type</em> and <em>alias</em> activity parameters has no special effect.</p>
 
-<p>Metrics associated with a specific activity will have the activity alias in their name. The names and types of metrics provided for each activity type vary. You can easily see what metrics are available for a given activity type:</p>
+<p>You can make use of more extensive Java or Javascript libraries as needed,
+mixing then with the runtime controls provided above.</p>
 
-<pre><code>java -jar eb.jar --show-metrics alias=test type=diag
-</code></pre>
+<h2 id="enhanced-metrics-for-scripting">Enhanced Metrics for Scripting</h2>
 
-<p>This initializes an activity as if to run it, but never starts cycling it.</p>
+<p>The metrics available in engineblock are slightly different than the standard
+kit with dropwizard metrics. The key differences are:</p>
 
-<h2 id="hdr-histograms">HDR Histograms</h2>
+<h3 id="hdr-histograms">HDR Histograms</h3>
 
-<h3 id="recording-hdr-histogram-logs">Recording HDR Histogram Logs</h3>
+<p>All histograms use HDR histograms with <em>four</em> significant digits.</p>
 
-<p>You can record details of histograms from any compatible metric (histograms and timers) with an option like this:</p>
+<p>All histograms reset on snapshot, automatically keeping all data until you
+report the snapshot or access the snapshot via scripting. (see below).</p>
 
-<pre><code>--log-histograms hdrdata.log
-</code></pre>
+<p>The metric types that use histograms have been replaced with nicer version for
+scripting. You don&rsquo;t have to do anything differently in your reporter config to
+use them. However, if you need to use the enhanced versions in your local
+scripting, you can. This means that Timer and Histogram types are enchanced. If
+you do not use the scripting extensions, then you will automatically get the
+standard behavior that you are used to, only with higher-resolution HDR and full
+snapshots for each report to your downstream metrics systems.</p>
 
-<p>If you want to record only certain metrics in this way, then use this form:</p>
+<h3 id="scripting-with-delta-snapshots">Scripting with Delta Snapshots</h3>
 
-<pre><code>--log-histograms 'hdrdata.log:.*suffix'
-</code></pre>
+<p>For both the timer and the histogram types, you can call getDeltaReader(), or
+access it simply as &lt;metric&gt;.deltaReader. When you do this, the delta
+snapshotting behavior is maintained until you use the deltaReader to access it.
+You can get a snapshot from the deltaReader by calling getDeltaSnapshot(10000),
+which causes the snapshot to be reset for collection, but retains a cache of the
+snapshot for any other consumer of getSnapshot() for that duration in
+milliseconds. If, for example, metrics reporters access the snapshot in the next
+10 seconds, the reported snapshot will be exactly what was used in the script.</p>
 
-<p>Notice that the option is enclosed in single quotes. This is because the second part of the option value is a regex. The &lsquo;.*suffix&rsquo; pattern matches any metric name that ends with &ldquo;suffix&rdquo;. Effectively, leaving out the pattern is the same as using &lsquo;.*&rsquo;, which matches all metrics.</p>
+<p>This is important for using local scripting methods and calculations with
+aggregate views downstream. It means that the histograms will match up between
+your local script output and your downstream dashboards, as they will both be
+using the same frame of data, when done properly.</p>
 
-<p>Metrics may be included in multiple logs, but care should be taken not to overdo this. Keeping higher fidelity histogram reservoirs does come with a cost, so be sure to be specific in what you record as much as possible.</p>
+<h3 id="histogram-convenience-methods">Histogram Convenience Methods</h3>
 
-<p>If you want to specify the recording interval, use this form:</p>
+<p>All histogram snapshots have additional convenience methods for accessing every
+percentile in (P50, P75, P90, P95, P98, P99, P999, P9999) and every time unit in
+(s, ms, us, ns). For example, getP99ms() is supported, as is getP50ns(), and
+every other possible combination. This means that you can access the 99th
+percentile metric value in your scripts for activity <em>foo</em> as
+<em>metrics.foo.cycles.snapshot.p99ms</em>.</p>
 
-<pre><code>--log-histograms 'hdrdata.log:.*suffix:5s'
-</code></pre>
+<h2 id="control-flow">Control Flow</h2>
 
-<p>If you want to specify the interval, you must use the third form, although it is valid to leave
-the pattern empty, such as &lsquo;hdrdata.log::5s&rsquo;.</p>
+<p>When a script is run, it has absolute control over the scenario runtime while it
+is active. Once the script reaches its end, however, it will only exit if all
+activities have completed. If you want to explicitly stop a script, you must
+stop all activities.</p>
 
-<h3 id="recording-hdr-histogram-stats">Recording HDR Histogram Stats</h3>
+<h2 id="strategies">Strategies</h2>
 
-<p>You can also record basic snapshots of histogram data on a periodic interval just like above with
-HDR histogram logs. The option to do this is:</p>
+<p>You can use EngineBlock in the classic form with <code>run type=&lt;type&gt; param=value
+...</code> command line syntax. There are reasons, however, that you will sometimes
+want customize and modify your scripts directly, such as:</p>
 
-<pre><code>--log-histostats 'hdrstats.log:.*suffix:10s'
-</code></pre>
+<ul>
+<li>permute test variables to cover many sub-conditions in a test</li>
+<li>automatically adjust load factors to identify the nominal capacity of a system</li>
+<li>Adjust rate of a workload in order to get a specific measurement of system behavior</li>
+<li>React to changes in test or target system state in order to properly sequence a test</li>
+</ul>
 
-<p>Everything works the same as for hdr histogram logging, except that the format is in
-CSV as shown in the example below:</p>
+<h2 id="script-input-output">Script Input &amp; Output</h2>
 
-<pre><code>#logging stats for session scenario-1479089852022
-#[Histogram log format version 1.0]
-#[StartTime: 1479089852.046 (seconds since epoch), Sun Nov 13 20:17:32 CST 2016]
-#Tag,Interval_Start,Interval_Length,count,min,p25,p50,p75,p90,p95,p98,p99,p999,p9999,max
-Tag=diag1.delay,0.457,0.044,1,16,31,31,31,31,31,31,31,31,31,31
-Tag=diag1.cycles,0.48,0.021,31,4096,8191,8191,8191,8191,8191,8191,8191,8191,8191,2097151
-Tag=diag1.delay,0.501,0.499,1,1,1,1,1,1,1,1,1,1,1,1
-Tag=diag1.cycles,0.501,0.499,498,1024,2047,2047,4095,4095,4095,4095,4095,4095,4095,4194303
-...
-</code></pre>
+<p>Internal buffers are kept for <em>stdin</em>, <em>stdout</em>, and <em>stderr</em> for the scenario
+script execution. These are logged to the logfile upon script completion, with
+markers showing the timestamp and file descriptor (stdin, stdout, or stderr)
+that each line was recorded from.</p>
 
-<p>Notice that the format used is similar to that of the HDR logging.</p>
+<h2 id="external-docs">External Docs</h2>
+
+<ul>
+<li><a href="https://docs.oracle.com/javase/8/docs/technotes/guides/scripting/nashorn/api.html">Java Platform, Standard Edition Nashorn User&rsquo;s Guide (Java 8)</a></li>
+<li><a href="https://wiki.openjdk.java.net/display/Nashorn/Nashorn+extensions">Nashorn extensions on OpenJDK Wiki</a></li>
+<li><a href="http://docs.oracle.com/javase/8/docs/technotes/guides/scripting/">Scripting for the Java (8) Platform</a></li>
+</ul>
 
 
 			<aside class="copyright" role="note">
@@ -580,14 +657,14 @@ Tag=diag1.cycles,0.501,0.499,498,1024,2047,2047,4095,4095,4095,4095,4095,4095,40
 
   <div class="next">
   
-      <a href="http://docs.engineblock.io/user-guide/scripting/" title="Scenario Scripting">
+      <a href="http://docs.engineblock.io/user-guide/standard_metrics/" title="Standard Metrics">
         <span class="direction">
           Next
         </span>
         <div class="page">
           <div class="stretch">
             <div class="title">
-              Scenario Scripting
+              Standard Metrics
             </div>
           </div>
           <div class="button button-next" role="button" aria-label="Next">
