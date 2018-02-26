@@ -93,7 +93,8 @@ statement template from the provided bindings if needed, so this is valid:
 
 If you combine the statement section and the bindings sections above into one
 activity yaml, you get a slightly different result, as the bindings apply
-to the statements that are provided:
+to the statements that are provided, rather than creating a default statement
+for the bindings. See the example below:
 
 ```text
 [test]$ cat > stdout-test.yaml
@@ -168,7 +169,7 @@ get used in a given scenario:
 
 ```yaml
 tags:
- name:foxtrot
+ name: foxtrot
  unit: bravo
 ```
 
@@ -179,13 +180,14 @@ Tag filters are usually provided as an activity parameter when an activity is la
 The rules for tag filtering are:
 
 1. If no tag filter is specified, then the statement matches.
-2. A tag name predicate like <code>tags=name</code> asserts the presence of a specific
+2. A tag name predicate like `tags=name` asserts the presence of a specific
    tag name, regardless of its value.
-3. A tag value predicate like <code>tags=name:foxtrot</code> asserts the presence of
+3. A tag value predicate like `tags=name:foxtrot` asserts the presence of
    a specific tag name and a specific value for it.
-4. A tag pattern predicate like <code>tags=name:'fox.*'</code> asserts the presence of a
+4. A tag pattern predicate like `tags=name:'fox.*'` asserts the presence of a
    specific tag name and a value that matches the provided regular expression.
-5. Tag predicates are joined by *and* when more than one is provided -- If any predicate
+5. Multiple tag predicates may be specified as in `tags=name:'fox.*',unit:bravo`
+6. Tag predicates are joined by *and* when more than one is provided -- If any predicate
    fails to match a tagged element, then the whole tag filtering expression fails
    to match.
 
@@ -216,7 +218,7 @@ I'm alive!
 [test]$ ./eb run type=stdout yaml=stdout-test tags=name:bravo
 02:25:42.584 [scenarios:001] ERROR i.e.activities.stdout.StdoutActivity - Unable to create a stdout statement if you have no active statements or bindings configured.
 
-#tag value assertion matches
+# tag value assertion matches
 [test]$ ./eb run type=stdout yaml=stdout-test tags=name:foxtrot
 I'm alive!
 
@@ -224,9 +226,19 @@ I'm alive!
 [test]$ ./eb run type=stdout yaml=stdout-test tags=name:'fox.*'
 I'm alive!
 
-#tag pattern assertion does not match
+# tag pattern assertion does not match
 [test]$ ./eb run type=stdout yaml=stdout-test tags=name:'tango.*'
 02:26:05.149 [scenarios:001] ERROR i.e.activities.stdout.StdoutActivity - Unable to create a stdout statement if you have no active statements or bindings configured.
+
+# compound tag predicate matches every assertion
+[test]$ ./eb run type=stdout yaml=stdout-test tags='name=fox.*',unit=bravo
+I'm alive!
+
+# compound tag predicate does not fully match
+[test]$ ./eb run type=stdout yaml=stdout-test tags='name=fox.*',unit=delta
+11:02:53.490 [scenarios:001] ERROR i.e.activities.stdout.StdoutActivity - Unable to create a stdout statement if you have no active statements or bindings configured.
+
+
 ```
 
 ## Blocks
@@ -277,28 +289,6 @@ that document, unless specifically overridden within a given block.
 
 ## More Statements
 
-### Statement Sequences
-
-To provide a degree of flexibility to the user for statement definitions,
-multiple statements may be provided together as a sequence.
-
-```yaml
-# a list of statements
-statements:
- - "This a statement."
- - "The file format doesn't know how statements will be used."
- - "submit job {job} on queue {queue} with options {options};"
-
-# an ordered map of statements by name
-statements:
- name1: statement one
- name2: "statement two"
-```
-
-In the first sequence form, automatic statement naming occurs. In the last form,
-each statement has a name provided as a key. The only difference between these
-two forms is that the names are provided automatically in the first.
-
 ### Statement Delimiting
 
 Sometimes, you want to specify the text of a statement in different ways. Since
@@ -334,13 +324,34 @@ not, and so forth. For a more comprehensive guide on the YAML conventions
 regarding multi-line blocks, see [YAML Spec 1.2, Chapter 8, Block
 Styles](http://www.yaml.org/spec/1.2/spec.html#Block)
 
-### Statement Overrides
+### Statement Sequences
 
-In addition to the basic statement forms explained above in [Statement
-Sequences](#statement-sequences), there is another called a *statement config map*:
+To provide a degree of flexibility to the user for statement definitions,
+multiple statements may be provided together as a sequence.
 
 ```yaml
-# a list of statement config maps
+# a list of statements
+statements:
+ - "This a statement."
+ - "The file format doesn't know how statements will be used."
+ - "submit job {job} on queue {queue} with options {options};"
+
+# an ordered map of statements by name
+statements:
+ name1: statement one
+ name2: "statement two"
+```
+
+In the first form, the names are provided automatically by the YAML loader. In
+the second form, they are specified as ordered map keys.
+
+### Statement Properties
+
+You can also configure individual statements with named properties, using the
+**statement properties** form:
+
+```yaml
+# a list of statements with properties
 statements:
  - name: name1
    stmt: statement one
@@ -348,11 +359,12 @@ statements:
    stmt: statement two
 ```
 
-This is the most flexible configuration format at the statement level, however
-it is also the most verbose. Because this format names each property of the
-statement, it allows for other properties to be defined at this level as well.
-This includes all of the previously described configuration elements: bindings,
-params, and tags. A detailed example follows:
+This is the most flexible configuration format at the statement level. It is
+also the most verbose. Because this format names each property of the statement,
+it allows for other properties to be defined at this level as well. This
+includes all of the previously described configuration elements: `name`,
+`bindings`, `params`, `tags`, and additionally `stmt`. A detailed example
+follows:
 
 ```yaml
 statements:
@@ -369,9 +381,9 @@ statements:
 
 In this case, the values for `bindings`, `params`, and `tags` take precedence,
 overriding those set by the enclosing block or document or activity when the
-names match. Additionally, parameters called **free parameters** are allowed here,
-such as `freeparam3`. These are simply values that get assigned to the params
-map once all other processing has completed.
+names match. Parameters called **free parameters** are allowed here, such as
+`freeparam3`. These are simply values that get assigned to the params map once
+all other processing has completed.
 
 It is possible to mix the **`<name>: <statement>`** form as above in the
 example for mapping statement by name, so long as some specific rules are
@@ -387,14 +399,16 @@ statements:
     tag1: tvalue1
 ```
 
-In this case, you must avoid using both the name property and the initial
-**`<name>: <statement>`** together. Doing so will cause an error to be thrown.
-Further, it is not possible to detect when the user has combined both the
-**`<name>: <statement>`** form and the **`stmt: <statement>`**, so use caution
-when mixing forms.
+The rules:
 
-As explained above, `parm1: pvalue1` is as a *free parameter*, and is
-simply short-hand for setting values in the params map for the statement.
+1. You must avoid using both the name property and the initial
+   **`<name>: <statement>`** together. Doing so will cause an error to be thrown.
+2. Do not use the **`<name>: <statement>`** form in combination with a
+   **`stmt: <statement>`** property. It is not possible to detect if this occurs.
+   Use caution if you choose to mix these forms.
+
+As explained above, `parm1: pvalue1` is a *free parameter*, and is simply
+short-hand for setting values in the params map for the statement.
 
 ### Per-Statement Format
 

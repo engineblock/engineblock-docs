@@ -9,8 +9,8 @@ menu:
     weight: 22
 ---
 
-In the EB 2.* and newer versions, a standard YAML configuration format is
-provided that makes it easy to use for any activity that requires statements,
+In the EngineBlock 2.* and newer versions, a standard YAML configuration format
+is provided that makes it easy to use for any activity that requires statements,
 tags, parameters and data bindings.  This section describes how to use it as a
 developer*. Developers should already be familiar with the user guide for the
 YAML config format first.

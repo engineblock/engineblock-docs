@@ -9,9 +9,8 @@ menu:
     weight: 10
 ---
 
-EngineBlock (EB) is a machine pattern for load test design and
-execution.  This guide is intended to illustrate the moving parts and how they
-work together.
+EngineBlock is a machine pattern for test design and execution.  This guide is
+intended to illustrate the moving parts and how they work together.
 
 ## Scenario
 

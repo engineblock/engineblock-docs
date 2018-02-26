@@ -104,9 +104,9 @@ we go forward.
 ### Filtering
 
 A *CycleFilter* is simply an IntPredicate wrapper. It is used to filter cycle
-results. The thread harness (The Motor, in EB parlance) uses cycle filters
-when provided in order to subfilter the available cycles that will be dispatched
-to an action.
+results. The thread harness (The Motor, in EngineBlock parlance) uses cycle
+filters when provided in order to subfilter the available cycles that will be
+dispatched to an action.
 
 ## The Tracking Bestiary
 

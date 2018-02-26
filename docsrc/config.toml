@@ -52,6 +52,10 @@ canonifyurls = true
 	url    = "user-guide/"
 	weight = 30
 [[menu.main]]
+	name   = "Parameters"
+	url    = "parameters/"
+	weight = 40
+[[menu.main]]
     name   = "Dev Guide"
     url    = "dev-guide/"
     weight = 100

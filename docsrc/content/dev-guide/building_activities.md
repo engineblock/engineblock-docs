@@ -54,9 +54,9 @@ This will install the engineblock artifacts to your local _~/.m2/repository_.
 
 ## Using ActivityTypes
 
-There are a couple ways you can use your new ActivityTypes  with the EB runtime.
-You can mix and match these as needed. The most common way to integrate your
-ActivityTypes with the engineblock core is with Maven, but the details on thi
-will vary by environment.
+There are a couple ways you can use your new ActivityTypes  with the EngineBlock
+runtime. You can mix and match these as needed. The most common way to integrate
+your ActivityTypes with the engineblock core is with Maven, but the details on
+thi will vary by environment.
 
 

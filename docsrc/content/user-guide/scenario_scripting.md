@@ -63,8 +63,8 @@ The modification are:
     activity exposes its metrics to the scenario scripting sandbox. In order to 
     see these, use the command line option that dumps metrics names.
 
-Interaction with the EB runtime and the activities therein is made easy by the
-above variables and objects. When an assignment is made to any of these
+Interaction with the EngineBlock runtime and the activities therein is made easy
+by the above variables and objects. When an assignment is made to any of these
 variables, the changes are propagated to internal listeners. For changes to
 _threads_, the thread pool responsible for the affected activity adjusts the
 number of active threads (AKA slots). Other changes are further propagated

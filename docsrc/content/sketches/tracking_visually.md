@@ -86,8 +86,8 @@ When using buffered counting to track completion of a range of cycle values, it
 is necessary to break the number line into a set of uniformly sized intervals.
 This allows for modulo-style assignment of a cycle number to a marking bucket.
 For example, if you were tracking full completion of every 8 cycles in a bucket,
-then you would break the cycles into logical units like this, with a simple "mod 8" operation,
-which is also equivalent to masking off all but 3 LSBs.
+then you would break the cycles into logical units like this, with a simple "mod
+8" operation, which is also equivalent to masking off all but 3 LSBs.
 
 {{< viz >}}
 digraph d {
@@ -100,9 +100,9 @@ rankdir=LR;
 }   
 {{< /viz >}}
 
-In this case, it is possible to efficiently pace each segment as a unit, by allowing for
-efficient concurrent counting algorithms to operate exclusively on the segment state
-without exposing it yet to the reader side.
+In this case, it is possible to efficiently pace each segment as a unit, by
+allowing for efficient concurrent counting algorithms to operate exclusively on
+the segment state without exposing it yet to the reader side.
 
 ## Stride and Filtering
 
@@ -111,8 +111,8 @@ cycles to be processed within each thread, filtering may become a challenge.
 This is because you may want the same type of operational grouping within a downstream
 thread as you have in an upstream thread.
 
-Here is the current flow of stride, as managed by a thread harness (AKA a Motor in EB parlance),
-an input, and an action:
+Here is the current flow of stride, as managed by a thread harness (AKA a Motor
+in EngineBlock parlance), an input, and an action:
 
 {{< jssequence >}}
 Motor->Input: get[stride=5]
@@ -122,9 +122,10 @@ Motor->Action: runCycle(v)
 Action->Motor: result
 {{< /jssequence >}}
 
-That means that any filtering needs to be applied at the motor level, after applying stride, but
-before providing the cycles to the Action. This is also in keeping with the desire to avoid
-injecting inter-activity flow logic into the programming scope of individual activities.
+That means that any filtering needs to be applied at the motor level, after
+applying stride, but before providing the cycles to the Action. This is also in
+keeping with the desire to avoid injecting inter-activity flow logic into the
+programming scope of individual activities.
 
 The revised *stride & filter* scenario looks like this:
 
@@ -157,9 +158,10 @@ result codes.
 
 ### Locking and Signals
 
-Locking should be kept to a minimum. The only time locks should be used at all is when there
-is a blocking state that would otherwise consume resources in an idle loop, and for which
-there is a proper and coherent signaling scheme available.
+Locking should be kept to a minimum. The only time locks should be used at all
+is when there is a blocking state that would otherwise consume resources in an
+idle loop, and for which there is a proper and coherent signaling scheme
+available.
 
 - nowMarking signal should be set any time a new extent is added.
    
