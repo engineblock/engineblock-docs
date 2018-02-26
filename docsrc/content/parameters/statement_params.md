@@ -1,12 +1,12 @@
 ---
 date: 2017-05-19T21:52:57
 title: Statement Params
-weight: 12
+weight: 15
 menu:
   main:
     parent: Parameters
     identifier: statement-params
-    weight: 26
+    weight: 29
 ---
 
 Statement parameters apply to the defined operations for an activity. Statement

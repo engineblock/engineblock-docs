@@ -1,12 +1,12 @@
 ---
 date: 2017-05-19T21:52:57
 title: Activity Params
-weight: 12
+weight: 14
 menu:
   main:
     parent: Parameters
     identifier: activity-params
-    weight: 26
+    weight: 28
 ---
 
 Activity parameters are passed as named arguments for an activity, either on the
@@ -23,7 +23,7 @@ documented here.
 
 ## type
 
-- format `type=<activity type>`
+`type=<activity type>`
 
 You *must* set the _type_ parameter for every activity so that EngineBlock
 knows which activity implementation to use.

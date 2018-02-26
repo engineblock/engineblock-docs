@@ -1,12 +1,12 @@
 ---
 date: 2017-05-19T21:52:57
 title: Example Command
-weight: 10
+weight: 13
 menu:
   main:
     parent: Parameters
     identifier: example-command
-    weight: 26
+    weight: 27
 ---
 
 Most new users will be interested in a command line pattern that looks very much like this:
