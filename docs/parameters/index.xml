@@ -13,6 +13,16 @@
     
     
     <item>
+      <title>Parameter Usage</title>
+      <link>http://docs.engineblock.io/parameters/parameter_usage/</link>
+      <pubDate>Fri, 19 May 2017 21:52:57 +0000</pubDate>
+      
+      <guid>http://docs.engineblock.io/parameters/parameter_usage/</guid>
+      <description>To configure an EngineBlock activity to do something meaningful, you have to provide parameters to it. This can occur in one of several ways. This section is a guide on EngineBlock parameters, how they layer together, and when to use one form over another.
+Command Line The command line is used to configure both the overall EngineBlock runtime (logging, etc) as well as the individual activities and scripts. Global EngineBLock options can be distinguished from scenario commands and their parameters because because global options always start with a single or double hyphen.</description>
+    </item>
+    
+    <item>
       <title>Example Command</title>
       <link>http://docs.engineblock.io/parameters/example_command/</link>
       <pubDate>Fri, 19 May 2017 21:52:57 +0000</pubDate>
@@ -30,16 +40,6 @@
       <guid>http://docs.engineblock.io/parameters/activity_params/</guid>
       <description>Activity parameters are passed as named arguments for an activity, either on the command line or via a scenario script. On the command line, these take the form of
 &amp;lt;paramname&amp;gt;=&amp;lt;paramvalue&amp;gt;  Some activity parameters are universal in that they can be used with any activity type. These parameters are recognized by EngineBlock whether or not they are recognized by a particular activity type implementation. These are called universal activity parameters.</description>
-    </item>
-    
-    <item>
-      <title>Parameter Usage</title>
-      <link>http://docs.engineblock.io/parameters/parameter_usage/</link>
-      <pubDate>Fri, 19 May 2017 21:52:57 +0000</pubDate>
-      
-      <guid>http://docs.engineblock.io/parameters/parameter_usage/</guid>
-      <description>To configure an EngineBlock activity to do something meaningful, you have to provide parameters to it. This can occur in one of several ways. This section is a guide on EngineBlock parameters, how they layer together, and when to use one form over another.
-Command Line The command line is used to configure both the overall EngineBlock runtime (logging, etc) as well as the individual activities and scripts. Global EngineBLock options can be distinguished from scenario commands and their parameters because because global options always start with a single or double hyphen.</description>
     </item>
     
     <item>
