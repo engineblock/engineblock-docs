@@ -9,16 +9,16 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,maximum-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=10" />
-    <title>Vega Test - EngineBlock</title>
+    <title>Activity Params - EngineBlock</title>
     <meta name="generator" content="Hugo 0.31" />
 
     
     <meta name="description" content="EngineBlock Docs">
     
-    <link rel="canonical" href="http://docs.engineblock.io/sketches/vegatest/">
+    <link rel="canonical" href="http://docs.engineblock.io/parameters/activity_params/">
     
 
-    <meta property="og:url" content="http://docs.engineblock.io/sketches/vegatest/">
+    <meta property="og:url" content="http://docs.engineblock.io/parameters/activity_params/">
     <meta property="og:title" content="EngineBlock">
     <meta property="og:image" content="http://docs.engineblock.io/images/engineblock_128.png">
     <meta name="apple-mobile-web-app-title" content="EngineBlock">
@@ -72,8 +72,6 @@
 
   
     
-    
-    <script src="http://docs.engineblock.io//modules/vega/vega.js"></script>
     
 
     
@@ -141,7 +139,7 @@
     </div>
     <div class="stretch">
       <div class="title">
-        Vega Test
+        Activity Params
       </div>
     </div>
 
@@ -348,11 +346,14 @@
 
 
 
-<a  title="Activity Params" href="http://docs.engineblock.io/parameters/activity_params/">
+<a class="current" title="Activity Params" href="http://docs.engineblock.io/parameters/activity_params/">
 	
 	Activity Params
 </a>
 
+
+<ul id="scrollspy">
+</ul>
 
 
       
@@ -515,111 +516,197 @@
 
 	<article class="article">
 		<div class="wrapper">
-			<h1>Vega Test </h1>
+			<h1>Activity Params </h1>
 
-			<p>// Vega here below
+			
 
+<p>Activity parameters are passed as named arguments for an activity, either on the
+command line or via a scenario script. On the command line, these take the form
+of</p>
 
-<div align="center" class="vega-text"><pre>
-{
-  &#34;$schema&#34;: &#34;https://vega.github.io/schema/vega/v3.0.json&#34;,
-  &#34;width&#34;: 400,
-  &#34;height&#34;: 200,
-  &#34;padding&#34;: 5,
+<pre><code>&lt;paramname&gt;=&lt;paramvalue&gt;
+</code></pre>
 
-  &#34;data&#34;: [
-    {
-      &#34;name&#34;: &#34;table&#34;,
-      &#34;values&#34;: [
-        {&#34;category&#34;: &#34;A&#34;, &#34;amount&#34;: 28},
-        {&#34;category&#34;: &#34;B&#34;, &#34;amount&#34;: 55},
-        {&#34;category&#34;: &#34;C&#34;, &#34;amount&#34;: 43},
-        {&#34;category&#34;: &#34;D&#34;, &#34;amount&#34;: 91},
-        {&#34;category&#34;: &#34;E&#34;, &#34;amount&#34;: 81},
-        {&#34;category&#34;: &#34;F&#34;, &#34;amount&#34;: 53},
-        {&#34;category&#34;: &#34;G&#34;, &#34;amount&#34;: 19},
-        {&#34;category&#34;: &#34;H&#34;, &#34;amount&#34;: 87}
-      ]
-    }
-  ],
+<p>Some activity parameters are universal in that they can be used with any
+activity type. These parameters are recognized by EngineBlock whether or not
+they are recognized by a particular activity type implementation. These are
+called <em>universal activity parameters</em>. Only universal activity parameters are
+documented here.</p>
 
-  &#34;signals&#34;: [
-    {
-      &#34;name&#34;: &#34;tooltip&#34;,
-      &#34;value&#34;: {},
-      &#34;on&#34;: [
-        {&#34;events&#34;: &#34;rect:mouseover&#34;, &#34;update&#34;: &#34;datum&#34;},
-        {&#34;events&#34;: &#34;rect:mouseout&#34;,  &#34;update&#34;: &#34;{}&#34;}
-      ]
-    }
-  ],
+<h2 id="type">type</h2>
 
-  &#34;scales&#34;: [
-    {
-      &#34;name&#34;: &#34;xscale&#34;,
-      &#34;type&#34;: &#34;band&#34;,
-      &#34;domain&#34;: {&#34;data&#34;: &#34;table&#34;, &#34;field&#34;: &#34;category&#34;},
-      &#34;range&#34;: &#34;width&#34;
-    },
-    {
-      &#34;name&#34;: &#34;yscale&#34;,
-      &#34;domain&#34;: {&#34;data&#34;: &#34;table&#34;, &#34;field&#34;: &#34;amount&#34;},
-      &#34;nice&#34;: true,
-      &#34;range&#34;: &#34;height&#34;
-    }
-  ],
+<ul>
+<li>format <code>type=&lt;activity type&gt;</code></li>
+</ul>
 
-  &#34;axes&#34;: [
-    { &#34;orient&#34;: &#34;bottom&#34;, &#34;scale&#34;: &#34;xscale&#34; },
-    { &#34;orient&#34;: &#34;left&#34;, &#34;scale&#34;: &#34;yscale&#34; }
-  ],
+<p>You <em>must</em> set the <em>type</em> parameter for every activity so that EngineBlock
+knows which activity implementation to use.</p>
 
-  &#34;marks&#34;: [
-    {
-      &#34;type&#34;: &#34;rect&#34;,
-      &#34;from&#34;: {&#34;data&#34;:&#34;table&#34;},
-      &#34;encode&#34;: {
-        &#34;enter&#34;: {
-          &#34;x&#34;: {&#34;scale&#34;: &#34;xscale&#34;, &#34;field&#34;: &#34;category&#34;, &#34;offset&#34;: 1},
-          &#34;width&#34;: {&#34;scale&#34;: &#34;xscale&#34;, &#34;band&#34;: 1, &#34;offset&#34;: -1},
-          &#34;y&#34;: {&#34;scale&#34;: &#34;yscale&#34;, &#34;field&#34;: &#34;amount&#34;},
-          &#34;y2&#34;: {&#34;scale&#34;: &#34;yscale&#34;, &#34;value&#34;: 0}
-        },
-        &#34;update&#34;: {
-          &#34;fill&#34;: {&#34;value&#34;: &#34;steelblue&#34;}
-        },
-        &#34;hover&#34;: {
-          &#34;fill&#34;: {&#34;value&#34;: &#34;red&#34;}
-        }
-      }
-    },
-    {
-      &#34;type&#34;: &#34;text&#34;,
-      &#34;encode&#34;: {
-        &#34;enter&#34;: {
-          &#34;align&#34;: {&#34;value&#34;: &#34;center&#34;},
-          &#34;baseline&#34;: {&#34;value&#34;: &#34;bottom&#34;},
-          &#34;fill&#34;: {&#34;value&#34;: &#34;#333&#34;}
-        },
-        &#34;update&#34;: {
-          &#34;x&#34;: {&#34;scale&#34;: &#34;xscale&#34;, &#34;signal&#34;: &#34;tooltip.category&#34;, &#34;band&#34;: 0.5},
-          &#34;y&#34;: {&#34;scale&#34;: &#34;yscale&#34;, &#34;signal&#34;: &#34;tooltip.amount&#34;, &#34;offset&#34;: -2},
-          &#34;text&#34;: {&#34;signal&#34;: &#34;tooltip.amount&#34;},
-          &#34;fillOpacity&#34;: [
-            {&#34;test&#34;: &#34;datum === tooltip&#34;, &#34;value&#34;: 0},
-            {&#34;value&#34;: 1}
-          ]
-        }
-      }
-    }
-  ]
-}
-</pre></div>
+<p>This tells EngineBlock which activity type will be run for the provided
+parameters. This is used, for example, with the <code>run</code> or <code>start</code> commands. An
+activity of the named type will be initialized, and then further activity
+parameters on the command line will be used to configure it before it is
+started.</p>
 
+<p>The available activity types can be discovered with the <code>--list-activity-types</code>
+global option.</p>
 
-<script type="text/javascript" src="http://docs.engineblock.io/modules/vega/inithook-vega.js"></script>
+<h2 id="alias">alias</h2>
 
-// Vega here above</p>
+<p><code>alias=&lt;alias&gt;</code></p>
+
+<p>You <em>should</em> set the <em>alias</em> parameter when you have multiple activities,
+when you want to name metrics per-activity, or when you want to control
+activities via scripting.</p>
+
+<p>Each activity can be given a symbolic name known as an <em>alias</em>. It is good
+practice to give all your activities an alias, since this determines the named
+used in logging, metrics, and even scripting control.</p>
+
+<p><em>default value</em> : If the activity supports YAML config, then any provided YAML
+filename is used as the basis for the default alias. Otherwise, the activity
+type name is used. This is a convenience for simple test scenarios only.</p>
+
+<h2 id="threads">threads</h2>
+
+<p><code>threads=&lt;threads&gt;</code></p>
+
+<p>You <em>should</em> set the <em>threads</em> parameter when you need to ramp up a workload.</p>
+
+<p>Each activity can be created with a number of threads. It is important to adjust
+this setting to the system types used by EngineBlock.</p>
+
+<p><em>default value</em> : For now, the default is simply <em>1</em>. Users must be aware of
+ this setting and adjust it to a reasonable value for their workloads.</p>
+
+<h2 id="cycles">cycles</h2>
+
+<p><code>cycles=&lt;cycle count&gt;</code></p>
+
+<p><code>cycles=&lt;cycle min&gt;..&lt;cycle max&gt;</code></p>
+
+<p>You <em>should</em> set the cycles for every activity. Not setting it means that only
+one or a few cycles will run, constituting a sanity check at best.</p>
+
+<p>The cycles parameter determines the starting and ending point for an activity.
+In the <code>cycles=&lt;cycle count&gt;</code> version, the count indicates the total number of
+cycles, and is equivalent to <code>cycles=0..&lt;cycle max&gt;</code>. In both cases, the max
+value is not the actual number of the last cycle. This is because all cycle
+parameters define a closed-open interval. In other words, the minimum value is
+either zero by default or the specified minimum value, but the maximum value is
+the first value <em>not</em> included in the interval. This means that you can easily
+stack intervals over subsequent runs while knowing that you will cover all
+logical cycles without gaps or duplicates. For example, given <code>cycles=1000</code> and
+then <code>cycles=1000..2000</code>, and then <code>cycles=2000..5K</code>, you know that all cycles
+between 0 (inclusive) and 5000 (exclusive) have been specified.</p>
+
+<h2 id="seq">seq</h2>
+
+<p><code>seq=&lt;bucket|concat|interval&gt;</code></p>
+
+<p>This activity parameter set the default sequencing scheme for ratios. When
+ratios are used in a YAML config, a sequencer planner uses the assigned ratios
+to create a sequence of operations. Presently, <em>seq</em> is only an activity
+parameter, as it is not yet possible to have more than one type of sequencer
+over the statements in a single activity.</p>
+
+<p>There are currently three different kinds of sequence planners:</p>
+
+<ul>
+<li><p>bucket - This is a round robin planner which draws operations from buckets in
+circular fashion, removing each bucket as it is exhausted. For example, the
+ratios A:4, B:2, C:1 would yield the sequence A B C A B A A. The ratios A:1, B5
+would yield the sequence A B B B B B.</p></li>
+
+<li><p>concat - This simply takes each statement as it occurs in order and duplicates
+it in place to achieve the ratio. The ratios above (A:4, B:2, C:1) would yield
+the sequence A A A A B B C for the concat sequencer.</p></li>
+
+<li><p>interval - This is arguably the most complex sequencer. It takes each ratio
+as a frequency over a unit interval of time, and apportions the associated
+operation to occur evenly over that time. When two operations would be assigned
+the same time, then the order of appearance establishes precedence. In other
+words, statements appearing first win ties for the same time slot. The ratios
+A:4 B:2 C:1 would yield the sequence A B C A A B A. This occurs because, over
+the unit interval (0.0,1.0), A is assigned the positions [0.0, 0.25, 0.5,
+0.75], B is assigned the positions [0.0, 0.5], and C is assigned position
+[0.0]. These offsets are all sorted with a position-stable sort, and then the
+associated ops are taken as the order. In detail, the rendering appears thus:
+[0.0(A), 0.0(B), 0.0&copy;, 0.25(A), 0.5(A), 0.5(B), 0.75(A)] which yields A B C A
+A B A. This sequencer is most useful when you want a stable ordering of
+operations from a rich mix of statement types, where each operations is spaced
+as evenly as possible over time, and where it is not important to control the
+cycle-by-cycle sequencing of statements.</p></li>
+</ul>
+
+<div class="admonition warning">
+<p class="admonition-title"></p>
+<p>Parameters which are documented below are for advanced testing scenarios.
+If you are a first-time EngineBlock user, it is recommended that you
+get familiar with the parameters above first. These parameters can unlock
+some of the advanced testing capabilities of EngineBlock, although they are
+not necessary for general performance testing.</p>
+</div>
+
+<h2 id="input">input</h2>
+
+<p><code>input=type:&lt;input type&gt;[,...]</code></p>
+
+<p>You <em>may</em> use input instead of <a href="#cycles">cycles</a> when needed for advanced test
+scenarios.</p>
+
+<p>Every activity requires a set of cycle numbers on which to operate. The default
+interval-based input simply provides a set of cycles from a closed-open interval.
+Sometimes you need to control the cycles in a more specific way, say, for testing
+exceptional cases from a previous run.</p>
+
+<p>The input activity parameter allows for reflection-based configuration of the
+input data source for an activity. The sub-parameters for <em>input</em> are dependent
+on the specific input implementation. To see those, use <code>--list-input-types</code>.</p>
+
+<p>Example: <code>input=type:cyclelog,file=lastrun</code></p>
+
+<p>The cycles parameter acts as shorthand for configuring a basic interval-based
+input when no other input type is specified. It is essential equivalent to
+<code>input=type:core,cycles=&lt;cycles&gt;</code>.</p>
+
+<h2 id="inputfilter">inputfilter</h2>
+
+<p><code>inputfilter=include:54,exclude:32-35,...</code></p>
+
+<p><code>if=include:54,exclude:32-35,...</code></p>
+
+<p>You <em>may</em> use <em>inputfilter</em> when <em>input</em> has also been specified.</p>
+
+<p>Some input types allow for filtering of the values on input according to a filter.</p>
+
+<h2 id="output">output</h2>
+
+<p><code>output=type:&lt;output type&gt;[,...]</code></p>
+
+<p>You <em>may</em> use <em>output</em> in order to capture the per-cycle results of a test to
+a buffer or file.</p>
+
+<p>EngineBlock activities can yield a result status ordinal that is a simple integer
+value. This can be useful, for example, to record the status of individual cycles
+according to a result mapping for that activity. By default, the output values
+are discarded. With the <em>output</em> parameter, you can specify a reflection-based
+output handler that will do something specific with the output values. To see
+the supported output types, use <code>--list-output-types</code>.</p>
+
+<p>Example: <code>output=type:cyclelog,file=testcycles</code></p>
+
+<h2 id="outputfilter">outputfilter</h2>
+
+<p><code>outputfilter=...</code></p>
+
+<p><code>of=...</code></p>
+
+<p>You <em>may</em> use <em>outputfilter</em> if <em>output</em> has also been specified.</p>
+
+<p>If an output is used, then an output filter can be provided that will filter
+results before any further downstream handling, like writing to a logfile, for example.
+Presently, the output</p>
 
 
 			<aside class="copyright" role="note">
@@ -638,7 +725,7 @@
 <nav class="pagination" aria-label="Footer">
   <div class="previous">
   
-      <a href="http://docs.engineblock.io/sketches/tracking_visually/" title="Tracking Diagrams">
+      <a href="http://docs.engineblock.io/dev-guide/standard_yam_devl/" title="YAML Config API">
         <span class="direction">
           Previous
         </span>
@@ -648,7 +735,7 @@
           </div>
           <div class="stretch">
             <div class="title">
-              Tracking Diagrams
+              YAML Config API
             </div>
           </div>
         </div>
@@ -658,14 +745,14 @@
 
   <div class="next">
   
-      <a href="http://docs.engineblock.io/user-guide/" title="User Guide">
+      <a href="http://docs.engineblock.io/parameters/parameter_usage/" title="Parameter Usage">
         <span class="direction">
           Next
         </span>
         <div class="page">
           <div class="stretch">
             <div class="title">
-              User Guide
+              Parameter Usage
             </div>
           </div>
           <div class="button button-next" role="button" aria-label="Next">

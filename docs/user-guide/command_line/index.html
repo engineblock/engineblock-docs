@@ -299,19 +299,6 @@
 
 
 
-<a  title="YAML Config Errors" href="http://docs.engineblock.io/user-guide/standard_yaml_errors/">
-	
-	YAML Config Errors
-</a>
-
-
-
-      
-        
-        
-
-
-
 <a  title="Using Metrics" href="http://docs.engineblock.io/user-guide/using_metrics/">
 	
 	Using Metrics
@@ -341,6 +328,69 @@
 <a  title="Scenario Scripting" href="http://docs.engineblock.io/user-guide/scenario_scripting/">
 	
 	Scenario Scripting
+</a>
+
+
+
+      
+    </ul>
+  
+</li>
+
+
+
+<li>
+  
+    <span class="section">Parameters</span>
+    <ul>
+      
+        
+        
+
+
+
+<a  title="Activity Params" href="http://docs.engineblock.io/parameters/activity_params/">
+	
+	Activity Params
+</a>
+
+
+
+      
+        
+        
+
+
+
+<a  title="Example Command" href="http://docs.engineblock.io/parameters/example_command/">
+	
+	Example Command
+</a>
+
+
+
+      
+        
+        
+
+
+
+<a  title="Parameter Usage" href="http://docs.engineblock.io/parameters/parameter_usage/">
+	
+	Parameter Usage
+</a>
+
+
+
+      
+        
+        
+
+
+
+<a  title="Statement Params" href="http://docs.engineblock.io/parameters/statement_params/">
+	
+	Statement Params
 </a>
 
 
@@ -473,62 +523,79 @@
 <pre><code>java -jar eb.jar --help
 </code></pre>
 
-<p>The most common and useful commands will be explained at some depth in this guide, however
-the built-in help above will be complete, with proper syntax for all commands.</p>
+<p>The most common and useful commands will be explained at some depth in this
+guide, however the built-in help above will be complete, with proper syntax for
+all commands.</p>
 
-<p>There is more than one way to invoke EngineBlock. The sections below explain more about them, with more detail about how EngineBlock works as you read further.</p>
+<p>There is more than one way to invoke EngineBlock. The sections below explain
+more about them, with more detail about how EngineBlock works as you read
+further.</p>
 
 <p><strong>Running a pre-defined activity</strong></p>
 
-<p>You may want to simply run one of the activities that are packaged with EB. This is the easiest way to use it, but also the one that offers the least amount of flexibility.</p>
+<p>You may want to simply run one of the activities that are packaged with
+EngineBlock. This is the easiest way to use it, but also the one that offers the
+least amount of flexibility.</p>
 
 <pre><code>java -jar eb.jar activity alias=&lt;alias&gt; type=&lt;type&gt; param=&lt;value&gt; ...
 </code></pre>
 
-<p>This shows you how to run an activity and set the initial parameters for it.
-have special characters in your activity parameters, you may need to use single or double quotes around the affected parameter, as in &ldquo;parameter2=some value&rdquo;.</p>
+<p>This shows you how to run an activity and set the initial parameters for it. If
+you have special characters in your activity parameters, you may need to use
+single or double quotes around the affected parameter, as in &ldquo;parameter2=some
+value&rdquo;.</p>
 
-<p>The activity option is, in fact, CLI sugar for scripting. It simply creates the script behind the scenes which will run the specified activities till they complete. In fact, this script snippet
-is added at the end of the current script buffer, in the order that it appears in the command line.</p>
+<p>The activity option is, in fact, CLI sugar for scripting. It simply creates the
+script behind the scenes which will run the specified activities till they
+complete. In fact, this script snippet is added at the end of the current script
+buffer, in the order that it appears in the command line.</p>
 
 <p><strong>Running a scenario script</strong></p>
 
-<p>If you actually do want to control the EB scenario with your own script logic, you can:</p>
+<p>If you actually do want to control the EngineBlock scenario with your own script logic,
+you can:</p>
 
 <pre><code>java -jar eb.jar script &lt;scriptfile&gt; param=value ...
 </code></pre>
 
-<p>This starts EngineBlock in script mode. In this mode, you provide a script which will control the scenario, starting activities, changing their behavior while they are running, and stopping them as you wish. This is called a Scenario Control Script, or simply <code>control script</code> for short.</p>
+<p>This starts EngineBlock in script mode. In this mode, you provide a script which
+will control the scenario, starting activities, changing their behavior while
+they are running, and stopping them as you wish. This is called a Scenario
+Control Script, or simply <em>scenario script</em> for short.</p>
 
-<p>With this mode, you can build test scenarios which are more sophisticated than a simple activity definition will allow.</p>
+<p>With this mode, you can build test scenarios which are more sophisticated than a
+simple activity definition will allow.</p>
 
-<p>No matter how you start an EngineBlock scenario, a control script is always the outer-most level of logic.</p>
+<p>No matter how you start an EngineBlock scenario, a control script is always the
+outer-most level of logic. The scripting runtime is simply Java 8&rsquo;s Nashorn. You
+can do anything in your script that it allows. Furthermore, elements of the
+<a href="concepts.md">core runtime</a> are wired into the scripting sandbox.</p>
 
-<p>The scripting runtime is simply Java 8&rsquo;s Nashorn. You can do anything in your script that it allows. Furthermore, elements of the <a href="concepts.md">core runtime</a> are wired into the scripting sandbox.</p>
-
-<p>You can combine <code>activity</code> and <code>script</code> options in the same command line:</p>
+<p>You can combine script and activity related command options in the same command
+line:</p>
 
 <pre><code>java -jar eb.jar \
-activity alias=test1 type=diag threads=2 interval=50  \
+start alias=test1 type=diag threads=2 interval=50  \
 script=script2.js \
-activity alias=test3 type=diag threads=2 interval=50 
+run alias=test3 type=diag threads=2 interval=50 
 </code></pre>
 
-<p>The order of execution is preserved. The only caveat is that activities that are added
-in this way will be required to run completion before the scenario script exits. The point
-at which they are inserted into the script buffer will determine when they are started. The
-cycle parameter on each one will determine how many cycles it runs for before graceful exit.</p>
+<p>The order of execution is preserved. The only caveat is that activities that are
+added in this way will be required to run completion before the scenario script
+exits. The point at which they are inserted into the script buffer will
+determine when they are started. The cycle parameter on each one will determine
+how many cycles it runs for before graceful exit.</p>
 
 <p><strong>Learning about activities</strong></p>
 
-<p>If you need to learn about what activity types are available in your runtime, their required parameters, etc, do this:</p>
+<p>If you need to learn about what activity types are available in your runtime,
+their required parameters, etc, do this:</p>
 
 <pre><code>java -jar eb.jar --list-activity-types
 </code></pre>
 
-<p>Each activity type that is known to your runtime will be listed.</p>
-
-<p>You can also learn more about a particular activity type like this:</p>
+<p>Each activity type that is known to your runtime will be listed. You can also
+learn more about a particular activity type like this:</p>
 
 <pre><code>java -jar eb.jar help &lt;activity type&gt;
 </code></pre>

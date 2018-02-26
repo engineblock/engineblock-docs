@@ -9,16 +9,16 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,maximum-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=10" />
-    <title>Vega Test - EngineBlock</title>
+    <title>Parameter Usage - EngineBlock</title>
     <meta name="generator" content="Hugo 0.31" />
 
     
     <meta name="description" content="EngineBlock Docs">
     
-    <link rel="canonical" href="http://docs.engineblock.io/sketches/vegatest/">
+    <link rel="canonical" href="http://docs.engineblock.io/parameters/parameter_usage/">
     
 
-    <meta property="og:url" content="http://docs.engineblock.io/sketches/vegatest/">
+    <meta property="og:url" content="http://docs.engineblock.io/parameters/parameter_usage/">
     <meta property="og:title" content="EngineBlock">
     <meta property="og:image" content="http://docs.engineblock.io/images/engineblock_128.png">
     <meta name="apple-mobile-web-app-title" content="EngineBlock">
@@ -73,10 +73,10 @@
   
     
     
-    <script src="http://docs.engineblock.io//modules/vega/vega.js"></script>
-    
 
     
+    
+    <script src="http://docs.engineblock.io//modules/viz/viz.js"></script>
     
 
     
@@ -141,7 +141,7 @@
     </div>
     <div class="stretch">
       <div class="title">
-        Vega Test
+        Parameter Usage
       </div>
     </div>
 
@@ -374,11 +374,14 @@
 
 
 
-<a  title="Parameter Usage" href="http://docs.engineblock.io/parameters/parameter_usage/">
+<a class="current" title="Parameter Usage" href="http://docs.engineblock.io/parameters/parameter_usage/">
 	
 	Parameter Usage
 </a>
 
+
+<ul id="scrollspy">
+</ul>
 
 
       
@@ -515,111 +518,162 @@
 
 	<article class="article">
 		<div class="wrapper">
-			<h1>Vega Test </h1>
+			<h1>Parameter Usage </h1>
 
-			<p>// Vega here below
+			
+
+<p>To configure an EngineBlock activity to do something meaningful, you have to
+provide parameters to it. This can occur in one of several ways. This section
+is a guide on EngineBlock parameters, how they layer together, and when to
+use one form over another.</p>
+
+<h2 id="command-line">Command Line</h2>
+
+<p>The command line is used to configure both the overall EngineBlock runtime
+(logging, etc) as well as the individual activities and scripts. Global
+EngineBLock options can be distinguished from scenario commands and their
+parameters because because global options always start with a single or double
+hyphen.</p>
+
+<p>In this section, we will only focus on scenario commands and their options.
+Scenario commands are single words without any leading hyphens. Any command-line
+argument that follows a scenario command in the form of <code>&lt;name&gt;=&lt;value&gt;</code> is a
+parameter to that command.</p>
+
+<h2 id="activity-params">Activity Params</h2>
+
+<p>An activity is initially configured with a set of <code>&lt;name&gt;=&lt;value&gt;</code> arguments on
+the command line. Parameters can have various useful properties as described below.</p>
+
+<h3 id="universal-params">Universal Params</h3>
+
+<p>Universal activity parameters are understood by all activities because they are
+part of the core API. Universal params include type*, <em>alias</em>, and <em>threads</em>,
+for example. Parameters that are universal should be documented as such anywhere
+they are mentioned. These parameters are explained individually in the <a href="http://docs.engineblock.io/user-guide/parameter_index/">Parameter Index</a></p>
+
+<h3 id="dynamic-params">Dynamic Params</h3>
+
+<p>Dynamic parameters are parameters which may be changed while an activity is
+running. This means that scenario scripting logic may change some variables
+while an activity is running, and that the runtime should dynamically adjust to
+match. Parameters that are dynamic should be documented as such anywhere they
+are mentioned. The <em>threads</em> parameter is both a universal and a dynamic
+parameter. For more information on using dynamic parameters while an activity is
+running, see <a href="http://docs.engineblock.io/user-guide/scenario_scripting/#scripting-environment">Scripting Environment</a></p>
+
+<h2 id="statement-params">Statement Params</h2>
+
+<p>Some activities make use of a <a href="http://docs.engineblock.io/user-guide/standard_yaml/">Standard YAML</a> format
+that allows for a set of statements and associated parameters to be defined in
+declarative form. When this format contains <code>param:</code> maps, the params apply
+directly to the associated statement definitions. These are called <em>statement
+params</em>. Be careful, however, not to confuse these params with the values that
+may be assigned to an individual instance of a statement or operation. The
+params defined in the YAML allow you to affect <em>how</em> a statement is used in a
+workload, not which values are associated with each instance of that statement.
+(That is the job of the <a href="http://docs.engineblock.io/user-guide/standard_yaml/#bindings">bindings</a> in the
+YAML format.)</p>
+
+<h2 id="template-params">Template Params</h2>
+
+<p>If you need to provide general-purpose overrides to a named section of the
+standard YAML, then you may use a mechanism called <a href="http://docs.engineblock.io/user-guide/standard_yaml/#template-params">Template
+Params</a>. These params are taken from
+the values provided for an activity, and if no such named parameter is provided,
+then the default is used as specified in the named template.</p>
+
+<h2 id="precedence">Precedence</h2>
+
+<p>Now that we&rsquo;ve described all the parameter types, let&rsquo;s tie them together.
+When an activity is loaded from the command line or script, the parameters are
+resolved in the following order:</p>
+
+<ol>
+<li>The <code>type</code> parameter tells EngineBlock which activity type implementation to load.</li>
+<li>The activity type implementation creates an activity.</li>
+<li>The activity is initialized with the parameters provided.</li>
+<li>If the activity uses the <a href="user-guide/standard_yaml">Standard YAML</a> as a config
+file, then tye <code>yaml</code> parameter is used to locate and load that file.
+4.1. Any template parameters in the file in <code>&lt;&lt;varname:default value&gt;&gt;</code> form
+    are resolved, taking override values from the provided params.</li>
+<li>Finally, the activity is started.</li>
+</ol>
+
+<h2 id="cli-parameters-and-yaml">CLI Parameters and YAML</h2>
 
 
-<div align="center" class="vega-text"><pre>
-{
-  &#34;$schema&#34;: &#34;https://vega.github.io/schema/vega/v3.0.json&#34;,
-  &#34;width&#34;: 400,
-  &#34;height&#34;: 200,
-  &#34;padding&#34;: 5,
 
-  &#34;data&#34;: [
-    {
-      &#34;name&#34;: &#34;table&#34;,
-      &#34;values&#34;: [
-        {&#34;category&#34;: &#34;A&#34;, &#34;amount&#34;: 28},
-        {&#34;category&#34;: &#34;B&#34;, &#34;amount&#34;: 55},
-        {&#34;category&#34;: &#34;C&#34;, &#34;amount&#34;: 43},
-        {&#34;category&#34;: &#34;D&#34;, &#34;amount&#34;: 91},
-        {&#34;category&#34;: &#34;E&#34;, &#34;amount&#34;: 81},
-        {&#34;category&#34;: &#34;F&#34;, &#34;amount&#34;: 53},
-        {&#34;category&#34;: &#34;G&#34;, &#34;amount&#34;: 19},
-        {&#34;category&#34;: &#34;H&#34;, &#34;amount&#34;: 87}
-      ]
-    }
-  ],
+<div align="center" class="viz-text"><pre>
+digraph params {
+ label=&#34;Parameter Dependencies and Precedence&#34;
+ tooltip=&#34;Mouse over individual components for more details!&#34; 
+ size=&#34;6&#34;
+ node[shape=&#34;box&#34;]
 
-  &#34;signals&#34;: [
-    {
-      &#34;name&#34;: &#34;tooltip&#34;,
-      &#34;value&#34;: {},
-      &#34;on&#34;: [
-        {&#34;events&#34;: &#34;rect:mouseover&#34;, &#34;update&#34;: &#34;datum&#34;},
-        {&#34;events&#34;: &#34;rect:mouseout&#34;,  &#34;update&#34;: &#34;{}&#34;}
-      ]
-    }
-  ],
+ subgraph cluster_cmdline {
+   label=&#34;command line&#34;
+   tooltip=&#34;This section represents the command line as it might appear before evaluation.&#34;
+   cmdline[shape=&#34;record&#34;,label=&#34;&lt;run&gt;run|&lt;type&gt;type=stdout|&lt;yaml&gt;yaml=example.yaml|&lt;cycles&gt;cycles=5000|&lt;myparam&gt;myparam=myvalue&#34;
+    tooltip=&#34;This is the raw command line as it might appear before evaluation.&#34;]
+ }
 
-  &#34;scales&#34;: [
-    {
-      &#34;name&#34;: &#34;xscale&#34;,
-      &#34;type&#34;: &#34;band&#34;,
-      &#34;domain&#34;: {&#34;data&#34;: &#34;table&#34;, &#34;field&#34;: &#34;category&#34;},
-      &#34;range&#34;: &#34;width&#34;
-    },
-    {
-      &#34;name&#34;: &#34;yscale&#34;,
-      &#34;domain&#34;: {&#34;data&#34;: &#34;table&#34;, &#34;field&#34;: &#34;amount&#34;},
-      &#34;nice&#34;: true,
-      &#34;range&#34;: &#34;height&#34;
-    }
-  ],
+ subgraph cluster_cmd {
+   label=&#34;command&#34;
+   run_cmd[label=&#34;run&#34;, tooltip=&#34;tells EngineBlock to run an activity of the specified type&#34;] 
+ }
+ 
+ subgraph cluster_activity_types {
+    label=&#34;activity types&#34;
+    stdout [label=&#34;stdout\nActivity\nType&#34;]
+ }
+ 
+ cmdline:run -&gt; run_cmd;
+ cmdline:type -&gt; type_param;
+ cmdline:yaml -&gt; yaml_param;
+ cmdline:cycles -&gt; cycles_param;
+ cmdline:myparam -&gt; myparam_param;
 
-  &#34;axes&#34;: [
-    { &#34;orient&#34;: &#34;bottom&#34;, &#34;scale&#34;: &#34;xscale&#34; },
-    { &#34;orient&#34;: &#34;left&#34;, &#34;scale&#34;: &#34;yscale&#34; }
-  ],
+ subgraph cluster_params {
+   label=&#34;activity params&#34;
+   type_param[label=&#34;type=stdout&#34; tooltip=&#34;tells engineblock what type of activity to run&#34;]
+   yaml_param[label=&#34;yaml=example.yaml&#34; tooltip=&#34;tells the loaded activity type which yaml file to load, if YAML is supported for that type&#34;]
+   cycles_param[label=&#34;cycles=5000&#34; tooltip=&#34;tells engineblock how to configure the input that will feed this activity&#34;]
+   myparam_param[label=&#34;myparam=myvalue&#34; tooltip=&#34;a generic parameter that can be used to configure the activity or the YAML template variables&#34;]
 
-  &#34;marks&#34;: [
-    {
-      &#34;type&#34;: &#34;rect&#34;,
-      &#34;from&#34;: {&#34;data&#34;:&#34;table&#34;},
-      &#34;encode&#34;: {
-        &#34;enter&#34;: {
-          &#34;x&#34;: {&#34;scale&#34;: &#34;xscale&#34;, &#34;field&#34;: &#34;category&#34;, &#34;offset&#34;: 1},
-          &#34;width&#34;: {&#34;scale&#34;: &#34;xscale&#34;, &#34;band&#34;: 1, &#34;offset&#34;: -1},
-          &#34;y&#34;: {&#34;scale&#34;: &#34;yscale&#34;, &#34;field&#34;: &#34;amount&#34;},
-          &#34;y2&#34;: {&#34;scale&#34;: &#34;yscale&#34;, &#34;value&#34;: 0}
-        },
-        &#34;update&#34;: {
-          &#34;fill&#34;: {&#34;value&#34;: &#34;steelblue&#34;}
-        },
-        &#34;hover&#34;: {
-          &#34;fill&#34;: {&#34;value&#34;: &#34;red&#34;}
-        }
-      }
-    },
-    {
-      &#34;type&#34;: &#34;text&#34;,
-      &#34;encode&#34;: {
-        &#34;enter&#34;: {
-          &#34;align&#34;: {&#34;value&#34;: &#34;center&#34;},
-          &#34;baseline&#34;: {&#34;value&#34;: &#34;bottom&#34;},
-          &#34;fill&#34;: {&#34;value&#34;: &#34;#333&#34;}
-        },
-        &#34;update&#34;: {
-          &#34;x&#34;: {&#34;scale&#34;: &#34;xscale&#34;, &#34;signal&#34;: &#34;tooltip.category&#34;, &#34;band&#34;: 0.5},
-          &#34;y&#34;: {&#34;scale&#34;: &#34;yscale&#34;, &#34;signal&#34;: &#34;tooltip.amount&#34;, &#34;offset&#34;: -2},
-          &#34;text&#34;: {&#34;signal&#34;: &#34;tooltip.amount&#34;},
-          &#34;fillOpacity&#34;: [
-            {&#34;test&#34;: &#34;datum === tooltip&#34;, &#34;value&#34;: 0},
-            {&#34;value&#34;: 1}
-          ]
-        }
-      }
-    }
-  ]
+    type_param -&gt; stdout[label=&#34;selects&#34; tooltip=&#34;&#34;]
+   
+ }
+ 
+ subgraph cluster_eb_runtime {
+   label=&#34;EngineBlock runtime&#34;
+   subgraph activity_runtime {
+     label=&#34;Activity Instance&#34;
+    activity [label=&#34;Activity(stdout)&#34;]
+    yaml_file[shape=&#34;note&#34; label=&#34;YAML\n(example.yaml)&#34; tooltip=&#34;statements:\ns2&#34;]
+    runtime_params[label=&#34;Activity Params&#34; tooltip=&#34;The parameters are kept in an observable map in the activity instance&#34;]
+    
+    type_param -&gt; runtime_params;
+    yaml_param -&gt; runtime_params;
+    cycles_param -&gt; runtime_params;
+    myparam_param -&gt; runtime_params;  
+
+  template_variables[label=&#34;Template Variables&#34;] 
+
+  run_cmd -&gt; stdout [label=&#34;loads\nelected\ntype&#34;]
+  activity -&gt; yaml_file [label=&#34;loads&#34;]
+  runtime_params -&gt; template_variables [label=&#34;set&#34; tooltip=&#34;Matching variable names from the activity parameters are used to set template variables.&#34;]
+  stdout -&gt; activity [label=&#34;instantiates&#34;]
+  }
+ }
+ 
+ yaml_file -&gt; template_variables[label=&#34;contains&#34;]
+ 
+ 
 }
 </pre></div>
+<script type="text/javascript" src="http://docs.engineblock.io/modules/viz/inithook-viz.js"></script>
 
-
-<script type="text/javascript" src="http://docs.engineblock.io/modules/vega/inithook-vega.js"></script>
-
-// Vega here above</p>
 
 
 			<aside class="copyright" role="note">
@@ -638,7 +692,7 @@
 <nav class="pagination" aria-label="Footer">
   <div class="previous">
   
-      <a href="http://docs.engineblock.io/sketches/tracking_visually/" title="Tracking Diagrams">
+      <a href="http://docs.engineblock.io/parameters/activity_params/" title="Activity Params">
         <span class="direction">
           Previous
         </span>
@@ -648,7 +702,7 @@
           </div>
           <div class="stretch">
             <div class="title">
-              Tracking Diagrams
+              Activity Params
             </div>
           </div>
         </div>
@@ -658,14 +712,14 @@
 
   <div class="next">
   
-      <a href="http://docs.engineblock.io/user-guide/" title="User Guide">
+      <a href="http://docs.engineblock.io/parameters/statement_params/" title="Statement Params">
         <span class="direction">
           Next
         </span>
         <div class="page">
           <div class="stretch">
             <div class="title">
-              User Guide
+              Statement Params
             </div>
           </div>
           <div class="button button-next" role="button" aria-label="Next">

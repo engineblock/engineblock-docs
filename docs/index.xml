@@ -13,12 +13,22 @@
     
     
     <item>
+      <title>Example Command</title>
+      <link>http://docs.engineblock.io/parameters/example_command/</link>
+      <pubDate>Fri, 19 May 2017 21:52:57 +0000</pubDate>
+      
+      <guid>http://docs.engineblock.io/parameters/example_command/</guid>
+      <description>Most new users will be interested in a command line pattern that looks very much like this:
+./eb... run type=stdout alias=test1 yaml=mystmts cycles=5M -v  This is basically telling EngineBlock to load an activity type known as stdout, naming it test1, with an input interval between 0 (inclusive) and 5000000 (exclusive), with statements and any other settings loaded from the file test1.yaml, using the the Standard YAML. This is a very common usage pattern for tools based on EngineBlock.</description>
+    </item>
+    
+    <item>
       <title>Concepts</title>
       <link>http://docs.engineblock.io/user-guide/concepts/</link>
       <pubDate>Fri, 19 May 2017 21:52:57 +0000</pubDate>
       
       <guid>http://docs.engineblock.io/user-guide/concepts/</guid>
-      <description>EngineBlock (EB) is a machine pattern for load test design and execution. This guide is intended to illustrate the moving parts and how they work together.
+      <description>EngineBlock is a machine pattern for test design and execution. This guide is intended to illustrate the moving parts and how they work together.
 Scenario EngineBlock executes performance testing scenarios in a Nashorn scripting environment. The scenario is in the form of a script, either constructed on-the-fly from the command line options, or directly created by a scenario designer.
 Activity A scenario can have multiple activities. Each activity runs independently of the others, and independently of the control flow of the scenario script.</description>
     </item>
@@ -59,8 +69,40 @@ Metric Outputs Metrics from a scenario run can be gathered in multiple ways:
       <pubDate>Tue, 24 Oct 2017 00:00:00 +0000</pubDate>
       
       <guid>http://docs.engineblock.io/dev-guide/standard_yam_devl/</guid>
-      <description>In the EB 2.* and newer versions, a standard YAML configuration format is provided that makes it easy to use for any activity that requires statements, tags, parameters and data bindings. This section describes how to use it as a developer*. Developers should already be familiar with the user guide for the YAML config format first.
+      <description>In the EngineBlock 2.* and newer versions, a standard YAML configuration format is provided that makes it easy to use for any activity that requires statements, tags, parameters and data bindings. This section describes how to use it as a developer*. Developers should already be familiar with the user guide for the YAML config format first.
 Simple Usage StrInterpolater interpolator = new StrInterpolater(activityDef); String yaml_loc = activityDef.getParams().getOptionalString(&amp;quot;yaml&amp;quot;).orElse(&amp;quot;default&amp;quot;); StmtsDocList sdl = StatementsLoader.</description>
+    </item>
+    
+    <item>
+      <title>Activity Params</title>
+      <link>http://docs.engineblock.io/parameters/activity_params/</link>
+      <pubDate>Fri, 19 May 2017 21:52:57 +0000</pubDate>
+      
+      <guid>http://docs.engineblock.io/parameters/activity_params/</guid>
+      <description>Activity parameters are passed as named arguments for an activity, either on the command line or via a scenario script. On the command line, these take the form of
+&amp;lt;paramname&amp;gt;=&amp;lt;paramvalue&amp;gt;  Some activity parameters are universal in that they can be used with any activity type. These parameters are recognized by EngineBlock whether or not they are recognized by a particular activity type implementation. These are called universal activity parameters.</description>
+    </item>
+    
+    <item>
+      <title>Parameter Usage</title>
+      <link>http://docs.engineblock.io/parameters/parameter_usage/</link>
+      <pubDate>Fri, 19 May 2017 21:52:57 +0000</pubDate>
+      
+      <guid>http://docs.engineblock.io/parameters/parameter_usage/</guid>
+      <description>To configure an EngineBlock activity to do something meaningful, you have to provide parameters to it. This can occur in one of several ways. This section is a guide on EngineBlock parameters, how they layer together, and when to use one form over another.
+Command Line The command line is used to configure both the overall EngineBlock runtime (logging, etc) as well as the individual activities and scripts. Global EngineBLock options can be distinguished from scenario commands and their parameters because because global options always start with a single or double hyphen.</description>
+    </item>
+    
+    <item>
+      <title>Statement Params</title>
+      <link>http://docs.engineblock.io/parameters/statement_params/</link>
+      <pubDate>Fri, 19 May 2017 21:52:57 +0000</pubDate>
+      
+      <guid>http://docs.engineblock.io/parameters/statement_params/</guid>
+      <description>Statement parameters apply to the defined operations for an activity. Statement parameters are always configurable as part of a params block in YAML, for activities that use the Standard YAML format.
+In some cases, an Activity Parameter of the same name can be used to establish a default value. In that case, it will be documented here with the parameter description.
+ratio ratio: &amp;lt;ratio&amp;gt;
+Determines the frequency of the affected statements in the operational sequence.</description>
     </item>
     
     <item>
@@ -231,15 +273,6 @@ What is Slot Assembly? Slot assembly in this context simply refers the logic tha
       <guid>http://docs.engineblock.io/user-guide/standard_yaml/</guid>
       <description>In the EngineBlock 2.* and newer versions, a standard YAML configuration format is provided that makes it easy to use for any activity that requires statements, tags, parameters and data bindings. In practice, any useful activity types have needed these. This section describes the standard YAML format and how to use it.
 A valid config file for an activity consists of statements, parameters for those statements, bindings for the data to use with those statements, and tags for selecting statements for an activity.</description>
-    </item>
-    
-    <item>
-      <title>YAML Config Errors</title>
-      <link>http://docs.engineblock.io/user-guide/standard_yaml_errors/</link>
-      <pubDate>Tue, 24 Oct 2017 00:00:00 +0000</pubDate>
-      
-      <guid>http://docs.engineblock.io/user-guide/standard_yaml_errors/</guid>
-      <description></description>
     </item>
     
     <item>

@@ -304,19 +304,6 @@
 
 
 
-<a  title="YAML Config Errors" href="http://docs.engineblock.io/user-guide/standard_yaml_errors/">
-	
-	YAML Config Errors
-</a>
-
-
-
-      
-        
-        
-
-
-
 <a  title="Using Metrics" href="http://docs.engineblock.io/user-guide/using_metrics/">
 	
 	Using Metrics
@@ -346,6 +333,69 @@
 <a  title="Scenario Scripting" href="http://docs.engineblock.io/user-guide/scenario_scripting/">
 	
 	Scenario Scripting
+</a>
+
+
+
+      
+    </ul>
+  
+</li>
+
+
+
+<li>
+  
+    <span class="section">Parameters</span>
+    <ul>
+      
+        
+        
+
+
+
+<a  title="Activity Params" href="http://docs.engineblock.io/parameters/activity_params/">
+	
+	Activity Params
+</a>
+
+
+
+      
+        
+        
+
+
+
+<a  title="Example Command" href="http://docs.engineblock.io/parameters/example_command/">
+	
+	Example Command
+</a>
+
+
+
+      
+        
+        
+
+
+
+<a  title="Parameter Usage" href="http://docs.engineblock.io/parameters/parameter_usage/">
+	
+	Parameter Usage
+</a>
+
+
+
+      
+        
+        
+
+
+
+<a  title="Statement Params" href="http://docs.engineblock.io/parameters/statement_params/">
+	
+	Statement Params
 </a>
 
 
@@ -566,8 +616,8 @@ a:8-&gt;b:8; a:9-&gt;b:9;
 is necessary to break the number line into a set of uniformly sized intervals.
 This allows for modulo-style assignment of a cycle number to a marking bucket.
 For example, if you were tracking full completion of every 8 cycles in a bucket,
-then you would break the cycles into logical units like this, with a simple &ldquo;mod 8&rdquo; operation,
-which is also equivalent to masking off all but 3 LSBs.</p>
+then you would break the cycles into logical units like this, with a simple &ldquo;mod
+8&rdquo; operation, which is also equivalent to masking off all but 3 LSBs.</p>
 
 
 
@@ -584,9 +634,9 @@ rankdir=LR;
 <script type="text/javascript" src="http://docs.engineblock.io/modules/viz/inithook-viz.js"></script>
 
 
-<p>In this case, it is possible to efficiently pace each segment as a unit, by allowing for
-efficient concurrent counting algorithms to operate exclusively on the segment state
-without exposing it yet to the reader side.</p>
+<p>In this case, it is possible to efficiently pace each segment as a unit, by
+allowing for efficient concurrent counting algorithms to operate exclusively on
+the segment state without exposing it yet to the reader side.</p>
 
 <h2 id="stride-and-filtering">Stride and Filtering</h2>
 
@@ -595,8 +645,8 @@ cycles to be processed within each thread, filtering may become a challenge.
 This is because you may want the same type of operational grouping within a downstream
 thread as you have in an upstream thread.</p>
 
-<p>Here is the current flow of stride, as managed by a thread harness (AKA a Motor in EB parlance),
-an input, and an action:</p>
+<p>Here is the current flow of stride, as managed by a thread harness (AKA a Motor
+in EngineBlock parlance), an input, and an action:</p>
 
 
 
@@ -610,9 +660,10 @@ Action-&gt;Motor: result
 <script type="text/javascript" src="http://docs.engineblock.io/modules/jssequence/inithook-jssequence.js"></script>
 
 
-<p>That means that any filtering needs to be applied at the motor level, after applying stride, but
-before providing the cycles to the Action. This is also in keeping with the desire to avoid
-injecting inter-activity flow logic into the programming scope of individual activities.</p>
+<p>That means that any filtering needs to be applied at the motor level, after
+applying stride, but before providing the cycles to the Action. This is also in
+keeping with the desire to avoid injecting inter-activity flow logic into the
+programming scope of individual activities.</p>
 
 <p>The revised <em>stride &amp; filter</em> scenario looks like this:</p>
 
@@ -648,9 +699,10 @@ result codes.</p>
 
 <h3 id="locking-and-signals">Locking and Signals</h3>
 
-<p>Locking should be kept to a minimum. The only time locks should be used at all is when there
-is a blocking state that would otherwise consume resources in an idle loop, and for which
-there is a proper and coherent signaling scheme available.</p>
+<p>Locking should be kept to a minimum. The only time locks should be used at all
+is when there is a blocking state that would otherwise consume resources in an
+idle loop, and for which there is a proper and coherent signaling scheme
+available.</p>
 
 <ul>
 <li>nowMarking signal should be set any time a new extent is added.

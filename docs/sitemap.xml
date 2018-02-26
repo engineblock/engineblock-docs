@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>http://docs.engineblock.io/parameters/example_command/</loc>
+    <lastmod>2017-05-19T21:52:57+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://docs.engineblock.io/user-guide/concepts/</loc>
     <lastmod>2017-05-19T21:52:57+00:00</lastmod>
   </url>
@@ -25,6 +30,21 @@
   <url>
     <loc>http://docs.engineblock.io/dev-guide/standard_yam_devl/</loc>
     <lastmod>2017-10-24T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://docs.engineblock.io/parameters/activity_params/</loc>
+    <lastmod>2017-05-19T21:52:57+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://docs.engineblock.io/parameters/parameter_usage/</loc>
+    <lastmod>2017-05-19T21:52:57+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://docs.engineblock.io/parameters/statement_params/</loc>
+    <lastmod>2017-05-19T21:52:57+00:00</lastmod>
   </url>
   
   <url>
@@ -113,11 +133,6 @@
   </url>
   
   <url>
-    <loc>http://docs.engineblock.io/user-guide/standard_yaml_errors/</loc>
-    <lastmod>2017-10-24T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>http://docs.engineblock.io/sketches/</loc>
     <lastmod>2017-05-19T21:51:26+00:00</lastmod>
   </url>
@@ -162,6 +177,12 @@
   <url>
     <loc>http://docs.engineblock.io/historic/</loc>
     <lastmod>2017-05-19T22:09:53+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://docs.engineblock.io/parameters/</loc>
+    <lastmod>2017-05-19T21:52:57+00:00</lastmod>
     <priority>0</priority>
   </url>
   

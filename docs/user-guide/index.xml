@@ -18,7 +18,7 @@
       <pubDate>Fri, 19 May 2017 21:52:57 +0000</pubDate>
       
       <guid>http://docs.engineblock.io/user-guide/concepts/</guid>
-      <description>EngineBlock (EB) is a machine pattern for load test design and execution. This guide is intended to illustrate the moving parts and how they work together.
+      <description>EngineBlock is a machine pattern for test design and execution. This guide is intended to illustrate the moving parts and how they work together.
 Scenario EngineBlock executes performance testing scenarios in a Nashorn scripting environment. The scenario is in the form of a script, either constructed on-the-fly from the command line options, or directly created by a scenario designer.
 Activity A scenario can have multiple activities. Each activity runs independently of the others, and independently of the control flow of the scenario script.</description>
     </item>
@@ -92,15 +92,6 @@ For more basic setup and sequencing needs, you can achive a fair degree of flexi
       <guid>http://docs.engineblock.io/user-guide/standard_yaml/</guid>
       <description>In the EngineBlock 2.* and newer versions, a standard YAML configuration format is provided that makes it easy to use for any activity that requires statements, tags, parameters and data bindings. In practice, any useful activity types have needed these. This section describes the standard YAML format and how to use it.
 A valid config file for an activity consists of statements, parameters for those statements, bindings for the data to use with those statements, and tags for selecting statements for an activity.</description>
-    </item>
-    
-    <item>
-      <title>YAML Config Errors</title>
-      <link>http://docs.engineblock.io/user-guide/standard_yaml_errors/</link>
-      <pubDate>Tue, 24 Oct 2017 00:00:00 +0000</pubDate>
-      
-      <guid>http://docs.engineblock.io/user-guide/standard_yaml_errors/</guid>
-      <description></description>
     </item>
     
   </channel>

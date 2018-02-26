@@ -299,19 +299,6 @@
 
 
 
-<a  title="YAML Config Errors" href="http://docs.engineblock.io/user-guide/standard_yaml_errors/">
-	
-	YAML Config Errors
-</a>
-
-
-
-      
-        
-        
-
-
-
 <a  title="Using Metrics" href="http://docs.engineblock.io/user-guide/using_metrics/">
 	
 	Using Metrics
@@ -341,6 +328,69 @@
 <a  title="Scenario Scripting" href="http://docs.engineblock.io/user-guide/scenario_scripting/">
 	
 	Scenario Scripting
+</a>
+
+
+
+      
+    </ul>
+  
+</li>
+
+
+
+<li>
+  
+    <span class="section">Parameters</span>
+    <ul>
+      
+        
+        
+
+
+
+<a  title="Activity Params" href="http://docs.engineblock.io/parameters/activity_params/">
+	
+	Activity Params
+</a>
+
+
+
+      
+        
+        
+
+
+
+<a  title="Example Command" href="http://docs.engineblock.io/parameters/example_command/">
+	
+	Example Command
+</a>
+
+
+
+      
+        
+        
+
+
+
+<a  title="Parameter Usage" href="http://docs.engineblock.io/parameters/parameter_usage/">
+	
+	Parameter Usage
+</a>
+
+
+
+      
+        
+        
+
+
+
+<a  title="Statement Params" href="http://docs.engineblock.io/parameters/statement_params/">
+	
+	Statement Params
 </a>
 
 
@@ -552,7 +602,8 @@ statement template from the provided bindings if needed, so this is valid:</p>
 
 <p>If you combine the statement section and the bindings sections above into one
 activity yaml, you get a slightly different result, as the bindings apply
-to the statements that are provided:</p>
+to the statements that are provided, rather than creating a default statement
+for the bindings. See the example below:</p>
 
 <pre><code class="language-text">[test]$ cat &gt; stdout-test.yaml
 statements:
@@ -624,7 +675,7 @@ useful way.</p>
 get used in a given scenario:</p>
 
 <pre><code class="language-yaml">tags:
- name:foxtrot
+ name: foxtrot
  unit: bravo
 </code></pre>
 
@@ -640,8 +691,9 @@ The rules for tag filtering are:</p>
 tag name, regardless of its value.</li>
 <li>A tag value predicate like <code>tags=name:foxtrot</code> asserts the presence of
 a specific tag name and a specific value for it.</li>
-<li>A tag pattern predicate like <code>tags=name:&lsquo;fox.*&rsquo;</code> asserts the presence of a
+<li>A tag pattern predicate like <code>tags=name:'fox.*'</code> asserts the presence of a
 specific tag name and a value that matches the provided regular expression.</li>
+<li>Multiple tag predicates may be specified as in <code>tags=name:'fox.*',unit:bravo</code></li>
 <li>Tag predicates are joined by <em>and</em> when more than one is provided &ndash; If any predicate
 fails to match a tagged element, then the whole tag filtering expression fails
 to match.</li>
@@ -673,7 +725,7 @@ I'm alive!
 [test]$ ./eb run type=stdout yaml=stdout-test tags=name:bravo
 02:25:42.584 [scenarios:001] ERROR i.e.activities.stdout.StdoutActivity - Unable to create a stdout statement if you have no active statements or bindings configured.
 
-#tag value assertion matches
+# tag value assertion matches
 [test]$ ./eb run type=stdout yaml=stdout-test tags=name:foxtrot
 I'm alive!
 
@@ -681,9 +733,19 @@ I'm alive!
 [test]$ ./eb run type=stdout yaml=stdout-test tags=name:'fox.*'
 I'm alive!
 
-#tag pattern assertion does not match
+# tag pattern assertion does not match
 [test]$ ./eb run type=stdout yaml=stdout-test tags=name:'tango.*'
 02:26:05.149 [scenarios:001] ERROR i.e.activities.stdout.StdoutActivity - Unable to create a stdout statement if you have no active statements or bindings configured.
+
+# compound tag predicate matches every assertion
+[test]$ ./eb run type=stdout yaml=stdout-test tags='name=fox.*',unit=bravo
+I'm alive!
+
+# compound tag predicate does not fully match
+[test]$ ./eb run type=stdout yaml=stdout-test tags='name=fox.*',unit=delta
+11:02:53.490 [scenarios:001] ERROR i.e.activities.stdout.StdoutActivity - Unable to create a stdout statement if you have no active statements or bindings configured.
+
+
 </code></pre>
 
 <h2 id="blocks">Blocks</h2>
@@ -733,27 +795,6 @@ that document, unless specifically overridden within a given block.</p>
 
 <h2 id="more-statements">More Statements</h2>
 
-<h3 id="statement-sequences">Statement Sequences</h3>
-
-<p>To provide a degree of flexibility to the user for statement definitions,
-multiple statements may be provided together as a sequence.</p>
-
-<pre><code class="language-yaml"># a list of statements
-statements:
- - &quot;This a statement.&quot;
- - &quot;The file format doesn't know how statements will be used.&quot;
- - &quot;submit job {job} on queue {queue} with options {options};&quot;
-
-# an ordered map of statements by name
-statements:
- name1: statement one
- name2: &quot;statement two&quot;
-</code></pre>
-
-<p>In the first sequence form, automatic statement naming occurs. In the last form,
-each statement has a name provided as a key. The only difference between these
-two forms is that the names are provided automatically in the first.</p>
-
 <h3 id="statement-delimiting">Statement Delimiting</h3>
 
 <p>Sometimes, you want to specify the text of a statement in different ways. Since
@@ -788,12 +829,32 @@ not, and so forth. For a more comprehensive guide on the YAML conventions
 regarding multi-line blocks, see <a href="http://www.yaml.org/spec/1.2/spec.html#Block">YAML Spec 1.2, Chapter 8, Block
 Styles</a></p>
 
-<h3 id="statement-overrides">Statement Overrides</h3>
+<h3 id="statement-sequences">Statement Sequences</h3>
 
-<p>In addition to the basic statement forms explained above in <a href="#statement-sequences">Statement
-Sequences</a>, there is another called a <em>statement config map</em>:</p>
+<p>To provide a degree of flexibility to the user for statement definitions,
+multiple statements may be provided together as a sequence.</p>
 
-<pre><code class="language-yaml"># a list of statement config maps
+<pre><code class="language-yaml"># a list of statements
+statements:
+ - &quot;This a statement.&quot;
+ - &quot;The file format doesn't know how statements will be used.&quot;
+ - &quot;submit job {job} on queue {queue} with options {options};&quot;
+
+# an ordered map of statements by name
+statements:
+ name1: statement one
+ name2: &quot;statement two&quot;
+</code></pre>
+
+<p>In the first form, the names are provided automatically by the YAML loader. In
+the second form, they are specified as ordered map keys.</p>
+
+<h3 id="statement-properties">Statement Properties</h3>
+
+<p>You can also configure individual statements with named properties, using the
+<strong>statement properties</strong> form:</p>
+
+<pre><code class="language-yaml"># a list of statements with properties
 statements:
  - name: name1
    stmt: statement one
@@ -801,11 +862,12 @@ statements:
    stmt: statement two
 </code></pre>
 
-<p>This is the most flexible configuration format at the statement level, however
-it is also the most verbose. Because this format names each property of the
-statement, it allows for other properties to be defined at this level as well.
-This includes all of the previously described configuration elements: bindings,
-params, and tags. A detailed example follows:</p>
+<p>This is the most flexible configuration format at the statement level. It is
+also the most verbose. Because this format names each property of the statement,
+it allows for other properties to be defined at this level as well. This
+includes all of the previously described configuration elements: <code>name</code>,
+<code>bindings</code>, <code>params</code>, <code>tags</code>, and additionally <code>stmt</code>. A detailed example
+follows:</p>
 
 <pre><code class="language-yaml">statements:
  - name: foostmt
@@ -821,9 +883,9 @@ params, and tags. A detailed example follows:</p>
 
 <p>In this case, the values for <code>bindings</code>, <code>params</code>, and <code>tags</code> take precedence,
 overriding those set by the enclosing block or document or activity when the
-names match. Additionally, parameters called <strong>free parameters</strong> are allowed here,
-such as <code>freeparam3</code>. These are simply values that get assigned to the params
-map once all other processing has completed.</p>
+names match. Parameters called <strong>free parameters</strong> are allowed here, such as
+<code>freeparam3</code>. These are simply values that get assigned to the params map once
+all other processing has completed.</p>
 
 <p>It is possible to mix the <strong><code>&lt;name&gt;: &lt;statement&gt;</code></strong> form as above in the
 example for mapping statement by name, so long as some specific rules are
@@ -838,14 +900,18 @@ followed. An example, which is equivalent to the above:</p>
     tag1: tvalue1
 </code></pre>
 
-<p>In this case, you must avoid using both the name property and the initial
-<strong><code>&lt;name&gt;: &lt;statement&gt;</code></strong> together. Doing so will cause an error to be thrown.
-Further, it is not possible to detect when the user has combined both the
-<strong><code>&lt;name&gt;: &lt;statement&gt;</code></strong> form and the <strong><code>stmt: &lt;statement&gt;</code></strong>, so use caution
-when mixing forms.</p>
+<p>The rules:</p>
 
-<p>As explained above, <code>parm1: pvalue1</code> is as a <em>free parameter</em>, and is
-simply short-hand for setting values in the params map for the statement.</p>
+<ol>
+<li>You must avoid using both the name property and the initial
+<strong><code>&lt;name&gt;: &lt;statement&gt;</code></strong> together. Doing so will cause an error to be thrown.</li>
+<li>Do not use the <strong><code>&lt;name&gt;: &lt;statement&gt;</code></strong> form in combination with a
+<strong><code>stmt: &lt;statement&gt;</code></strong> property. It is not possible to detect if this occurs.
+Use caution if you choose to mix these forms.</li>
+</ol>
+
+<p>As explained above, <code>parm1: pvalue1</code> is a <em>free parameter</em>, and is simply
+short-hand for setting values in the params map for the statement.</p>
 
 <h3 id="per-statement-format">Per-Statement Format</h3>
 
@@ -1086,14 +1152,14 @@ on the type of YAML file you are trying to load.</p>
 
   <div class="next">
   
-      <a href="http://docs.engineblock.io/user-guide/standard_yaml_errors/" title="YAML Config Errors">
+      <a href="http://docs.engineblock.io/sketches/" title="Design Sketches">
         <span class="direction">
           Next
         </span>
         <div class="page">
           <div class="stretch">
             <div class="title">
-              YAML Config Errors
+              Design Sketches
             </div>
           </div>
           <div class="button button-next" role="button" aria-label="Next">

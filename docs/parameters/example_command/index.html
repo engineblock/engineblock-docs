@@ -9,16 +9,16 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,maximum-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=10" />
-    <title>YAML Config Errors - EngineBlock</title>
+    <title>Example Command - EngineBlock</title>
     <meta name="generator" content="Hugo 0.31" />
 
     
     <meta name="description" content="EngineBlock Docs">
     
-    <link rel="canonical" href="http://docs.engineblock.io/user-guide/standard_yaml_errors/">
+    <link rel="canonical" href="http://docs.engineblock.io/parameters/example_command/">
     
 
-    <meta property="og:url" content="http://docs.engineblock.io/user-guide/standard_yaml_errors/">
+    <meta property="og:url" content="http://docs.engineblock.io/parameters/example_command/">
     <meta property="og:title" content="EngineBlock">
     <meta property="og:image" content="http://docs.engineblock.io/images/engineblock_128.png">
     <meta name="apple-mobile-web-app-title" content="EngineBlock">
@@ -139,7 +139,7 @@
     </div>
     <div class="stretch">
       <div class="title">
-        YAML Config Errors
+        Example Command
       </div>
     </div>
 
@@ -296,22 +296,6 @@
 
 
 
-<a class="current" title="YAML Config Errors" href="http://docs.engineblock.io/user-guide/standard_yaml_errors/">
-	
-	YAML Config Errors
-</a>
-
-
-<ul id="scrollspy">
-</ul>
-
-
-      
-        
-        
-
-
-
 <a  title="Using Metrics" href="http://docs.engineblock.io/user-guide/using_metrics/">
 	
 	Using Metrics
@@ -341,6 +325,72 @@
 <a  title="Scenario Scripting" href="http://docs.engineblock.io/user-guide/scenario_scripting/">
 	
 	Scenario Scripting
+</a>
+
+
+
+      
+    </ul>
+  
+</li>
+
+
+
+<li>
+  
+    <span class="section">Parameters</span>
+    <ul>
+      
+        
+        
+
+
+
+<a  title="Activity Params" href="http://docs.engineblock.io/parameters/activity_params/">
+	
+	Activity Params
+</a>
+
+
+
+      
+        
+        
+
+
+
+<a class="current" title="Example Command" href="http://docs.engineblock.io/parameters/example_command/">
+	
+	Example Command
+</a>
+
+
+<ul id="scrollspy">
+</ul>
+
+
+      
+        
+        
+
+
+
+<a  title="Parameter Usage" href="http://docs.engineblock.io/parameters/parameter_usage/">
+	
+	Parameter Usage
+</a>
+
+
+
+      
+        
+        
+
+
+
+<a  title="Statement Params" href="http://docs.engineblock.io/parameters/statement_params/">
+	
+	Statement Params
 </a>
 
 
@@ -466,9 +516,26 @@
 
 	<article class="article">
 		<div class="wrapper">
-			<h1>YAML Config Errors </h1>
+			<h1>Example Command </h1>
 
-			
+			<p>Most new users will be interested in a command line pattern that looks very much like this:</p>
+
+<pre><code>./eb... run type=stdout alias=test1 yaml=mystmts cycles=5M -v
+</code></pre>
+
+<p>This is basically telling EngineBlock to load an activity type known as
+<em>stdout</em>, naming it <em>test1</em>, with an input interval between 0 (inclusive) and
+5000000 (exclusive), with statements and any other settings loaded from the file
+<em>test1.yaml</em>, using the the <a href="http://docs.engineblock.io/user-guide/standard_yaml">Standard YAML</a>. This is
+a very common usage pattern for tools based on EngineBlock.</p>
+
+<p>If you wanted to
+crank up the concurrency and thread-level work size for speed, you could add
+<code>threads=100</code> and <code>stride=1000</code> respectively. This would tell EngineBlock to
+also use 100 threads for this activity, with each thread taking 1000 cycle
+values at a time before going back to the input for the next set of cycle values
+to iterate on.</p>
+
 
 			<aside class="copyright" role="note">
 				
@@ -486,34 +553,18 @@
 <nav class="pagination" aria-label="Footer">
   <div class="previous">
   
-      <a href="http://docs.engineblock.io/user-guide/standard_yaml/" title="YAML Config">
-        <span class="direction">
-          Previous
-        </span>
-        <div class="page">
-          <div class="button button-previous" role="button" aria-label="Previous">
-            <i class="icon icon-back"></i>
-          </div>
-          <div class="stretch">
-            <div class="title">
-              YAML Config
-            </div>
-          </div>
-        </div>
-      </a>
-  
   </div>
 
   <div class="next">
   
-      <a href="http://docs.engineblock.io/sketches/" title="Design Sketches">
+      <a href="http://docs.engineblock.io/user-guide/concepts/" title="Concepts">
         <span class="direction">
           Next
         </span>
         <div class="page">
           <div class="stretch">
             <div class="title">
-              Design Sketches
+              Concepts
             </div>
           </div>
           <div class="button button-next" role="button" aria-label="Next">
