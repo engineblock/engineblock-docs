@@ -86,6 +86,89 @@ logical cycles without gaps or duplicates. For example, given `cycles=1000` and
 then `cycles=1000..2000`, and then `cycles=2000..5K`, you know that all cycles
 between 0 (inclusive) and 5000 (exclusive) have been specified.
 
+## striderate
+
+`striderate=1000` - use stride rate limiter for 1000 ops/s.
+
+`striderate=1000,0.0` - same as above, with scheduling strictness 0.0 (the default)
+
+`striderate=1000,0.0,co` - same as above, but with scheduling delay included in latency metrics. 
+
+`co_striderate=1000` - An alternate form for the `,co` setting above.
+
+This sets the target rate for strides. In EngineBlock, a stride is a group of
+operations that are dispatched and executed together within the same thread.
+This is useful, for example, to emulate application behaviors in which some
+outside request translates to multiple internal requests. It is also a way
+to optimize a client runtime for more efficiency and throughput. The stride
+rate limiter applies to the whole activity irrespective of how many threads
+it has.
+
+The three-parameter form includes the ops/s target rate, a scheduling strictness
+parameter between 0.0 and 1.0, and an optional flag to enable coordinated
+omission compensation for latency metrics. Regardless of whether coordinated
+omission is included in latency metrics, the rate limiter still publishes a
+guage metric that shows the cumulative scheduling delay behind the target rate.
+The co option simply tells the latency metrics whether or not to include this
+value per-operation, or more precisely, per-stride in this case.
+
+**Only strictness values of 0.0 are allowed at this time. When strict rate limiting
+is better tested and documented, values up to 1.0 will be enabled.**
+
+**It is not ideal to combine multiple rates with the co option applied unless you
+are strictly aligning the rates to the number of strides, cycles, or phases.** 
+
+## targetrate
+
+The `targetrate` parameter is a synonym for [cyclerate](#cyclerate), below.
+
+## cyclerate
+
+`cyclerate=1000` or `targetrate=1000` - set the cycle rate limiter to 1000
+ops/s.
+
+`cyclerate=1000,0.0` or `targetrate=1000,0.0` - same as above, but with
+strictness set to 0.0 (the default)
+
+`cyclerate=1000,0.0,co` or `targetrate=1000,0.0,co` - same as above but with
+scheduling delay included in latency metrics.
+
+This sets the rate limit for individual cycles within the activity, across the
+whole activity, irrespective of how many threads are active. Cycles are the
+individual units of work within an EngineBlock activity which we normally think of
+as *operations*. As with the stride rate limiter above, the co option enables
+the inclusion of scheduling delay in latency metrics. In any case, the cycle
+rate limiter will provide a gauge metric that shows the total internal scheduling
+delay as compared to the target op rate. 
+
+**Only strictness values of 0.0 are allowed at this time. When strict rate limiting
+is better tested and documented, values up to 1.0 will be enabled.**
+
+**It is not ideal to combine multiple rates with the co option applied unless you
+are strictly aligning the rates to the number of strides, cycles, or phases.** 
+
+## phaserate
+
+`phaserate=1000` - set the phase rate limiter to 1000 ops/s.
+
+`phaserate=1000,0.0` - same as above, but with a schedule strictness of 0.0 (the
+default)
+
+`phaserate=1000,0.0,co` - same as above, but with scheduling delay included in
+latency metrics
+
+`co_phaserate=1000` - an alternate form for specifying the `,co` option.
+
+This sets the rate limit for phases. A phase is a sub-cycle unit of work which
+is sometimes used to implement things like async protocols, data paging, or
+other types of workloads which could not be expressed as well with only cycles.
+
+**Only strictness values of 0.0 are allowed at this time. When strict rate limiting
+is better tested and documented, values up to 1.0 will be enabled.**
+
+**It is not ideal to combine multiple rates with the co option applied unless you
+are strictly aligning the rates to the number of strides, cycles, or phases.** 
+
 ## seq
 
 `seq=<bucket|concat|interval>`
@@ -123,6 +206,7 @@ There are currently three different kinds of sequence planners:
  as evenly as possible over time, and where it is not important to control the
  cycle-by-cycle sequencing of statements.
 
+ 
 {{< warning >}}
 Parameters which are documented below are for advanced testing scenarios.
 If you are a first-time EngineBlock user, it is recommended that you
@@ -190,7 +274,6 @@ You *may* use _outputfilter_ if _output_ has also been specified.
 
 If an output is used, then an output filter can be provided that will filter
 results before any further downstream handling, like writing to a logfile, for example.
-Presently, the output
 
 
 

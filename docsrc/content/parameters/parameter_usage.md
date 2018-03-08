@@ -81,7 +81,7 @@ resolved in the following order:
 3. The activity is initialized with the parameters provided.
 4. If the activity uses the [Standard YAML](user-guide/standard_yaml) as a config
    file, then tye `yaml` parameter is used to locate and load that file.
-   4.1. Any template parameters in the file in `<<varname:default value>>` form
-        are resolved, taking override values from the provided params.
-5. Finally, the activity is started.
+5. Any template parameters in the file in `<<varname:default value>>` form
+   are resolved, taking override values from the provided params.
+6. Finally, the activity is started.
 
