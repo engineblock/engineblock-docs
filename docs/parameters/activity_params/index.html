@@ -598,6 +598,89 @@ logical cycles without gaps or duplicates. For example, given <code>cycles=1000<
 then <code>cycles=1000..2000</code>, and then <code>cycles=2000..5K</code>, you know that all cycles
 between 0 (inclusive) and 5000 (exclusive) have been specified.</p>
 
+<h2 id="striderate">striderate</h2>
+
+<p><code>striderate=1000</code> - use stride rate limiter for 1000 ops/s.</p>
+
+<p><code>striderate=1000,0.0</code> - same as above, with scheduling strictness 0.0 (the default)</p>
+
+<p><code>striderate=1000,0.0,co</code> - same as above, but with scheduling delay included in latency metrics.</p>
+
+<p><code>co_striderate=1000</code> - An alternate form for the <code>,co</code> setting above.</p>
+
+<p>This sets the target rate for strides. In EngineBlock, a stride is a group of
+operations that are dispatched and executed together within the same thread.
+This is useful, for example, to emulate application behaviors in which some
+outside request translates to multiple internal requests. It is also a way
+to optimize a client runtime for more efficiency and throughput. The stride
+rate limiter applies to the whole activity irrespective of how many threads
+it has.</p>
+
+<p>The three-parameter form includes the ops/s target rate, a scheduling strictness
+parameter between 0.0 and 1.0, and an optional flag to enable coordinated
+omission compensation for latency metrics. Regardless of whether coordinated
+omission is included in latency metrics, the rate limiter still publishes a
+guage metric that shows the cumulative scheduling delay behind the target rate.
+The co option simply tells the latency metrics whether or not to include this
+value per-operation, or more precisely, per-stride in this case.</p>
+
+<p><strong>Only strictness values of 0.0 are allowed at this time. When strict rate limiting
+is better tested and documented, values up to 1.0 will be enabled.</strong></p>
+
+<p><strong>It is not ideal to combine multiple rates with the co option applied unless you
+are strictly aligning the rates to the number of strides, cycles, or phases.</strong></p>
+
+<h2 id="targetrate">targetrate</h2>
+
+<p>The <code>targetrate</code> parameter is a synonym for <a href="#cyclerate">cyclerate</a>, below.</p>
+
+<h2 id="cyclerate">cyclerate</h2>
+
+<p><code>cyclerate=1000</code> or <code>targetrate=1000</code> - set the cycle rate limiter to 1000
+ops/s.</p>
+
+<p><code>cyclerate=1000,0.0</code> or <code>targetrate=1000,0.0</code> - same as above, but with
+strictness set to 0.0 (the default)</p>
+
+<p><code>cyclerate=1000,0.0,co</code> or <code>targetrate=1000,0.0,co</code> - same as above but with
+scheduling delay included in latency metrics.</p>
+
+<p>This sets the rate limit for individual cycles within the activity, across the
+whole activity, irrespective of how many threads are active. Cycles are the
+individual units of work within an EngineBlock activity which we normally think of
+as <em>operations</em>. As with the stride rate limiter above, the co option enables
+the inclusion of scheduling delay in latency metrics. In any case, the cycle
+rate limiter will provide a gauge metric that shows the total internal scheduling
+delay as compared to the target op rate.</p>
+
+<p><strong>Only strictness values of 0.0 are allowed at this time. When strict rate limiting
+is better tested and documented, values up to 1.0 will be enabled.</strong></p>
+
+<p><strong>It is not ideal to combine multiple rates with the co option applied unless you
+are strictly aligning the rates to the number of strides, cycles, or phases.</strong></p>
+
+<h2 id="phaserate">phaserate</h2>
+
+<p><code>phaserate=1000</code> - set the phase rate limiter to 1000 ops/s.</p>
+
+<p><code>phaserate=1000,0.0</code> - same as above, but with a schedule strictness of 0.0 (the
+default)</p>
+
+<p><code>phaserate=1000,0.0,co</code> - same as above, but with scheduling delay included in
+latency metrics</p>
+
+<p><code>co_phaserate=1000</code> - an alternate form for specifying the <code>,co</code> option.</p>
+
+<p>This sets the rate limit for phases. A phase is a sub-cycle unit of work which
+is sometimes used to implement things like async protocols, data paging, or
+other types of workloads which could not be expressed as well with only cycles.</p>
+
+<p><strong>Only strictness values of 0.0 are allowed at this time. When strict rate limiting
+is better tested and documented, values up to 1.0 will be enabled.</strong></p>
+
+<p><strong>It is not ideal to combine multiple rates with the co option applied unless you
+are strictly aligning the rates to the number of strides, cycles, or phases.</strong></p>
+
 <h2 id="seq">seq</h2>
 
 <p><code>seq=&lt;bucket|concat|interval&gt;</code></p>
@@ -703,8 +786,7 @@ the supported output types, use <code>--list-output-types</code>.</p>
 <p>You <em>may</em> use <em>outputfilter</em> if <em>output</em> has also been specified.</p>
 
 <p>If an output is used, then an output filter can be provided that will filter
-results before any further downstream handling, like writing to a logfile, for example.
-Presently, the output</p>
+results before any further downstream handling, like writing to a logfile, for example.</p>
 
 
 			<aside class="copyright" role="note">
