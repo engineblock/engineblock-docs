@@ -546,6 +546,15 @@ to use them.</p>
 
 <h2 id="terms">Terms</h2>
 
+<div class="admonition note">
+<p class="admonition-title"></p>
+<p>The terms in this section attempt to make useful contrasts while
+staying reasonably close to established terms across the distributed computing
+industry. They may be adjusted for accuracy or effect. If you have ideas or
+suggestions for this, please submit change
+<a href="https://github.com/engineblock/engineblock/issues">request</a>.</p>
+</div>
+
 <p>Often, terms used to describe latency in the context of coordinated omission can
 create confusion. In this section the following terms will be used, as there are
 a few different conventions in use across the industry.</p>
@@ -568,19 +577,25 @@ separately per operation. The reason for this will be made clearer below.</p>
 <h2 id="c-o-rate-controls">C.O. Rate Controls</h2>
 
 <p>When rate limiting is enabled, the rate limiter is responsible for both limiting
-the start time of each operation, as well as metering how far the operations lag
+the start time of each operation as well as metering how far the operations lag
 behind the ideal schedule. This is retained as a scheduling delay specific to
 each operation and added to any measurements of latency in order to arrive at an
 overall response time for each operation.</p>
 
 <p>When the rate controls are enabled, you have to decide whether the scheduling
-delay measured by the rate limiter will be used in latency metrics. If you
-choose not to include the delay, then the latency metrics reported only measure
-operational latency. You can still observe the scheduling delay metric in this
-case in order to interpret the overall severity of scheduling delay by itself.
-If you choose to include the delay, then the latency metrics reported are
-effectively <em>response time</em> as defined above. In this mode, the per-op
-operational latency is lost in the mix.</p>
+delay measured by the rate limiter will be used in latency metrics or not. If
+you choose not to include the delay, then the latency metrics reported only
+measure operational latency. You can still observe the scheduling delay metric
+in this case in order to interpret the overall severity of scheduling delay by
+itself. If you choose to include the delay, then <strong>specific</strong> latency metrics
+reported are effectively promoted to <em>response time</em> metrics as defined above.
+In this mode, the per-op operational latency is lost in the mix.</p>
+
+<p>In the EngineBlock documentation, metrics which can have this adjustment made
+are called <strong><em>coordinated omission aware</em></strong>. In general, any where you see a
+configuration option with <code>co</code> in it, this represent the option of enabling a
+total response metric that is coordinated omission aware, or converting a
+latency metric to a response metric.</p>
 
 <p>There are reasons to measure either way, depending on the kind of testing you
 are doing. All systems have concurrency limitations and critical resource
@@ -603,7 +618,7 @@ in more detail under <a href="http://docs.engineblock.io/parameters/activity_par
 
 <p>Setting a target rate for more than one of these at a time is not something that is
 generally useful, since nested rates can become askew from each other unless they are
-perfectly matched together in terms of op counts.</p>
+perfectly matched together in terms of counts and rates.</p>
 
 <p>In general, simply add <code>,co</code> to the end of any rate specifier to ensure that it is enabled.
 For example, <code>cyclerate=1000,0.0,co</code>. The second number in the rate specifier will be
@@ -614,7 +629,15 @@ the same effect, as in <code>co_cyclerate=1000</code>.</p>
 
 <h2 id="metric-names">Metric Names</h2>
 
-<p>When a rate limiter is set, there are two additional metrics that are reported:</p>
+<p>When a rate limiter is set, the <a href="http://docs.engineblock.io/user-guide/standard_metrics/#cycles">cycles</a>
+metric is becomes a total response time metric instead of simply an operational
+latency metric. If you have an activity named &ldquo;myactivity&rdquo; by the
+<code>alias=myactivity</code> parameter, then this metric will be named
+<code>&lt;prefix&gt;.myactivity.cycles</code>, where the prefix is set by the metrics prefix
+option. The same apples for the stride and phase metrics, using the same
+conventions.</p>
+
+<p>Additionally, there are two additional metrics that are reported for rate limiters:</p>
 
 <ul>
 <li><code>&lt;alias&gt;.&lt;stride|cycle|phase&gt;.cco_delay_gauge</code> - A meter of the cumulative
@@ -628,11 +651,31 @@ per-op.
 </ul></li>
 <li><code>&lt;alias&gt;.&lt;stride|cycle|phase&gt;.avg_targetrate_gauge</code> - This simply reports the intended average
 target rate for complete metric views in dashboards.
-<br />
-
-<br />
 <br /></li>
 </ul>
+
+<h2 id="concurrency-model">Concurrency Model</h2>
+
+<p>Activity types can implement either a per-thread concurrency model or an asynchronous concurrency
+model which allows threads to manage a number of simultaneous requests each. In practice, this can
+be a factor for how many pending requests a client can put into flight. Async implementations generally
+have the ability to juggle a higher number of pending operations, as idle time on threads is reduced
+as well as context switching that occurs when high thread counts are used to drive effective concurrency.</p>
+
+<p>However, even asynchronous implementations have limits as to where blocking states can occur. Regardless
+of whether your client-server systems is synchronous or asynchronous, there will be a limitation about
+how much work can be submitted without going into a backlogging mode somewhere in the flow. It is
+important to bear this in mind when interpreting coordinated omission results, as there is no simple
+and universal remedy for resource contention at saturation. If you are not driving a saturating load
+to the target system, and you are not blocking your client or server op rates by hitting
+concurrency limits, then there is little difference between the two concurrency models in terms of
+measurement.</p>
+
+<p>In effect, the coordinated omission awareness and the ability to have an asynchronous execution model
+should be considered complimentary. If you want to use async activities, and the activity type supports
+asynchronous operations, then you can enable it separately. Going forward, the convention for enabling
+async on an activity that supports it will be the <code>async</code> parameter, which will be documented
+in the respective activity type documentation.</p>
 
 
 			<aside class="copyright" role="note">
