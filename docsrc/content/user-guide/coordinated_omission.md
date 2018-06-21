@@ -88,13 +88,13 @@ the same effect, as in `co_cyclerate=1000`.
 
 When a rate limiter is set, there are two additional metrics that are reported:
 
-- <alias>.<stride|cycle|phase>.cco_delay_gauge - A meter of the cumulative
+- `<alias>.<stride|cycle|phase>.cco_delay_gauge` - A meter of the cumulative
   scheduling delay for an activity with the alias and the respective rate limiter
   level. Although this is a gauge, the scheduled delay that is added to latencies is calculated
   per-op.
   - example: `testactivity.cycle.cco_delay_gauge` is the cycle delay gauge for an activity with the alias
     'testactivity'.
-- <alias>.<stride|cycle|phase>.avg_targetrate_gauge - This simply reports the intended average
+- `<alias>.<stride|cycle|phase>.avg_targetrate_gauge` - This simply reports the intended average
   target rate for complete metric views in dashboards.
   
 
