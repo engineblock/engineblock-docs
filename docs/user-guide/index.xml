@@ -24,6 +24,15 @@ Activity A scenario can have multiple activities. Each activity runs independent
     </item>
     
     <item>
+      <title>Coordinated Omission</title>
+      <link>http://docs.engineblock.io/user-guide/coordinated_omission/</link>
+      <pubDate>Fri, 19 May 2017 21:52:57 +0000</pubDate>
+      
+      <guid>http://docs.engineblock.io/user-guide/coordinated_omission/</guid>
+      <description>Coordinated omission is a term of art coined by Gil Tene. In practice, coordinated omission follows from the fact that all systems have finite concurrency and scheduling capacity, including the clients that test them. While the term doesn&amp;rsquo;t cover all important aspects of scale and performance testing, it does put a focus on a particularly troublesome problem that often occurs with testing methods where effective concurrency is a meaningful limitation.</description>
+    </item>
+    
+    <item>
       <title>Scenario Scripting</title>
       <link>http://docs.engineblock.io/user-guide/scenario_scripting/</link>
       <pubDate>Fri, 19 May 2017 21:52:57 +0000</pubDate>

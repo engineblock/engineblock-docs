@@ -9,16 +9,16 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,maximum-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=10" />
-    <title>Diag ActivityType - EngineBlock</title>
+    <title>Coordinated Omission - EngineBlock</title>
     <meta name="generator" content="Hugo 0.31" />
 
     
     <meta name="description" content="EngineBlock Docs">
     
-    <link rel="canonical" href="http://docs.engineblock.io/dev-guide/annotated_diag/">
+    <link rel="canonical" href="http://docs.engineblock.io/user-guide/coordinated_omission/">
     
 
-    <meta property="og:url" content="http://docs.engineblock.io/dev-guide/annotated_diag/">
+    <meta property="og:url" content="http://docs.engineblock.io/user-guide/coordinated_omission/">
     <meta property="og:title" content="EngineBlock">
     <meta property="og:image" content="http://docs.engineblock.io/images/engineblock_128.png">
     <meta name="apple-mobile-web-app-title" content="EngineBlock">
@@ -139,7 +139,7 @@
     </div>
     <div class="stretch">
       <div class="title">
-        Diag ActivityType
+        Coordinated Omission
       </div>
     </div>
 
@@ -322,11 +322,14 @@
 
 
 
-<a  title="Coordinated Omission" href="http://docs.engineblock.io/user-guide/coordinated_omission/">
+<a class="current" title="Coordinated Omission" href="http://docs.engineblock.io/user-guide/coordinated_omission/">
 	
 	Coordinated Omission
 </a>
 
+
+<ul id="scrollspy">
+</ul>
 
 
       
@@ -461,14 +464,11 @@
 
 
 
-<a class="current" title="Diag ActivityType" href="http://docs.engineblock.io/dev-guide/annotated_diag/">
+<a  title="Diag ActivityType" href="http://docs.engineblock.io/dev-guide/annotated_diag/">
 	
 	Diag ActivityType
 </a>
 
-
-<ul id="scrollspy">
-</ul>
 
 
       
@@ -529,227 +529,110 @@
 
 	<article class="article">
 		<div class="wrapper">
-			<h1>Diag ActivityType </h1>
+			<h1>Coordinated Omission </h1>
 
 			
 
-<p>If you take all the code chunks from this document and concatenate them
-together, you&rsquo;ll have &lsquo;diag&rsquo;, one of the in-build activity types for
-EngineBlock.</p>
+<p>Coordinated omission is a term of art coined by Gil Tene. In practice,
+coordinated omission follows from the fact that all systems have finite
+concurrency and scheduling capacity, including the clients that test them. While
+the term doesn&rsquo;t cover all important aspects of scale and performance testing,
+it does put a focus on a particularly troublesome problem that often occurs with
+testing methods where effective concurrency is a meaningful limitation.</p>
 
-<p>First, we annotate our ActivityType implementation, name DiagActivityType, with
-the @AutoService annotation. This is a simple way to manage your ServiceLoader
-configurations. For more information, see
-<a href="https://github.com/google/auto/tree/master/servicehttps://github.com/google/auto/tree/master/service">AutoService</a>.</p>
+<p>EngineBlock has specific features to help shed a light on the effects of
+coordinated omission. This section explains some of them, how they work, and how
+to use them.</p>
 
-<pre><code>@AutoService(ActivityType.class)
-</code></pre>
+<h2 id="terms">Terms</h2>
 
-<h3 id="diagactivitytype-is-an-activitytype">DiagActivityType is an ActivityType</h3>
+<p>Often, terms used to describe latency in the context of coordinated omission can
+create confusion. In this section the following terms will be used, as there are
+a few different conventions in use across the industry.</p>
 
-<p>Let&rsquo;s implement an ActivityType. Actually, let&rsquo;s make it useful for something
-besides default behavior. Let&rsquo;s also implement ActionDispenserProvider.</p>
+<ul>
+<li>scheduling delay - The time between when an operation is intended to start
+and when it actually starts on a client</li>
+<li>operational latency - The time between when an operation is started from the
+client, and when it is completed on the client.</li>
+<li>total response time - The user-centric measurement of latency which includes
+both scheduling delay and operational latency.</li>
+<li>service time - The time it takes a server or system to fully respond to a
+request and send a response.</li>
+</ul>
 
-<pre><code>public class DiagActivityType implements ActivityType {
-</code></pre>
+<p>As EngineBlock is a client-side tool, only the first two are directly
+observable: <em>delay</em> and <em>latency</em>. The third, <em>response</em> is calculated
+separately per operation. The reason for this will be made clearer below.</p>
 
-<p>The ActivityType interface uses default methods for the <em>&hellip;DispenserProvider</em>
-methods. Most ActivityType implementations will only need ActionDispenser(&hellip;).</p>
+<h2 id="c-o-rate-controls">C.O. Rate Controls</h2>
 
-<h3 id="diagactivitytype-has-a-name">DiagActivityType has a name</h3>
+<p>When rate limiting is enabled, the rate limiter is responsible for both limiting
+the start time of each operation, as well as metering how far the operations lag
+behind the ideal schedule. This is retained as a scheduling delay specific to
+each operation and added to any measurements of latency in order to arrive at an
+overall response time for each operation.</p>
 
-<p>Each ActivityType implementation must provide a simple name by which it is known
-at runtime. When the available activity types are discovered at runtime, it is
-an error for more than one to have the same name.</p>
+<p>When the rate controls are enabled, you have to decide whether the scheduling
+delay measured by the rate limiter will be used in latency metrics. If you
+choose not to include the delay, then the latency metrics reported only measure
+operational latency. You can still observe the scheduling delay metric in this
+case in order to interpret the overall severity of scheduling delay by itself.
+If you choose to include the delay, then the latency metrics reported are
+effectively <em>response time</em> as defined above. In this mode, the per-op
+operational latency is lost in the mix.</p>
 
-<pre><code>
-    @Override
-    public String getName() {
-        return &quot;diag&quot;;
-    }
+<p>There are reasons to measure either way, depending on the kind of testing you
+are doing. All systems have concurrency limitations and critical resource
+constraints. Also, systems are comprised of clients <em>and</em> servers with various
+concurrency models. Sometimes it is useful to see system behavior through a more
+conventional lens.</p>
 
-</code></pre>
+<h2 id="using-c-o-metrics">Using C.O. metrics</h2>
 
-<h3 id="actiondispenser-method">ActionDispenser method</h3>
+<p>You can enable coordinated awareness in your metrics by using the following activity parameters:</p>
 
-<p>We need to provide our own type of action for <em>diag</em> in order to make it useful.
-getActionDispenser(&hellip;) will be called exactly once per activity instance. The
-ActionDispenser that we provide here (per activity instance) will be used to
-create the per-thread actions for each per-thread Runnable (aka Motor). The
-ActivityDef is also our first chance to specialize the behavior of the
-ActivityType. This means that your primary input into the control of an
-activity&rsquo;s behavior is this activity definition. If you want your ActivityType
-to do something configurable, this is how you do it.</p>
+<ul>
+<li><a href="http://docs.engineblock.io/parameters/activity_params/#striderate">striderate</a></li>
+<li><a href="http://docs.engineblock.io/parameters/activity_params/#cyclerate">cyclerate</a></li>
+<li><a href="http://docs.engineblock.io/parameters/activity_params/#phaserate">phaserate</a></li>
+</ul>
 
-<pre><code>    @Override
-    public ActionDispenser getActionDispenser(ActivityDef activity) {
-        return new DiagActionDispenser(activity);
-    }
-}
-</code></pre>
+<p>These rate controls nest from the outside-in. The relationship between them is explained
+in more detail under <a href="http://docs.engineblock.io/parameters/activity_params">Activity Params</a>.</p>
 
-<p>Now, on to the implementation of the DiagActionDispenser we just saw above.</p>
+<p>Setting a target rate for more than one of these at a time is not something that is
+generally useful, since nested rates can become askew from each other unless they are
+perfectly matched together in terms of op counts.</p>
 
-<p>This implementation does little, but what it does is important. First, it
-remembers the ActivityDef that goes with the activity instance. This is intended
-to be the initializer data for the activity instance. Second, it simply provides
-an Action when asked. Now we see the second opportunity to specialize the
-behavior of the Action, around the slot number.</p>
+<p>In general, simply add <code>,co</code> to the end of any rate specifier to ensure that it is enabled.
+For example, <code>cyclerate=1000,0.0,co</code>. The second number in the rate specifier will be
+a scheduling strictness control. For now, it is required to be <code>0.0</code>, which means burstable
+average rate limiting. Still, the scheduling delay is included in the result as long as <code>,co</code>
+is present. Alternately, you can use the <code>co_</code> prefix for the rate controls to achieve
+the same effect, as in <code>co_cyclerate=1000</code>.</p>
 
-<p>Whether we want it or not, the slot number is available to us. Notice that the
-DiagAction itself is taking the slot number and the activity. We&rsquo;ll explain why
-further down.</p>
+<h2 id="metric-names">Metric Names</h2>
 
-<pre><code>public class DiagActionDispenser implements ActionDispenser {
-    private ActivityDef activity;
+<p>When a rate limiter is set, there are two additional metrics that are reported:</p>
 
-    public DiagActionDispenser(ActivityDef activity) {
-        this.activity = activity;
-    }
+<ul>
+<li><alias>.<stride|cycle|phase>.cco_delay_gauge - A meter of the cumulative
+scheduling delay for an activity with the alias and the respective rate limiter
+level. Although this is a gauge, the scheduled delay that is added to latencies is calculated
+per-op.
 
-    @Override
-    public Action getAction(int slot) {
-        return new DiagAction(slot, activity);
-    }
-}
-</code></pre>
+<ul>
+<li>example: <code>testactivity.cycle.cco_delay_gauge</code> is the cycle delay gauge for an activity with the alias
+&lsquo;testactivity&rsquo;.</li>
+</ul></li>
+<li><alias>.<stride|cycle|phase>.avg_targetrate_gauge - This simply reports the intended average
+target rate for complete metric views in dashboards.
+<br />
 
-<h4 id="a-note-on-instances-and-scoping">A note on instances and scoping</h4>
-
-<p>It may be the case that your Action implementation is thread-safe, and that you
-want to just share the same instance across all Runnables in your running
-activity. In that case, you&rsquo;d keep a local instance of a DiagAction and simply
-initialize and return it as needed. However, most often you&rsquo;ll want thread to
-have some thread-local state, and you&rsquo;ll simply use the slot number for
-diagnostic and logging purposes. This implementation does the latter.</p>
-
-<p>The picture is different when you are talking about Inputs. It is often useful
-to have a common stream of input for many threads, such as when you want to
-meter the rate of processing over some number of inputs. In this case, a simple
-atomically accessed and incremented long does the job well. But, in order to
-meter or rate-limit the set of threads, you need them to use the same input. The
-input is your control and measurement point. In this case, you would simply
-re-use the same input for all slots.</p>
-
-<p>Motors work exactly the same way. The naming of the interfaces for Motors,
-Inputs, and Actions is consistent throughout, so hopefully that makes the API
-easier to understand and use.</p>
-
-<p>This allows for a degree of flexibility in mapping motors, inputs, and action to
-slot numbers. You can create a ActivityType that shares none of these components
-between threads for an activity, or one that shares all of the across threads
-for an activity, or anything in between. The most common recipe is: one input
-per activity and one motor and action per thread reading from this input.</p>
-
-<h3 id="diagaction">DiagAction</h3>
-
-<p>Now, on to the substance of this activity type, the Action implementation.</p>
-
-<pre><code>public class DiagAction implements Action, ActivityDefObserver {
-    private final static Logger logger = LoggerFactory.getLogger(DiagAction.class);
-</code></pre>
-
-<p>DiagAction is also an ActivityDefObserver. This is how an activity is able to be
-informed when any of it&rsquo;s parameters are modified while it is running. We also
-have the usual Logger in play.</p>
-
-<p>Now, the local state:</p>
-
-<pre><code>    private ActivityDef activity;
-    private int slot;
-    private long lastUpdate;
-    private long quantizedInterval;
-</code></pre>
-
-<p>ActivityDef and slot number are remembered. lastUpdate and quantizedInterval are
-used by DiagAction in order to know when to report.</p>
-
-<p>The basic purpose of diag is to provide a simple ActivityType that can be used
-for testing and diagnostics. To do that, its action simply logs the input value
-at some configured interval. It also demonstrates a couple of basic EngineBlock
-patterns:</p>
-
-<ol>
-<li>Sharing work across threads</li>
-<li>Dynamically adjusting when the activity definition is modified.</li>
-</ol>
-
-<p>A more detailed explaination of diag&rsquo;s behavior goes like this:</p>
-
-<p>A logline for the input value is reported at every configured &lsquo;interval&rsquo;, in
-milliseconds. The time between the scheduled reporting time and the actual
-reporting time is also reported as &lsquo;delay&rsquo;. All threads take a turn reporting
-the interval.</p>
-
-<p>In order to support this behavior, when the activity (and its actions) are
-initialized, each Action computes a time interval which would put it in the
-right place on the reporting schedule. This method is updateReportTime(), as
-seen in the constructor:</p>
-
-<pre><code>    public DiagAction(int slot, ActivityDef activity) {
-        this.activity = activity;
-        this.slot = slot;
-
-        updateReportTime();
-    }
-
-</code></pre>
-
-<p>Some helper methods make updateReportTime and the math around time offsets easier to read.</p>
-
-<pre><code>    private void updateReportTime() {
-        lastUpdate = System.currentTimeMillis() - calculateOffset(slot, activity);
-        quantizedInterval = calculateInterval(activity);
-        logger.debug(&quot;updating report time for slot:&quot; + slot + &quot;, def:&quot; + activity + &quot; to &quot; + quantizedInterval);
-    }
-
-    private long calculateOffset(long timeslot, ActivityDef activity) {
-        long updateInterval = activity.getParams().getLongOrDefault(&quot;interval&quot;, 100L);
-        long offset = calculateInterval(activity) - (updateInterval * timeslot);
-        return offset;
-    }
-
-    private long calculateInterval(ActivityDef activity) {
-        long updateInterval = activity.getParams().getLongOrDefault(&quot;interval&quot;, 100L);
-        int threads = activity.getThreads();
-        return updateInterval * threads;
-    }
-</code></pre>
-
-<p>This is where we read the activity def values. For diag, <em>interval</em> is a useful
-parameter in the activity definition. The default is 100, of unset.</p>
-
-<p>It is true that the code could be optimized more around performance or
-terseness, but clarity and correctness are more important here.</p>
-
-<h3 id="diagaction-implements-action">DiagAction implements Action</h3>
-
-<p>As an Action, we must accept input:</p>
-
-<pre><code>    @Override
-    public void accept(long value) {
-        long now = System.currentTimeMillis();
-        if ((now - lastUpdate) &gt; quantizedInterval) {
-
-            logger.info(&quot;diag action, input=&quot; + value + &quot;, report delay=&quot; + ((now - lastUpdate) - quantizedInterval));
-            lastUpdate += quantizedInterval;
-        }
-    }
-</code></pre>
-
-<p>This is simply a loop that reads input and throws it away unless it is time to
-report. If it is time to report, we mark the time in lastUpdate.</p>
-
-<h3 id="diagaction-implements-activitydefobserver">DiagAction implements ActivityDefObserver</h3>
-
-<pre><code>    @Override
-    public void onActivityDefUpdate(ActivityDef activity) {
-        updateReportTime();
-    }
-}
-</code></pre>
-
-<p>This is all there is to making an activity react to real-time changes in the activity definition.</p>
+<br />
+<br /></li>
+</ul>
 
 
 			<aside class="copyright" role="note">
@@ -768,7 +651,7 @@ report. If it is time to report, we mark the time in lastUpdate.</p>
 <nav class="pagination" aria-label="Footer">
   <div class="previous">
   
-      <a href="http://docs.engineblock.io/dev-guide/contributing/" title="Contributing">
+      <a href="http://docs.engineblock.io/user-guide/concepts/" title="Concepts">
         <span class="direction">
           Previous
         </span>
@@ -778,7 +661,7 @@ report. If it is time to report, we mark the time in lastUpdate.</p>
           </div>
           <div class="stretch">
             <div class="title">
-              Contributing
+              Concepts
             </div>
           </div>
         </div>
@@ -788,14 +671,14 @@ report. If it is time to report, we mark the time in lastUpdate.</p>
 
   <div class="next">
   
-      <a href="http://docs.engineblock.io/dev-guide/project_structure/" title="Project Structure">
+      <a href="http://docs.engineblock.io/user-guide/scenario_scripting/" title="Scenario Scripting">
         <span class="direction">
           Next
         </span>
         <div class="page">
           <div class="stretch">
             <div class="title">
-              Project Structure
+              Scenario Scripting
             </div>
           </div>
           <div class="button button-next" role="button" aria-label="Next">
