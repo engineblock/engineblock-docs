@@ -129,13 +129,13 @@ have the ability to juggle a higher number of pending operations, as idle time o
 as well as context switching that occurs when high thread counts are used to drive effective concurrency.
 
 However, even asynchronous implementations have limits as to where blocking states can occur. Regardless
-of whether your client-server systems is synchronous or asynchronous, there will be a limitation about
-how much work can be submitted without going into a backlogging mode somewhere in the flow. It is
+of whether your client-server system is synchronous or asynchronous, there will be a limitation of
+how much work can be enqueued without going into a backlogging mode somewhere in the flow. It is
 important to bear this in mind when interpreting coordinated omission results, as there is no simple
 and universal remedy for resource contention at saturation. If you are not driving a saturating load
 to the target system, and you are not blocking your client or server op rates by hitting 
 concurrency limits, then there is little difference between the two concurrency models in terms of
-measurement. 
+measurement.
 
 In effect, the coordinated omission awareness and the ability to have an asynchronous execution model
 should be considered complimentary. If you want to use async activities, and the activity type supports
