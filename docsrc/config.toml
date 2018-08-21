@@ -3,7 +3,8 @@ languageCode = "en-us"
 title = "EngineBlock"
 theme = "hugo-material-docs"
 metadataformat = "yaml"
-canonifyurls = true
+canonifyURLs = false
+relativeURLs = true
 
 [params]
 	# General information
