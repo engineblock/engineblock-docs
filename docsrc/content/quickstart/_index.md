@@ -1,6 +1,7 @@
 ---
 date: 2017-05-19T21:51:26
 title: Getting Started
+layout: single
 weight: 0
 ---
 

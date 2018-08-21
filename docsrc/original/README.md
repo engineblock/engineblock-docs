@@ -6,7 +6,7 @@ because you skipped forward too far. If you follow from the top and find
 something out of order or missing, please submit a [new request for doc
 improvements](https://github.com/jshook/em/issues/new?title=Doc%20Improvement:&labels=docs).
 
-1. [Quick Start](../content/quickstart/index.md)
+1. [Quick Start](../content/quickstart/_index.md)
 2. [Understanding Core Concepts](../content/user-guide/concepts.md)
 3. [Using the Command Line](../content/user-guide/command_line.md)
 4. [Wiring up Metrics](../content/user-guide/metrics.md)
