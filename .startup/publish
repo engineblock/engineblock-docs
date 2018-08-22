@@ -7,23 +7,26 @@ then
  exit 2
 fi
 
-if [ ! -x /usr/bin/hugo ]
+if [ ! -x local/bin/hugo ]
 then
- HUGO_VERSION=0.20.7
+ mkdir -p local/bin local/tmp
+
+ HUGO_VERSION=0.46
+ #HUGO_VERSION=0.20.7
  #HUGO_VERSION=0.19
  DL_SUFFIX=Linux-64bit
  INNER_SUFFIX=linux_amd64
- wget -P /tmp/ https://github.com/spf13/hugo/releases/download/v${HUGO_VERSION}/hugo_${HUGO_VERSION}_${DL_SUFFIX}.tar.gz
- tar -xvf /tmp/hugo_${HUGO_VERSION}_${DL_SUFFIX}.tar.gz -C /tmp
- sudo mv /tmp/hugo /usr/bin/hugo
- sudo chmod +x /usr/bin/hugo
+ wget -P local/tmp/ https://github.com/spf13/hugo/releases/download/v${HUGO_VERSION}/hugo_${HUGO_VERSION}_${DL_SUFFIX}.tar.gz
+ tar -xvf local/tmp/hugo_${HUGO_VERSION}_${DL_SUFFIX}.tar.gz -C local/tmp
+ mv local/tmp/hugo local/bin/hugo
+ chmod +x local/bin/hugo
 fi
 
 git submodule update --init
 git submodule sync
 
 rm -rf docsrc/public
-hugo --source docsrc --config docsrc/config.toml --canonifyURLs
+local/bin/hugo --source docsrc --config docsrc/config.toml
 
 
 rsync -av --delete --progress docsrc/public/ docs/
@@ -32,5 +35,4 @@ echo "docs.engineblock.io" > docs/CNAME
 git add docs
 git commit -m'publishing docs'
 git push
-
 
