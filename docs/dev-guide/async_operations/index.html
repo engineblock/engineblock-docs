@@ -9,16 +9,16 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,maximum-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=10" />
-    <title>Using Metrics - EngineBlock</title>
+    <title>Async Operations - EngineBlock</title>
     <meta name="generator" content="Hugo 0.46" />
 
     
     <meta name="description" content="EngineBlock Docs">
     
-    <link rel="canonical" href="http://docs.engineblock.io/user-guide/using_metrics/">
+    <link rel="canonical" href="http://docs.engineblock.io/dev-guide/async_operations/">
     
 
-    <meta property="og:url" content="http://docs.engineblock.io/user-guide/using_metrics/">
+    <meta property="og:url" content="http://docs.engineblock.io/dev-guide/async_operations/">
     <meta property="og:title" content="EngineBlock">
     <meta property="og:image" content="/images/engineblock_128.png">
     <meta name="apple-mobile-web-app-title" content="EngineBlock">
@@ -156,7 +156,7 @@
     </div>
     <div class="stretch">
       <div class="title">
-        Using Metrics
+        Async Operations
       </div>
     </div>
 
@@ -615,142 +615,85 @@
 
 	<article class="article">
 		<div class="wrapper">
-			<h1>Using Metrics </h1>
+			<h1>Async Operations </h1>
 
 			
 
-<h2 id="unit-of-measure">Unit of Measure</h2>
+<h2 id="introduction">Introduction</h2>
 
-<p>All metrics collected from activities are recorded in nanoseconds and ops per
-second. All histograms are recorded with 4 digits of precision using HDR
-histograms.</p>
+<p>In EngineBlock, two types of activities are supported: sync or async. Going forward, the async interface will be
+refined and hardened, and then the sync interface will be deprecated. This is simply a matter of simplifying the
+API over time, and the async interface is the essential one. If you want synchronous behavior with the async
+interface, you can easily achieve that, but not the other way around.</p>
 
-<h2 id="metric-outputs">Metric Outputs</h2>
+<h3 id="configuring-async">Configuring Async</h3>
 
-<p>Metrics from a scenario run can be gathered in multiple ways:</p>
+<p>In an async activity, you still have multiple threads, but in this case, each thread is allowed to juggle one or
+more asynchronous operations. The <code>async=100</code> parameter, for example, informs an activity that it needs to allocate
+100 total operations over the allocated threads. In the case of <code>async=100 threads=10</code>, it is the responsibility
+of the ActivityType&rsquo;s action dispenser to configure their actions to know that each of them can juggle 10 operations
+each.</p>
+
+<div class="admonition note">
+<p class="admonition-title"></p>
+<p><p>The <em>async</em> parameter has a standard meaning in engineblock. If it is defined, async is enabled. Its
+parameter value is the number of total async operations that can be in flight at any one instant, with the number
+per-thread divided as evenly as possible over all the threads.</p>
+
+<p>If the async parameter is defined, but the action implementation does <em>not</em> implement the async logic,
+then an error is thrown to the user. This is to ensure that users are aware of when they are expecting async
+behavior but getting something else.</p>
+</p>
+</div>
+
+<h3 id="async-messaging-flow">Async Messaging Flow</h3>
+
+<p>The contract between a motor and an action is very basic.</p>
 
 <ul>
-<li>In the log output</li>
-<li>In CSV files</li>
-<li>In HDR histogram logs</li>
-<li>In Histogram Stats logs (CSV)</li>
-<li>To a monitoring system via graphite</li>
+<li>Each motor submits as many async operations as is allowed to its action, as long as there are
+cycles remaining, until the action signals that it is at its limit.</li>
+<li>As long as an action is able to retire an operation by giving a result back to its motor,
+the motor keeps providing one more and retiring one more, as long as there are cycles remaining.</li>
+<li>Once there are no more cycles remaining, the motor retires operations from the action until
+the action signals that no more are pending.</li>
 </ul>
 
-<p>These forms may be combined and used in combination. The command line options
-for enabling these are documented in the built-in help, although some examples
-of these may be found below.</p>
+<p>The basic result of this is that each thread ramps up to its async juggling rate, hovers at that
+rate, with a completion rate dependent on the target system, and then ramps down as pending ops
+are retired back down to zero.</p>
 
-<h2 id="metrics-via-graphite">Metrics via Graphite</h2>
+<h3 id="advanced-signaling">Advanced Signaling</h3>
 
-<p>If you like to have all of your testing data in one place, then you may be
-interested in reporting your measurements to a monitoring system. For this,
-EngineBlock includes a <a href="https://github.com/dropwizard/metrics">Metrics Library</a>.
-Graphite reporting is baked in as the default reporter.</p>
+<p>Because of differences in client-side APIs and behavior, and the need to do simple and reliable
+flow management in EngineBlock, there are a few details about the API that are worth understanding
+as a developer.</p>
 
-<p>In order to enable graphite reporting, use one of these options formats:</p>
+<ul>
+<li>There are multiple return or signaling points in the lifetime of an op context:
 
-<pre><code>    --report-graphite-to &lt;host&gt;
-    --report-graphite-to &lt;host&gt;:&lt;port&gt;
-</code></pre>
+<ol>
+<li>When an action becomes aware that an operation has completed, it is up to the action to
+mark the op context with a call to <code>opcontext.stop(result)</code> at that time. This is important,
+because operations do not complete in the same order that they are submitted, especially
+when other async logic is present. A common way to do this is to register a callback on
+a listener, for example.</li>
+<li>The action must still return this op context back to the motor when it is asked. Thus, it
+is a common pattern to keep a linked list of operations that are ready to retire and thus
+allow the action to control orderly shutdown of the motor without any guesswork about the
+completion state of pending operations.</li>
+<li>The op context can be a sub-type, if you need to specialize the details that you keep for
+an in-flight operation. In fact, async actions <em>must</em> implement a basic factory method,
+but it can return a simple op context if no specialization is needed.</li>
+<li>op contexts are recycled to avoid heap pressure for high data rates. This makes it relatively
+low-cost to use the specialized op context to hold contextual data that may otherwise be
+expensive to <em>malloc</em> and <em>free</em>.</li>
+</ol></li>
+</ul>
 
-<h2 id="metrics-scripting">Metrics &amp; Scripting</h2>
+<h3 id="examples">Examples</h3>
 
-<p>There are enhancements to the metrics bundled with EngineBlock to support
-advanced scripting. See the <a href="../../user-guide/scripting/#enhanced-metrics-for-scripting">Advanced Metrics for
-Scripting</a> in the
-scripting guide for more details.</p>
-
-<h2 id="metric-naming">Metric Naming</h2>
-
-<h4 id="prefix-core-metrics-use-the-prefix-engineblock-by-default-you-can">Prefix Core metrics use the prefix <em>engineblock</em> by default. You can</h4>
-
-<h4 id="override-this-with-the-metrics-prefix-option">override this with the `<code>--metrics-prefix</code> option:</h4>
-
-<pre><code>--metrics-prefix myclient.group5
-</code></pre>
-
-<h4 id="identifiers">Identifiers</h4>
-
-<p>Metrics associated with a specific activity will have the activity alias in
-their name. The names and types of metrics provided for each activity type vary.
-You can easily see what metrics are available for a given activity type:</p>
-
-<p>Sometimes, an activity type will expose metrics on a per statement basis,
-measuring over all invocations of a given statement as defined in the YAML. In
-these cases, you will see <code>--</code> separating the name components of the metric. The
-most fully-qualified form of a named statement for metrics purposes looks like
-<code>&lt;activity&gt;.&lt;docname&gt;--&lt;blockname&gt;--&lt;statementname&gt;--&lt;metricname&gt;</code>, although in
-practice these will be shorter by design. Just be aware that the double dash
-represents name composition <em>within</em> an activity.</p>
-
-<pre><code>java -jar eb.jar --show-metrics alias=test type=diag
-</code></pre>
-
-<p>This initializes an activity as if to run it, but never starts cycling it.</p>
-
-<h2 id="hdr-histograms">HDR Histograms</h2>
-
-<h3 id="recording-hdr-histogram-logs">Recording HDR Histogram Logs</h3>
-
-<p>You can record details of histograms from any compatible metric (histograms and
-timers) with an option like this:</p>
-
-<pre><code>--log-histograms hdrdata.log
-</code></pre>
-
-<p>If you want to record only certain metrics in this way, then use this form:</p>
-
-<pre><code>--log-histograms 'hdrdata.log:.*suffix'
-</code></pre>
-
-<p>Notice that the option is enclosed in single quotes. This is because the second
-part of the option value is a regex. The &lsquo;.*suffix&rsquo; pattern matches any metric
-name that ends with &ldquo;suffix&rdquo;. Effectively, leaving out the pattern is the same
-as using &lsquo;.*&rsquo;, which matches all metrics. Any valid regex is allowed here.</p>
-
-<p>Metrics may be included in multiple logs, but care should be taken not to overdo
-this. Keeping higher fidelity histogram reservoirs does come with a cost, so be
-sure to be specific in what you record as much as possible.</p>
-
-<p>If you want to specify the recording interval, use this form:</p>
-
-<pre><code>--log-histograms 'hdrdata.log:.*suffix:5s'
-</code></pre>
-
-<p>If you want to specify the interval, you must use the third form, although it is
-valid to leave the pattern empty, such as &lsquo;hdrdata.log::5s&rsquo;.</p>
-
-<p>Each interval specified will be tracked in a discrete reservoir in memory, so they
-will not interfere with each other in terms of accuracy.</p>
-
-<h3 id="recording-hdr-histogram-stats">Recording HDR Histogram Stats</h3>
-
-<p>You can also record basic snapshots of histogram data on a periodic interval
-just like above with HDR histogram logs. The option to do this is:</p>
-
-<pre><code>--log-histostats 'hdrstats.log:.*suffix:10s'
-</code></pre>
-
-<p>Everything works the same as for hdr histogram logging, except that the format
-is in CSV as shown in the example below:</p>
-
-<pre><code>#logging stats for session scenario-1479089852022
-#[Histogram log format version 1.0]
-#[StartTime: 1479089852.046 (seconds since epoch), Sun Nov 13 20:17:32 CST 2016]
-#Tag,Interval_Start,Interval_Length,count,min,p25,p50,p75,p90,p95,p98,p99,p999,p9999,max
-Tag=diag1.delay,0.457,0.044,1,16,31,31,31,31,31,31,31,31,31,31
-Tag=diag1.cycles,0.48,0.021,31,4096,8191,8191,8191,8191,8191,8191,8191,8191,8191,2097151
-Tag=diag1.delay,0.501,0.499,1,1,1,1,1,1,1,1,1,1,1,1
-Tag=diag1.cycles,0.501,0.499,498,1024,2047,2047,4095,4095,4095,4095,4095,4095,4095,4194303
-...
-</code></pre>
-
-<p>This includes the metric name (Tag), the interval start time and length (from
-the beginning of collection time), number of metrics recorded (count), minimum
-magnitude, a number of percentile measurements, and the maximum value. Notice
-that the format used is similar to that of the HDR logging, although instead of
-including the raw histogram data, common percentiles are recorded directly.</p>
+<p>Developers can refer to the Diag activity type implementation for further examples.</p>
 
 
 			<aside class="copyright" role="note">
@@ -769,7 +712,7 @@ including the raw histogram data, common percentiles are recorded directly.</p>
 <nav class="pagination" aria-label="Footer">
   <div class="previous">
   
-      <a href="http://docs.engineblock.io/user-guide/command_line/" title="Command Line">
+      <a href="http://docs.engineblock.io/dev-guide/error_mapping/" title="Error Mapping">
         <span class="direction">
           Previous
         </span>
@@ -779,7 +722,7 @@ including the raw histogram data, common percentiles are recorded directly.</p>
           </div>
           <div class="stretch">
             <div class="title">
-              Command Line
+              Error Mapping
             </div>
           </div>
         </div>
@@ -789,14 +732,14 @@ including the raw histogram data, common percentiles are recorded directly.</p>
 
   <div class="next">
   
-      <a href="http://docs.engineblock.io/user-guide/standard_metrics/" title="Standard Metrics">
+      <a href="http://docs.engineblock.io/dev-guide/scripting_extensions/" title="Scripting Extensions">
         <span class="direction">
           Next
         </span>
         <div class="page">
           <div class="stretch">
             <div class="title">
-              Standard Metrics
+              Scripting Extensions
             </div>
           </div>
           <div class="button button-next" role="button" aria-label="Next">

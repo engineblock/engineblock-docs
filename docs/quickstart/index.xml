@@ -1,27 +1,15 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Quickstarts on EngineBlock</title>
+    <title>Getting Started on EngineBlock</title>
     <link>http://docs.engineblock.io/quickstart/</link>
-    <description>Recent content in Quickstarts on EngineBlock</description>
+    <description>Recent content in Getting Started on EngineBlock</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <copyright>APL 2.0</copyright>
     <lastBuildDate>Fri, 19 May 2017 21:51:26 +0000</lastBuildDate>
     
 	<atom:link href="http://docs.engineblock.io/quickstart/index.xml" rel="self" type="application/rss+xml" />
     
-    
-    <item>
-      <title>Getting Started</title>
-      <link>http://docs.engineblock.io/quickstart/</link>
-      <pubDate>Fri, 19 May 2017 21:51:26 +0000</pubDate>
-      
-      <guid>http://docs.engineblock.io/quickstart/</guid>
-      <description>Getting EngineBlock The latest release can always be run with this simple script: run-eb. You can use the commands below to get it.
-curl -O https://raw.githubusercontent.com/engineblock/engineblock/master/eb-cli/bin/run-eb chmod u+x run-eb ./run-eb help  This script demonstrates how to fetch the version of the latest published artifact via maven central search. It also downloads that artifact if it doesn&amp;rsquo;t find it locally cached within the last 2 days.
-A cautionary word: As always, blindly running scripts from the web is not a good idea.</description>
-    </item>
     
   </channel>
 </rss>

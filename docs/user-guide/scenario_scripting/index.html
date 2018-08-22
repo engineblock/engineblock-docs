@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,maximum-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=10" />
     <title>Scenario Scripting - EngineBlock</title>
-    <meta name="generator" content="Hugo 0.31" />
+    <meta name="generator" content="Hugo 0.46" />
 
     
     <meta name="description" content="EngineBlock Docs">
@@ -20,37 +20,37 @@
 
     <meta property="og:url" content="http://docs.engineblock.io/user-guide/scenario_scripting/">
     <meta property="og:title" content="EngineBlock">
-    <meta property="og:image" content="http://docs.engineblock.io/images/engineblock_128.png">
+    <meta property="og:image" content="/images/engineblock_128.png">
     <meta name="apple-mobile-web-app-title" content="EngineBlock">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
-    <link rel="shortcut icon" type="image/x-icon" href="http://docs.engineblock.io/images/engineblock_32.png">
-    <link rel="icon" type="image/x-icon" href="http://docs.engineblock.io/images/engineblock_32.png">
+    <link rel="shortcut icon" type="image/x-icon" href="../../images/engineblock_32.png">
+    <link rel="icon" type="image/x-icon" href="../../images/engineblock_32.png">
 
     <style>
       @font-face {
         font-family: 'Icon';
-        src: url('http://docs.engineblock.io/fonts/icon.eot');
-        src: url('http://docs.engineblock.io/fonts/icon.eot')
+        src: url('/fonts/icon.eot?52m981');
+        src: url('/fonts/icon.eot?#iefix52m981')
                format('embedded-opentype'),
-             url('http://docs.engineblock.io/fonts/icon.woff')
+             url('/fonts/icon.woff?52m981')
                format('woff'),
-             url('http://docs.engineblock.io/fonts/icon.ttf')
+             url('/fonts/icon.ttf?52m981')
                format('truetype'),
-             url('http://docs.engineblock.io/fonts/icon.svg')
+             url('/fonts/icon.svg?52m981#icon')
                format('svg');
         font-weight: normal;
         font-style: normal;
       }
     </style>
 
-    <link rel="stylesheet" href="http://docs.engineblock.io/stylesheets/application.css">
-    <link rel="stylesheet" href="http://docs.engineblock.io/stylesheets/temporary.css">
-    <link rel="stylesheet" href="http://docs.engineblock.io/stylesheets/palettes.css">
-    <link rel="stylesheet" href="http://docs.engineblock.io/stylesheets/images.css">
+    <link rel="stylesheet" href="../../stylesheets/application.css">
+    <link rel="stylesheet" href="../../stylesheets/temporary.css">
+    <link rel="stylesheet" href="../../stylesheets/palettes.css">
+    <link rel="stylesheet" href="../../stylesheets/images.css">
 
-    <link rel="stylesheet" href="http://docs.engineblock.io/stylesheets/highlight/highlight.css">
+    <link rel="stylesheet" href="../../stylesheets/highlight/highlight.css">
 
     
     
@@ -66,13 +66,11 @@
     </style>
 
     
-    <script src="http://docs.engineblock.io/javascripts/modernizr.js"></script>
+    <script src="../../javascripts/modernizr.js"></script>
 
     
 
   
-    
-    
 
     
     
@@ -85,34 +83,53 @@
 
     
     
+    <script src="http://docs.engineblock.io//modules/jssequence/webfont.js"></script>
+    <script src="http://docs.engineblock.io//modules/jssequence/snap.svg-min.js"></script>
+    <script src="http://docs.engineblock.io//modules/jssequence/underscore-min.js"></script>
+    <script src="http://docs.engineblock.io//modules/jssequence/sequence-diagram.js"></script>
+    <link href="http://docs.engineblock.io//modules/jssequence/sequence-diagram-min.css" rel="stylesheet" />
+    
+
+    
+    
+    <script src="http://docs.engineblock.io//modules/railroad/railroad-diagrams.js"></script>
+    <link href="http://docs.engineblock.io//modules/railroad/railroad-diagrams.css" rel="stylesheet">
+    
+
+    
+    
+    <link href="http://docs.engineblock.io//modules/jsxgraph/jsxgraph.css" type="text/css" rel="stylesheet"/>
+    <script src="http://docs.engineblock.io//modules/jsxgraph//jsxgraphcore.js"></script>
+    
+    
+
+    
+    
+    <link href="http://docs.engineblock.io//modules/mermaid/mermaid.css" type="text/css" rel="stylesheet"/>
+    <script src="http://docs.engineblock.io//modules/mermaid/mermaid.js"></script>
+    <script>mermaid.initialize({startOnLoad:true});</script>
+    
+
+    
+    
+    <script src="http://docs.engineblock.io//modules/nomnoml/lodash.min.js"></script>
+    <script src="http://docs.engineblock.io//modules/nomnoml/dagre.min.js"></script>
+    <script src="http://docs.engineblock.io//modules/nomnoml/skanaar.util.js"></script>
+    <script src="http://docs.engineblock.io//modules/nomnoml/skanaar.svg.js"></script>
+    <script src="http://docs.engineblock.io//modules/nomnoml/skanaar.vector.js"></script>
+    <script src="http://docs.engineblock.io//modules/nomnoml/skanaar.canvas.js"></script>
+    <script src="http://docs.engineblock.io//modules/nomnoml/nomnoml.jison.js"></script>
+    <script src="http://docs.engineblock.io//modules/nomnoml/nomnoml.parser.js"></script>
+    <script src="http://docs.engineblock.io//modules/nomnoml/nomnoml.layouter.js"></script>
+    <script src="http://docs.engineblock.io//modules/nomnoml/nomnoml.renderer.js"></script>
+    <script src="http://docs.engineblock.io//modules/nomnoml/nomnoml.js"></script>
+    
 
     
     
 
     
     
-    
-    
-    
-
-    
-    
-
-
-      
-    
-    <link href="http://docs.engineblock.io//modules/annotatorjs/annotator.css" rel="stylesheet" />
-    <script src="http://docs.engineblock.io//modules/annotatorjs/jquery-3.2.1.js"></script>
-    <script src="http://docs.engineblock.io//modules/annotatorjs/annotator.js"></script>
-    <script>
-        var app = new annotator.App();
-        app.include(annotator.ui.main);
-        app
-            .start()
-            .then(function() {
-                app.annotations.load();
-            });
-    </script>
 
 
   </head>
@@ -204,10 +221,12 @@
 
 
 
-<a  title="EngineBlock" href="http://docs.engineblock.io/">
+<a  title="EngineBlock" href="../../">
 	
 	EngineBlock
 </a>
+
+
 
 
 
@@ -222,10 +241,12 @@
 
 
 
-<a  title="Quickstart" href="http://docs.engineblock.io/quickstart/">
+<a  title="Quickstart" href="../../quickstart/">
 	
 	Quickstart
 </a>
+
+
 
 
 
@@ -244,105 +265,118 @@
 
 
 
-<a  title="Concepts" href="http://docs.engineblock.io/user-guide/concepts/">
+<a  title="Concepts" href="../../user-guide/concepts/">
 	
 	Concepts
 </a>
 
 
 
+
+
       
         
         
 
 
 
-<a  title="Command Line" href="http://docs.engineblock.io/user-guide/command_line/">
+<a  title="Command Line" href="../../user-guide/command_line/">
 	
 	Command Line
 </a>
 
 
 
+
+
       
         
         
 
 
 
-<a  title="CLI Scripting" href="http://docs.engineblock.io/user-guide/cli_scripting/">
+<a  title="CLI Scripting" href="../../user-guide/cli_scripting/">
 	
 	CLI Scripting
 </a>
 
 
 
+
+
       
         
         
 
 
 
-<a  title="YAML Config" href="http://docs.engineblock.io/user-guide/standard_yaml/">
+<a  title="YAML Config" href="../../user-guide/standard_yaml/">
 	
 	YAML Config
 </a>
 
 
 
+
+
       
         
         
 
 
 
-<a  title="Using Metrics" href="http://docs.engineblock.io/user-guide/using_metrics/">
+<a  title="Using Metrics" href="../../user-guide/using_metrics/">
 	
 	Using Metrics
 </a>
 
 
 
+
+
       
         
         
 
 
 
-<a  title="Standard Metrics" href="http://docs.engineblock.io/user-guide/standard_metrics/">
+<a  title="Standard Metrics" href="../../user-guide/standard_metrics/">
 	
 	Standard Metrics
 </a>
 
 
 
+
+
       
         
         
 
 
 
-<a  title="Coordinated Omission" href="http://docs.engineblock.io/user-guide/coordinated_omission/">
+<a  title="Coordinated Omission" href="../../user-guide/coordinated_omission/">
 	
 	Coordinated Omission
 </a>
 
 
 
+
+
       
         
         
 
 
 
-<a class="current" title="Scenario Scripting" href="http://docs.engineblock.io/user-guide/scenario_scripting/">
+<a  title="Scenario Scripting" href="../../user-guide/scenario_scripting/">
 	
 	Scenario Scripting
 </a>
 
 
-<ul id="scrollspy">
-</ul>
+
 
 
       
@@ -362,49 +396,57 @@
 
 
 
-<a  title="Parameter Usage" href="http://docs.engineblock.io/parameters/parameter_usage/">
+<a  title="Parameter Usage" href="../../parameters/parameter_usage/">
 	
 	Parameter Usage
 </a>
 
 
 
+
+
       
         
         
 
 
 
-<a  title="Example Command" href="http://docs.engineblock.io/parameters/example_command/">
+<a  title="Example Command" href="../../parameters/example_command/">
 	
 	Example Command
 </a>
 
 
 
+
+
       
         
         
 
 
 
-<a  title="Activity Params" href="http://docs.engineblock.io/parameters/activity_params/">
+<a  title="Activity Params" href="../../parameters/activity_params/">
 	
 	Activity Params
 </a>
 
 
 
+
+
       
         
         
 
 
 
-<a  title="Statement Params" href="http://docs.engineblock.io/parameters/statement_params/">
+<a  title="Statement Params" href="../../parameters/statement_params/">
 	
 	Statement Params
 </a>
+
+
 
 
 
@@ -425,88 +467,132 @@
 
 
 
-<a  title="Activity Internals" href="http://docs.engineblock.io/dev-guide/activity_internals/">
+<a  title="Activity Internals" href="../../dev-guide/activity_internals/">
 	
 	Activity Internals
 </a>
 
 
 
+
+
       
         
         
 
 
 
-<a  title="Building ActivityTypes" href="http://docs.engineblock.io/dev-guide/building_activities/">
+<a  title="Async Operations" href="../../dev-guide/async_operations/">
+	
+	Async Operations
+</a>
+
+
+
+
+
+      
+        
+        
+
+
+
+<a  title="Building ActivityTypes" href="../../dev-guide/building_activities/">
 	
 	Building ActivityTypes
 </a>
 
 
 
+
+
       
         
         
 
 
 
-<a  title="Contributing" href="http://docs.engineblock.io/dev-guide/contributing/">
+<a  title="Contributing" href="../../dev-guide/contributing/">
 	
 	Contributing
 </a>
 
 
 
+
+
       
         
         
 
 
 
-<a  title="Diag ActivityType" href="http://docs.engineblock.io/dev-guide/annotated_diag/">
+<a  title="Diag ActivityType" href="../../dev-guide/annotated_diag/">
 	
 	Diag ActivityType
 </a>
 
 
 
+
+
       
         
         
 
 
 
-<a  title="Project Structure" href="http://docs.engineblock.io/dev-guide/project_structure/">
+<a  title="Project Structure" href="../../dev-guide/project_structure/">
 	
 	Project Structure
 </a>
 
 
 
+
+
       
         
         
 
 
 
-<a  title="Scripting Extensions" href="http://docs.engineblock.io/dev-guide/scripting_extensions/">
+<a  title="Scripting Extensions" href="../../dev-guide/scripting_extensions/">
 	
 	Scripting Extensions
 </a>
 
 
 
+
+
       
         
         
 
 
 
-<a  title="YAML Config API" href="http://docs.engineblock.io/dev-guide/standard_yam_devl/">
+<a  title="Error Mapping" href="../../dev-guide/error_mapping/">
+	
+	Error Mapping
+</a>
+
+
+
+
+
+      
+        
+        
+
+
+
+<a  title="YAML Config API" href="../../dev-guide/standard_yam_devl/">
 	
 	YAML Config API
 </a>
+
+
 
 
 
@@ -564,7 +650,7 @@ fly.</p>
 <p>Here is a view of what is below the line, separate from the scripting sandbox,
 and what is hoisted up into the scripting sandbox.</p>
 
-<p><img src="http://docs.engineblock.io/diagrams/artandmachinery.png" alt="ScriptingEngine" /></p>
+<p><img src="../../diagrams/artandmachinery.png" alt="ScriptingEngine" /></p>
 
 <h2 id="scripting-environment">Scripting Environment</h2>
 
@@ -700,7 +786,7 @@ that each line was recorded from.</p>
 <nav class="pagination" aria-label="Footer">
   <div class="previous">
   
-      <a href="http://docs.engineblock.io/user-guide/coordinated_omission/" title="Coordinated Omission">
+      <a href="http://docs.engineblock.io/user-guide/standard_metrics/" title="Standard Metrics">
         <span class="direction">
           Previous
         </span>
@@ -710,7 +796,7 @@ that each line was recorded from.</p>
           </div>
           <div class="stretch">
             <div class="title">
-              Coordinated Omission
+              Standard Metrics
             </div>
           </div>
         </div>
@@ -720,14 +806,14 @@ that each line was recorded from.</p>
 
   <div class="next">
   
-      <a href="http://docs.engineblock.io/user-guide/standard_metrics/" title="Standard Metrics">
+      <a href="http://docs.engineblock.io/user-guide/coordinated_omission/" title="Coordinated Omission">
         <span class="direction">
           Next
         </span>
         <div class="page">
           <div class="stretch">
             <div class="title">
-              Standard Metrics
+              Coordinated Omission
             </div>
           </div>
           <div class="button button-next" role="button" aria-label="Next">
@@ -764,7 +850,7 @@ that each line was recorded from.</p>
     
     </script>
 
-    <script src="http://docs.engineblock.io/javascripts/application.js"></script>
+    <script src="../../javascripts/application.js"></script>
     
 
     <script>

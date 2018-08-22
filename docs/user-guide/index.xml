@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>User-guides on EngineBlock</title>
+    <title>User Guide on EngineBlock</title>
     <link>http://docs.engineblock.io/user-guide/</link>
-    <description>Recent content in User-guides on EngineBlock</description>
+    <description>Recent content in User Guide on EngineBlock</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <copyright>APL 2.0</copyright>
-    <lastBuildDate>Fri, 19 May 2017 21:52:57 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 19 May 2017 22:00:36 +0000</lastBuildDate>
     
 	<atom:link href="http://docs.engineblock.io/user-guide/index.xml" rel="self" type="application/rss+xml" />
     
@@ -71,16 +70,6 @@ Metric Outputs Metrics from a scenario run can be gathered in multiple ways:
       <description>To get built-in help on the available command line options, run
 java -jar eb.jar --help  The most common and useful commands will be explained at some depth in this guide, however the built-in help above will be complete, with proper syntax for all commands.
 There is more than one way to invoke EngineBlock. The sections below explain more about them, with more detail about how EngineBlock works as you read further.</description>
-    </item>
-    
-    <item>
-      <title>User Guide</title>
-      <link>http://docs.engineblock.io/user-guide/</link>
-      <pubDate>Fri, 19 May 2017 22:00:36 +0000</pubDate>
-      
-      <guid>http://docs.engineblock.io/user-guide/</guid>
-      <description> This is the user&amp;rsquo;s guide.
-This is another section </description>
     </item>
     
     <item>

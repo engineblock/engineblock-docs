@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Dev-guides on EngineBlock</title>
+    <title>EngineBlock Dev Guide on EngineBlock</title>
     <link>http://docs.engineblock.io/dev-guide/</link>
-    <description>Recent content in Dev-guides on EngineBlock</description>
+    <description>Recent content in EngineBlock Dev Guide on EngineBlock</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <copyright>APL 2.0</copyright>
-    <lastBuildDate>Tue, 24 Oct 2017 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 19 May 2017 21:52:39 +0000</lastBuildDate>
     
 	<atom:link href="http://docs.engineblock.io/dev-guide/index.xml" rel="self" type="application/rss+xml" />
     
@@ -82,13 +81,23 @@ Firstly, there is a parent for each of the modules. In Maven parlance, you can t
     </item>
     
     <item>
-      <title>EngineBlock Dev Guide</title>
-      <link>http://docs.engineblock.io/dev-guide/</link>
-      <pubDate>Fri, 19 May 2017 21:52:39 +0000</pubDate>
+      <title>Async Operations</title>
+      <link>http://docs.engineblock.io/dev-guide/async_operations/</link>
+      <pubDate>Fri, 19 May 2017 22:09:53 +0000</pubDate>
       
-      <guid>http://docs.engineblock.io/dev-guide/</guid>
-      <description>Conduct It&amp;rsquo;s simple really. Everything in the Open Code of Conduct applies here. If, after reading that, you are unclear, then please pick another project to work on. The maintainers will not hesitate to enforce a code of conduct.
-License EngineBlock is licensed under the Apache License, version 2.0. If you wish to contribute your code to this project, you must be willing to use this license. All code contributed here is presumed to be licensed automatically as such.</description>
+      <guid>http://docs.engineblock.io/dev-guide/async_operations/</guid>
+      <description>Introduction In EngineBlock, two types of activities are supported: sync or async. Going forward, the async interface will be refined and hardened, and then the sync interface will be deprecated. This is simply a matter of simplifying the API over time, and the async interface is the essential one. If you want synchronous behavior with the async interface, you can easily achieve that, but not the other way around.</description>
+    </item>
+    
+    <item>
+      <title>Error Mapping</title>
+      <link>http://docs.engineblock.io/dev-guide/error_mapping/</link>
+      <pubDate>Fri, 19 May 2017 22:09:53 +0000</pubDate>
+      
+      <guid>http://docs.engineblock.io/dev-guide/error_mapping/</guid>
+      <description>Each activity type should provide its own mapping between thrown errors and the error codes assigned to them.
+This is facilitated by the ErrorMapper interface. It simply provides a way to initialize a cache-friendly view of classes which are known exception types to a stable numbering of error codes.
+By providing an error mapper for your activity type, you are enabling advanced testing scenarios that deal with error routing and advanced error handling.</description>
     </item>
     
   </channel>
