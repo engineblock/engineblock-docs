@@ -49,7 +49,7 @@ bindings:
  alpha: Identity()
  beta: NumberNameToString()
  gamma: Combinations('0-9A-F;0-9;A-Z;_;p;r;o;')
- delta: WeightedStrings(one:1;six:6;three:3;)
+ delta: WeightedStrings('one:1;six:6;three:3;')
 ```
 
 Notice that bindings are represented as a map. The bindings above *mostly* match
@@ -75,7 +75,7 @@ statement template from the provided bindings if needed, so this is valid:
      alpha: Identity()
      beta: NumberNameToString()
      gamma: Combinations('0-9A-F;0-9;A-Z;_;p;r;o;')
-     delta: WeightedStrings(one:1;six:6;three:3;)
+     delta: WeightedStrings('one:1;six:6;three:3;')
 # EOF (control-D in your terminal)
 
 [test]$ ./eb run type=stdout yaml=stdout-test cycles=10
@@ -108,7 +108,7 @@ bindings:
  alpha: Identity()
  beta: NumberNameToString()
  gamma: Combinations('0-9A-F;0-9;A-Z;_;p;r;o;')
- delta: WeightedStrings(one:1;six:6;three:3;)
+ delta: WeightedStrings('one:1;six:6;three:3;')
 # EOF (control-D in your terminal)
 
 [test]$ ./eb run type=stdout yaml=stdout-test cycles=10
