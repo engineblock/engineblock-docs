@@ -76,9 +76,6 @@ for anything that can cause delay before a request is started from a client.
 This even includes process and IO scheduling systems as found within operating
 systems.
 
-The scheduler as an active element has been obviated from the diagram,
-as it is generally their job to arbitrate over shared resources.
-
 ### Generality
  
 Further, the basic relationship that is shown here between a client entity, a 
