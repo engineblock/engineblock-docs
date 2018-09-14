@@ -9,16 +9,16 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,maximum-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=10" />
-    <title>Scripting Extensions - EngineBlock</title>
+    <title>Design Guidelines - EngineBlock</title>
     <meta name="generator" content="Hugo 0.46" />
 
     
     <meta name="description" content="EngineBlock Docs">
     
-    <link rel="canonical" href="http://docs.engineblock.io/dev-guide/scripting_extensions/">
+    <link rel="canonical" href="http://docs.engineblock.io/dev-guide/implementors_guide/">
     
 
-    <meta property="og:url" content="http://docs.engineblock.io/dev-guide/scripting_extensions/">
+    <meta property="og:url" content="http://docs.engineblock.io/dev-guide/implementors_guide/">
     <meta property="og:title" content="EngineBlock">
     <meta property="og:image" content="/images/engineblock_128.png">
     <meta name="apple-mobile-web-app-title" content="EngineBlock">
@@ -156,7 +156,7 @@
     </div>
     <div class="stretch">
       <div class="title">
-        Scripting Extensions
+        Design Guidelines
       </div>
     </div>
 
@@ -645,34 +645,62 @@
 
 	<article class="article">
 		<div class="wrapper">
-			<h1>Scripting Extensions </h1>
+			<h1>Design Guidelines </h1>
 
 			
 
-<h2 id="requirements">Requirements</h2>
+<h2 id="activitytype-naming">ActivityType Naming</h2>
 
-<ul>
-<li>Java 8</li>
-<li>Maven dependency:</li>
-</ul>
+<p>Each activity type should be named with a single lowercase name that is accurate and stable. Any activity type
+implementations submitted to the engineblock project may be changed by the project maintainers to ensure this.</p>
 
-<h2 id="scripting-extensions">Scripting Extensions</h2>
+<h2 id="activitytype-documentation">ActivityType Documentation</h2>
 
-<p>When a new scripting environment is initialized in EngineBlock, a new instance of each scripting extension is published into it as a variable. This variable acts as a named service endpoint within the scripting environment. For example, an extension for saving a JSON map to disk could be published into the scripting environment as &ldquo;savejson&rdquo;, and you might invoke it as &ldquo;savejson.save(&lsquo;somefile.json&rsquo;,myjson);&rdquo;.</p>
+<p>Each activity type should have a file which provides markdown-formatted documentation for the user. This documentation
+should be in a markdown format that is clean for terminal rendering for when users have <em>only</em> a terminal to read
+with.</p>
 
-<h2 id="loading-scripting-extensions">Loading Scripting Extensions</h2>
+<p>The single file should be hosted in the classpath under the name of the activity type with a <code>.md</code> extension. For example,
+the <code>tcpclient</code> activity type has documentation in <code>tcpclient.md</code> at the root of the classpath.</p>
 
-<p>In order to share these with the EngineBlock runtime, the ServerLoader API is used. The scripting environment will load every plugin implementing the SandboxPluginData interface, as long as it has the proper data in META-INF/services/ in the classpath. There are examples of how to do this via Maven in the source repo under the eb-extensions module.</p>
+<p>This allows for users to run <code>help tcpclient</code> to get that documentation.</p>
 
-<h2 id="maven-dependencies">Maven Dependencies</h2>
+<h3 id="activitytype-parameters">ActivityType Parameters</h3>
 
-<pre><code>&lt;dependency&gt;
-  &lt;groupId&gt;io.engineblock&lt;/groupId&gt;
-  &lt;artifactId&gt;eb-api&lt;/artifactId&gt;
-  &lt;version&gt;1.0.17&lt;/version&gt;
-  &lt;type&gt;pom&lt;/type&gt;
-&lt;/dependency&gt;
-</code></pre>
+<p>The documentation for an activity type should have an explanation of all the activity parameters that are unique to it.
+Examples of each of these should be given. The default values for these parameters should be given. Further, if
+there are some common settings that may be useful to users, these should be included in the examples.</p>
+
+<h3 id="statement-parameters">Statement Parameters</h3>
+
+<p>The documentation for an activity type should have an explanation of all the statement parameters that are unique to it.
+Examples of each of these should be given. The default values for these parameters should be given.</p>
+
+<h2 id="parameter-use">Parameter Use</h2>
+
+<p>Activity parameters <em>and</em> statement parameters must combine in intuitive ways.</p>
+
+<h3 id="additive-configuration">Additive Configuration</h3>
+
+<p>If there is a configuration element in the activity type which can be modified in multiple ways that are not mutually exclusive, each time that
+configuration element is modified, it should be done additively. This means that users should not be surprised when
+they use multiple parameters that modify the configuration element with only the last one being applied.</p>
+
+<h3 id="parameter-conflicts">Parameter Conflicts</h3>
+
+<p>If it is possible for parameters to conflict with each other in a way that would provide an invalid configuration when both are applied,
+or in a way that the underlying API would not strictly allow, then these conditions must be detected by the activity type, with
+an error thrown to the user explaining the conflict.</p>
+
+<h3 id="parameter-diagnostics">Parameter Diagnostics</h3>
+
+<p>Each and every activity parameter that is set on an activity <em>must</em> be logged at DEBUG level with the
+pattern <code>ACTIVITY PARAMETER: &lt;activity alias&gt;</code> included in the log line, so that the user may verify applied parameter settings.
+Further, an explanation for what this parameter does to the specific activity <em>should</em> be included in a following log line.</p>
+
+<p>Each and every statement parameter that is set on a statement <em>must</em> be logged at DEBUG level with the
+pattern <code>STATEMENT PARAMETER: &lt;statement name&gt;:</code> included in the log line, so that the user may verify applied statement settings.
+Further, an explanation for what this parameter does to the specific statement <em>should</em> be included in a following log line.</p>
 
 
 			<aside class="copyright" role="note">
@@ -691,7 +719,7 @@
 <nav class="pagination" aria-label="Footer">
   <div class="previous">
   
-      <a href="http://docs.engineblock.io/dev-guide/implementors_guide/" title="Design Guidelines">
+      <a href="http://docs.engineblock.io/dev-guide/async_operations/" title="Async Operations">
         <span class="direction">
           Previous
         </span>
@@ -701,7 +729,7 @@
           </div>
           <div class="stretch">
             <div class="title">
-              Design Guidelines
+              Async Operations
             </div>
           </div>
         </div>
@@ -711,14 +739,14 @@
 
   <div class="next">
   
-      <a href="http://docs.engineblock.io/dev-guide/project_structure/" title="Project Structure">
+      <a href="http://docs.engineblock.io/dev-guide/scripting_extensions/" title="Scripting Extensions">
         <span class="direction">
           Next
         </span>
         <div class="page">
           <div class="stretch">
             <div class="title">
-              Project Structure
+              Scripting Extensions
             </div>
           </div>
           <div class="button button-next" role="button" aria-label="Next">

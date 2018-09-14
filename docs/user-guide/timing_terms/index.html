@@ -9,16 +9,16 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,maximum-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=10" />
-    <title>Scripting Extensions - EngineBlock</title>
+    <title>Timing Terms - EngineBlock</title>
     <meta name="generator" content="Hugo 0.46" />
 
     
     <meta name="description" content="EngineBlock Docs">
     
-    <link rel="canonical" href="http://docs.engineblock.io/dev-guide/scripting_extensions/">
+    <link rel="canonical" href="http://docs.engineblock.io/user-guide/timing_terms/">
     
 
-    <meta property="og:url" content="http://docs.engineblock.io/dev-guide/scripting_extensions/">
+    <meta property="og:url" content="http://docs.engineblock.io/user-guide/timing_terms/">
     <meta property="og:title" content="EngineBlock">
     <meta property="og:image" content="/images/engineblock_128.png">
     <meta name="apple-mobile-web-app-title" content="EngineBlock">
@@ -156,7 +156,7 @@
     </div>
     <div class="stretch">
       <div class="title">
-        Scripting Extensions
+        Timing Terms
       </div>
     </div>
 
@@ -645,34 +645,92 @@
 
 	<article class="article">
 		<div class="wrapper">
-			<h1>Scripting Extensions </h1>
+			<h1>Timing Terms </h1>
 
 			
 
-<h2 id="requirements">Requirements</h2>
+<div class="admonition note">
+<p class="admonition-title"></p>
+<p>The terms in this section attempt to make useful contrasts while
+staying reasonably close to established terms across the distributed computing
+industry. They may be adjusted for accuracy or effect. If you have ideas or
+suggestions for this, please submit change
+<a href="https://github.com/engineblock/engineblock/issues">request</a>.</p>
+</div>
 
-<ul>
-<li>Java 8</li>
-<li>Maven dependency:</li>
-</ul>
+<p>Often, terms used to describe latency can create confusion. In EngineBlock,
+the following terms will be used for consistency, as there are a few different
+conventions in use across the industry.</p>
 
-<h2 id="scripting-extensions">Scripting Extensions</h2>
+<h3 id="wait-time">wait time</h3>
 
-<p>When a new scripting environment is initialized in EngineBlock, a new instance of each scripting extension is published into it as a variable. This variable acts as a named service endpoint within the scripting environment. For example, an extension for saving a JSON map to disk could be published into the scripting environment as &ldquo;savejson&rdquo;, and you might invoke it as &ldquo;savejson.save(&lsquo;somefile.json&rsquo;,myjson);&rdquo;.</p>
+<p><strong>The duration of time between when an operation is intended to start and when it actually
+starts on a client.</strong> This is also called <em>scheduling delay</em> in some places. Wait
+time occurs because clients are not able to make all requests instantaneously.
+There is an ideal time at which the request would be made according to user
+demand. This ideal time is always earlier than the actual time in practice.
+When there is a shortage of resources <em>of any kind</em> that delays a client request,
+it must wait.</p>
 
-<h2 id="loading-scripting-extensions">Loading Scripting Extensions</h2>
+<h3 id="transport-time">transport time</h3>
 
-<p>In order to share these with the EngineBlock runtime, the ServerLoader API is used. The scripting environment will load every plugin implementing the SandboxPluginData interface, as long as it has the proper data in META-INF/services/ in the classpath. There are examples of how to do this via Maven in the source repo under the eb-extensions module.</p>
+<p><strong>The amount of total time spent on a transport medium, or between client and server.</strong> This is
+sometimes called <em>wire time</em>. The transport time may include multiple segments or hops over
+infrastructure, and includes the total time transporting the request and the response together.</p>
 
-<h2 id="maven-dependencies">Maven Dependencies</h2>
+<h3 id="service-time">service time</h3>
 
-<pre><code>&lt;dependency&gt;
-  &lt;groupId&gt;io.engineblock&lt;/groupId&gt;
-  &lt;artifactId&gt;eb-api&lt;/artifactId&gt;
-  &lt;version&gt;1.0.17&lt;/version&gt;
-  &lt;type&gt;pom&lt;/type&gt;
-&lt;/dependency&gt;
-</code></pre>
+<p><strong>The duration of time it takes a server or other system to fully response to a request and
+send a response.</strong> The service time does not include transport time. It is limited to what happens within
+a responding system after it receives the request and until it has submitted the response to the transport layer.</p>
+
+<h3 id="latency">latency</h3>
+
+<p><strong>The duration of time between when a client starts an operation and when the operation is complete,
+including any transport time and service time.</strong> Latency is a measure of time that lumps
+together transport time and service time. From the client&rsquo;s perspective, there is no way to
+measure transport time and service time independently.</p>
+
+<h3 id="response-time">response time</h3>
+
+<p><strong>The duration of time a user has to wait for a response from the time they submitted the request.</strong>
+Response time is the duration of time from when a request was expected to start, to the time at
+which the response is finally seen by the user. A request is generally expected to start immediately
+when users make a request. For example, when a user enters a URL into a browser, they expect the request
+to start immediately when they hit enter.</p>
+
+<p>The response time can be calculated by adding the wait time, the transport time, and the service time.</p>
+
+<h2 id="timing-visually">Timing, Visually</h2>
+
+<div align="middle"><img src="../../diagrams/eb_timing_terms.svg" width="50%"></img></div>
+
+<h2 id="semantics">Semantics</h2>
+
+<h3 id="resources">Resources</h3>
+
+<p>As shown, the client has to wait for some resource to become available before
+an operation can be started. <em>This resource can be anything, including memory,
+threads, sockets, or time, as enforced by artificial constraints like rate
+limits.</em> In this diagram, the resource is a general purpose place holder
+for anything that can cause delay before a request is started from a client.
+This even includes process and IO scheduling systems as found within operating
+systems.</p>
+
+<p>The scheduler as an active element has been obviated from the diagram,
+as it is generally their job to arbitrate over shared resources.</p>
+
+<h3 id="generality">Generality</h3>
+
+<p>Further, the basic relationship that is shown here between a client entity, a
+transport layer, and a service entity is a general purpose abstraction.
+You can apply this view of timing to any messaging system in which you
+have those elements in play. For example, within a server, multiple subsystems
+are needed to fulfil a request. A server process will often need to wait for
+sufficient IO capacity in the event of a cold read. In this case, the server
+process becomes a client of the IO subsystem, with the IO scheduler acting
+as arbiter of the request. You can simply change the terms on the diagram
+to match such as scenario and it will still ring true.</p>
 
 
 			<aside class="copyright" role="note">
@@ -691,7 +749,7 @@
 <nav class="pagination" aria-label="Footer">
   <div class="previous">
   
-      <a href="http://docs.engineblock.io/dev-guide/implementors_guide/" title="Design Guidelines">
+      <a href="http://docs.engineblock.io/user-guide/using_metrics/" title="Using Metrics">
         <span class="direction">
           Previous
         </span>
@@ -701,7 +759,7 @@
           </div>
           <div class="stretch">
             <div class="title">
-              Design Guidelines
+              Using Metrics
             </div>
           </div>
         </div>
@@ -711,14 +769,14 @@
 
   <div class="next">
   
-      <a href="http://docs.engineblock.io/dev-guide/project_structure/" title="Project Structure">
+      <a href="http://docs.engineblock.io/user-guide/standard_metrics/" title="Standard Metrics">
         <span class="direction">
           Next
         </span>
         <div class="page">
           <div class="stretch">
             <div class="title">
-              Project Structure
+              Standard Metrics
             </div>
           </div>
           <div class="button button-next" role="button" aria-label="Next">

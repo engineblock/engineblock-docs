@@ -81,6 +81,16 @@ Firstly, there is a parent for each of the modules. In Maven parlance, you can t
     </item>
     
     <item>
+      <title>Design Guidelines</title>
+      <link>http://docs.engineblock.io/dev-guide/implementors_guide/</link>
+      <pubDate>Fri, 19 May 2017 22:09:53 +0000</pubDate>
+      
+      <guid>http://docs.engineblock.io/dev-guide/implementors_guide/</guid>
+      <description>ActivityType Naming Each activity type should be named with a single lowercase name that is accurate and stable. Any activity type implementations submitted to the engineblock project may be changed by the project maintainers to ensure this.
+ActivityType Documentation Each activity type should have a file which provides markdown-formatted documentation for the user. This documentation should be in a markdown format that is clean for terminal rendering for when users have only a terminal to read with.</description>
+    </item>
+    
+    <item>
       <title>Async Operations</title>
       <link>http://docs.engineblock.io/dev-guide/async_operations/</link>
       <pubDate>Fri, 19 May 2017 22:09:53 +0000</pubDate>

@@ -23,6 +23,11 @@
   </url>
   
   <url>
+    <loc>http://docs.engineblock.io/user-guide/timing_terms/</loc>
+    <lastmod>2017-05-19T21:52:57+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://docs.engineblock.io/user-guide/using_metrics/</loc>
     <lastmod>2017-05-19T21:52:57+00:00</lastmod>
   </url>
@@ -105,6 +110,11 @@
   <url>
     <loc>http://docs.engineblock.io/user-guide/standard_yaml/</loc>
     <lastmod>2017-10-24T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://docs.engineblock.io/dev-guide/implementors_guide/</loc>
+    <lastmod>2017-05-19T22:09:53+00:00</lastmod>
   </url>
   
   <url>
