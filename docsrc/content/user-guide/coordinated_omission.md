@@ -20,50 +20,31 @@ EngineBlock has specific features to help shed a light on the effects of
 coordinated omission. This section explains some of them, how they work, and how
 to use them.
 
-## Terms
-
-{{< note >}}
-The terms in this section attempt to make useful contrasts while
-staying reasonably close to established terms across the distributed computing
-industry. They may be adjusted for accuracy or effect. If you have ideas or
-suggestions for this, please submit change 
-[request](https://github.com/engineblock/engineblock/issues).
-{{</ note >}}
-
-Often, terms used to describe latency in the context of coordinated omission can
-create confusion. In this section the following terms will be used, as there are
-a few different conventions in use across the industry.
-
-- scheduling delay - The time between when an operation is intended to start 
-  and when it actually starts on a client
-- operational latency - The time between when an operation is started from the 
-  client, and when it is completed on the client.
-- total response time - The user-centric measurement of latency which includes 
-  both scheduling delay and operational latency.
-- service time - The time it takes a server or system to fully respond to a 
-  request and send a response.
-
+To make sense of this, it is important to be aware of the specific meaning
+of the terms used for timing with systems testing. For a specific view on
+how timing terms are used with EngineBlock, see [timing terms](../timing_terms).
 
 As EngineBlock is a client-side tool, only the first two are directly
-observable: *delay* and *latency*. The third, *response* is calculated
-separately per operation. The reason for this will be made clearer below.
+observable: *wait time* and *latency*. The most important, *response* is 
+calculated separately per operation. The reason for this will be made clearer below.
 
 ## C.O. Rate Controls
 
 When rate limiting is enabled, the rate limiter is responsible for both limiting
-the start time of each operation as well as metering how far the operations lag
+the start time of each operation as well as tracking how far the operations lag
 behind the ideal schedule. This is retained as a scheduling delay specific to
 each operation and added to any measurements of latency in order to arrive at an
-overall response time for each operation.
+overall response time for each operation. The phrase *scheduling delay* here
+is a specific form of wait time that is imposed upon the client in order to simulate
+some consistent rate of ideal users in the system, with operations spread over time.
 
 When the rate controls are enabled, you have to decide whether the scheduling
-delay measured by the rate limiter will be used in latency metrics or not. If
-you choose not to include the delay, then the latency metrics reported only
-measure operational latency. You can still observe the scheduling delay metric
-in this case in order to interpret the overall severity of scheduling delay by
-itself. If you choose to include the delay, then **specific** latency metrics
-reported are effectively promoted to *response time* metrics as defined above.
-In this mode, the per-op operational latency is lost in the mix.
+delay measured by the rate limiter will be used in response time metrics or not. If
+you choose not to include the delay, then the response time metrics only
+measure latency. You can still observe the scheduling delay metric
+in this case, as it is tracked and reported separately.
+If you choose to include the delay, then latency metrics reported are effectively 
+promoted to *response time* metrics.
 
 In the EngineBlock documentation, metrics which can have this adjustment made
 are called ***coordinated omission aware***. In general, any where you see a
