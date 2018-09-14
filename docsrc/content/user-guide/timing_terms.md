@@ -33,13 +33,13 @@ it must wait.
 
 ### transport time
 
-**The amount of total time spent on a transport medium, or between client and server.** This is
+**The duration of total time spent on a transport medium, or between client and server.** This is
 sometimes called *wire time*. The transport time may include multiple segments or hops over
 infrastructure, and includes the total time transporting the request and the response together.
 
 ### service time
 
-**The duration of time it takes a server or other system to fully response to a request and 
+**The duration of time it takes a server or other system to fully process to a request and 
 send a response.** The service time does not include transport time. It is limited to what happens within 
 a responding system after it receives the request and until it has submitted the response to the transport layer.
 
