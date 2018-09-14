@@ -9,16 +9,16 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,maximum-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=10" />
-    <title>Timing Terms - EngineBlock</title>
+    <title>Latency Terms - EngineBlock</title>
     <meta name="generator" content="Hugo 0.46" />
 
     
     <meta name="description" content="EngineBlock Docs">
     
-    <link rel="canonical" href="http://docs.engineblock.io/user-guide/timing_terms/">
+    <link rel="canonical" href="http://docs.engineblock.io/user-guide/latency_terms/">
     
 
-    <meta property="og:url" content="http://docs.engineblock.io/user-guide/timing_terms/">
+    <meta property="og:url" content="http://docs.engineblock.io/user-guide/latency_terms/">
     <meta property="og:title" content="EngineBlock">
     <meta property="og:image" content="/images/engineblock_128.png">
     <meta name="apple-mobile-web-app-title" content="EngineBlock">
@@ -156,7 +156,7 @@
     </div>
     <div class="stretch">
       <div class="title">
-        Timing Terms
+        Latency Terms
       </div>
     </div>
 
@@ -325,9 +325,9 @@
 
 
 
-<a  title="Timing Terms" href="../../user-guide/timing_terms/">
+<a  title="Latency Terms" href="../../user-guide/latency_terms/">
 	
-	Timing Terms
+	Latency Terms
 </a>
 
 
@@ -645,24 +645,38 @@
 
 	<article class="article">
 		<div class="wrapper">
-			<h1>Timing Terms </h1>
+			<h1>Latency Terms </h1>
 
 			
 
-<div class="admonition note">
-<p class="admonition-title"></p>
-<p>The terms in this section attempt to make useful contrasts while
-staying reasonably close to established terms across the distributed computing
-industry. They may be adjusted for accuracy or effect. If you have ideas or
-suggestions for this, please submit change
-<a href="https://github.com/engineblock/engineblock/issues">request</a>.</p>
-</div>
+<p>Often, terms used to describe latency can create confusion. In fact, the term
+<em>latency</em> is so overloaded in practice that it is not useful by itself.
+Because of this, EngineBlock will avoid using the term latency <em>except in a
+specific way</em>. Instead, the terms described in this section will be used.</p>
 
-<p>Often, terms used to describe latency can create confusion. In EngineBlock,
-the following terms will be used for consistency, as there are a few different
-conventions in use across the industry.</p>
+<p>EngineBlock is a client-centric testing tool. The measurement of operations occurs on
+the client, without visibility to what happens in transport or on the server. This
+means that the client <em>can</em> see how long an operation takes, but it <em>cannot see</em> how
+much of the operational time is spent in transport and otherwise. This has a bearing on
+the terms that are adopted with EngineBlock.</p>
 
-<h3 id="wait-time">wait time</h3>
+<p>Some terms are anchored by the context in which they are used. For latency terms,
+<em>service time</em> can be subjective. When using this term to describe other effects in your
+system, what is included depends on the perspective of the requester. The concept of
+service is universal, and every layer in a system can be seen as a service. Thus, the
+service time is defined by the vantage point of the requester.</p>
+
+<h3 id="responsetime">responsetime</h3>
+
+<p><strong>The duration of time a user has to wait for a response from the time they submitted the request.</strong>
+Response time is the duration of time from when a request was expected to start, to the time at
+which the response is finally seen by the user. A request is generally expected to start immediately
+when users make a request. For example, when a user enters a URL into a browser, they expect the request
+to start immediately when they hit enter.</p>
+
+<p>In EngineBlock, the response time can be calculated by adding the wait time and and the service time.</p>
+
+<h3 id="waittime">waittime</h3>
 
 <p><strong>The duration of time between when an operation is intended to start and when it actually
 starts on a client.</strong> This is also called <em>scheduling delay</em> in some places. Wait
@@ -672,38 +686,18 @@ demand. This ideal time is always earlier than the actual time in practice.
 When there is a shortage of resources <em>of any kind</em> that delays a client request,
 it must wait.</p>
 
-<h3 id="transport-time">transport time</h3>
-
-<p><strong>The duration of total time spent on a transport medium, or between client and server.</strong> This is
-sometimes called <em>wire time</em>. The transport time may include multiple segments or hops over
-infrastructure, and includes the total time transporting the request and the response together.</p>
-
-<h3 id="service-time">service time</h3>
+<h3 id="servicetime">servicetime</h3>
 
 <p><strong>The duration of time it takes a server or other system to fully process to a request and
-send a response.</strong> The service time does not include transport time. It is limited to what happens within
-a responding system after it receives the request and until it has submitted the response to the transport layer.</p>
-
-<h3 id="latency">latency</h3>
-
-<p><strong>The duration of time between when a client starts an operation and when the operation is complete,
-including any transport time and service time.</strong> Latency is a measure of time that lumps
-together transport time and service time. From the client&rsquo;s perspective, there is no way to
-measure transport time and service time independently.</p>
-
-<h3 id="response-time">response time</h3>
-
-<p><strong>The duration of time a user has to wait for a response from the time they submitted the request.</strong>
-Response time is the duration of time from when a request was expected to start, to the time at
-which the response is finally seen by the user. A request is generally expected to start immediately
-when users make a request. For example, when a user enters a URL into a browser, they expect the request
-to start immediately when they hit enter.</p>
-
-<p>The response time can be calculated by adding the wait time, the transport time, and the service time.</p>
+send a response.</strong> From the perspective of a testing client, the <em>system</em> includes the
+infrastructure as well as remote servers. As such, the service time metrics in EngineBlock
+include any operational time that is external to the client, including transport latency.
+This will be the convention adopted going forward, and previously named metrics which are
+not explicit in this will be deprecated over time.</p>
 
 <h2 id="timing-visually">Timing, Visually</h2>
 
-<div align="middle"><img src="../../diagrams/eb_timing_terms.svg" width="50%"></img></div>
+<div align="middle"><img src="../../diagrams/eb_latency_terms.svg" width="50%"></img></div>
 
 <h2 id="semantics">Semantics</h2>
 
@@ -746,7 +740,7 @@ to match such a scenario and it will still ring true.</p>
 <nav class="pagination" aria-label="Footer">
   <div class="previous">
   
-      <a href="http://docs.engineblock.io/user-guide/using_metrics/" title="Using Metrics">
+      <a href="http://docs.engineblock.io/user-guide/scenario_scripting/" title="Scenario Scripting">
         <span class="direction">
           Previous
         </span>
@@ -756,7 +750,7 @@ to match such a scenario and it will still ring true.</p>
           </div>
           <div class="stretch">
             <div class="title">
-              Using Metrics
+              Scenario Scripting
             </div>
           </div>
         </div>
@@ -766,14 +760,14 @@ to match such a scenario and it will still ring true.</p>
 
   <div class="next">
   
-      <a href="http://docs.engineblock.io/user-guide/standard_metrics/" title="Standard Metrics">
+      <a href="http://docs.engineblock.io/user-guide/coordinated_omission/" title="Coordinated Omission">
         <span class="direction">
           Next
         </span>
         <div class="page">
           <div class="stretch">
             <div class="title">
-              Standard Metrics
+              Coordinated Omission
             </div>
           </div>
           <div class="button button-next" role="button" aria-label="Next">

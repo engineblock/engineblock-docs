@@ -32,6 +32,16 @@ Activity A scenario can have multiple activities. Each activity runs independent
     </item>
     
     <item>
+      <title>Latency Terms</title>
+      <link>http://docs.engineblock.io/user-guide/latency_terms/</link>
+      <pubDate>Fri, 19 May 2017 21:52:57 +0000</pubDate>
+      
+      <guid>http://docs.engineblock.io/user-guide/latency_terms/</guid>
+      <description>Often, terms used to describe latency can create confusion. In fact, the term latency is so overloaded in practice that it is not useful by itself. Because of this, EngineBlock will avoid using the term latency except in a specific way. Instead, the terms described in this section will be used.
+EngineBlock is a client-centric testing tool. The measurement of operations occurs on the client, without visibility to what happens in transport or on the server.</description>
+    </item>
+    
+    <item>
       <title>Scenario Scripting</title>
       <link>http://docs.engineblock.io/user-guide/scenario_scripting/</link>
       <pubDate>Fri, 19 May 2017 21:52:57 +0000</pubDate>
@@ -48,16 +58,6 @@ Activity A scenario can have multiple activities. Each activity runs independent
       <guid>http://docs.engineblock.io/user-guide/standard_metrics/</guid>
       <description>Engineblock comes with a set of standard metrics that will be part of every activity type. Each activity type enhances the metrics available by adding their own metrics with the engineblock APIs. This section explains what the standard metrics are, and how to interpret them.
 read-input Within engineblock, a data stream provider called an Input is responsible for providing the actual cycle number that will be used by consumer threads.</description>
-    </item>
-    
-    <item>
-      <title>Timing Terms</title>
-      <link>http://docs.engineblock.io/user-guide/timing_terms/</link>
-      <pubDate>Fri, 19 May 2017 21:52:57 +0000</pubDate>
-      
-      <guid>http://docs.engineblock.io/user-guide/timing_terms/</guid>
-      <description>The terms in this section attempt to make useful contrasts while staying reasonably close to established terms across the distributed computing industry. They may be adjusted for accuracy or effect. If you have ideas or suggestions for this, please submit change request.
- Often, terms used to describe latency can create confusion. In EngineBlock, the following terms will be used for consistency, as there are a few different conventions in use across the industry.</description>
     </item>
     
     <item>
