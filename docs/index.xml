@@ -6,7 +6,6 @@
     <description>Recent content in EngineBlock Users Guide on EngineBlock</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 19 May 2017 21:52:39 +0000</lastBuildDate>
     
 	<atom:link href="http://docs.engineblock.io/index.xml" rel="self" type="application/rss+xml" />
     
@@ -14,7 +13,7 @@
     <item>
       <title>Concepts</title>
       <link>http://docs.engineblock.io/user-guide/concepts/</link>
-      <pubDate>Fri, 19 May 2017 21:52:57 +0000</pubDate>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>http://docs.engineblock.io/user-guide/concepts/</guid>
       <description>EngineBlock is a machine pattern for test design and execution. This guide is intended to illustrate the moving parts and how they work together.
@@ -25,7 +24,7 @@ Activity A scenario can have multiple activities. Each activity runs independent
     <item>
       <title>Coordinated Omission</title>
       <link>http://docs.engineblock.io/user-guide/coordinated_omission/</link>
-      <pubDate>Fri, 19 May 2017 21:52:57 +0000</pubDate>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>http://docs.engineblock.io/user-guide/coordinated_omission/</guid>
       <description>Coordinated omission is a term of art coined by Gil Tene. In practice, coordinated omission follows from the fact that all systems have finite concurrency and scheduling capacity, including the clients that test them. While the term doesn&amp;rsquo;t cover all important aspects of scale and performance testing, it does put a focus on a particularly troublesome problem that often occurs with testing methods where effective concurrency is a meaningful limitation.</description>
@@ -34,7 +33,7 @@ Activity A scenario can have multiple activities. Each activity runs independent
     <item>
       <title>Latency Terms</title>
       <link>http://docs.engineblock.io/user-guide/latency_terms/</link>
-      <pubDate>Fri, 19 May 2017 21:52:57 +0000</pubDate>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>http://docs.engineblock.io/user-guide/latency_terms/</guid>
       <description>Often, terms used to describe latency can create confusion. In fact, the term latency is so overloaded in practice that it is not useful by itself. Because of this, EngineBlock will avoid using the term latency except in a specific way. Instead, the terms described in this section will be used.
@@ -44,7 +43,7 @@ EngineBlock is a client-centric testing tool. The measurement of operations occu
     <item>
       <title>Scenario Scripting</title>
       <link>http://docs.engineblock.io/user-guide/scenario_scripting/</link>
-      <pubDate>Fri, 19 May 2017 21:52:57 +0000</pubDate>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>http://docs.engineblock.io/user-guide/scenario_scripting/</guid>
       <description>Motive The EngineBlock runtime is a combination of a scripting sandbox and a workload execution machine. This is not accidental. With this particular arrangement, it should be possible to build sophisticated tests across a variety of scenarios. In particular, logic which can observe and react to the system under test can be powerful. With this approach, it becomes possible to break away from the conventional run-interpret-adjust cycle which is all too often done by human hands.</description>
@@ -53,7 +52,7 @@ EngineBlock is a client-centric testing tool. The measurement of operations occu
     <item>
       <title>Standard Metrics</title>
       <link>http://docs.engineblock.io/user-guide/standard_metrics/</link>
-      <pubDate>Fri, 19 May 2017 21:52:57 +0000</pubDate>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>http://docs.engineblock.io/user-guide/standard_metrics/</guid>
       <description>Engineblock comes with a set of standard metrics that will be part of every activity type. Each activity type enhances the metrics available by adding their own metrics with the engineblock APIs. This section explains what the standard metrics are, and how to interpret them.
@@ -63,7 +62,7 @@ read-input Within engineblock, a data stream provider called an Input is respons
     <item>
       <title>Using Metrics</title>
       <link>http://docs.engineblock.io/user-guide/using_metrics/</link>
-      <pubDate>Fri, 19 May 2017 21:52:57 +0000</pubDate>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>http://docs.engineblock.io/user-guide/using_metrics/</guid>
       <description>Unit of Measure All metrics collected from activities are recorded in nanoseconds and ops per second. All histograms are recorded with 4 digits of precision using HDR histograms.
@@ -72,19 +71,9 @@ Metric Outputs Metrics from a scenario run can be gathered in multiple ways:
     </item>
     
     <item>
-      <title>YAML Config API</title>
-      <link>http://docs.engineblock.io/dev-guide/standard_yam_devl/</link>
-      <pubDate>Tue, 24 Oct 2017 00:00:00 +0000</pubDate>
-      
-      <guid>http://docs.engineblock.io/dev-guide/standard_yam_devl/</guid>
-      <description>In the EngineBlock 2.* and newer versions, a standard YAML configuration format is provided that makes it easy to use for any activity that requires statements, tags, parameters and data bindings. This section describes how to use it as a developer*. Developers should already be familiar with the user guide for the YAML config format first.
-Simple Usage StrInterpolater interpolator = new StrInterpolater(activityDef); String yaml_loc = activityDef.getParams().getOptionalString(&amp;quot;yaml&amp;quot;).orElse(&amp;quot;default&amp;quot;); StmtsDocList sdl = StatementsLoader.</description>
-    </item>
-    
-    <item>
       <title>Parameter Usage</title>
       <link>http://docs.engineblock.io/parameters/parameter_usage/</link>
-      <pubDate>Fri, 19 May 2017 21:52:57 +0000</pubDate>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>http://docs.engineblock.io/parameters/parameter_usage/</guid>
       <description>To configure an EngineBlock activity to do something meaningful, you have to provide parameters to it. This can occur in one of several ways. This section is a guide on EngineBlock parameters, how they layer together, and when to use one form over another.
@@ -92,9 +81,19 @@ Command Line The command line is used to configure both the overall EngineBlock 
     </item>
     
     <item>
+      <title>YAML Config API</title>
+      <link>http://docs.engineblock.io/dev-guide/standard_yam_devl/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://docs.engineblock.io/dev-guide/standard_yam_devl/</guid>
+      <description>In the EngineBlock 2.* and newer versions, a standard YAML configuration format is provided that makes it easy to use for any activity that requires statements, tags, parameters and data bindings. This section describes how to use it as a developer*. Developers should already be familiar with the user guide for the YAML config format first.
+Simple Usage StrInterpolater interpolator = new StrInterpolater(activityDef); String yaml_loc = activityDef.getParams().getOptionalString(&amp;quot;yaml&amp;quot;).orElse(&amp;quot;default&amp;quot;); StmtsDocList sdl = StatementsLoader.</description>
+    </item>
+    
+    <item>
       <title>Command Line</title>
       <link>http://docs.engineblock.io/user-guide/command_line/</link>
-      <pubDate>Fri, 19 May 2017 22:09:53 +0000</pubDate>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>http://docs.engineblock.io/user-guide/command_line/</guid>
       <description>To get built-in help on the available command line options, run
@@ -105,7 +104,7 @@ There is more than one way to invoke EngineBlock. The sections below explain mor
     <item>
       <title>Example Command</title>
       <link>http://docs.engineblock.io/parameters/example_command/</link>
-      <pubDate>Fri, 19 May 2017 21:52:57 +0000</pubDate>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>http://docs.engineblock.io/parameters/example_command/</guid>
       <description>Most new users will be interested in a command line pattern that looks very much like this:
@@ -115,7 +114,7 @@ There is more than one way to invoke EngineBlock. The sections below explain mor
     <item>
       <title>Activity Params</title>
       <link>http://docs.engineblock.io/parameters/activity_params/</link>
-      <pubDate>Fri, 19 May 2017 21:52:57 +0000</pubDate>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>http://docs.engineblock.io/parameters/activity_params/</guid>
       <description>Activity parameters are passed as named arguments for an activity, either on the command line or via a scenario script. On the command line, these take the form of
@@ -125,7 +124,7 @@ There is more than one way to invoke EngineBlock. The sections below explain mor
     <item>
       <title>Statement Params</title>
       <link>http://docs.engineblock.io/parameters/statement_params/</link>
-      <pubDate>Fri, 19 May 2017 21:52:57 +0000</pubDate>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>http://docs.engineblock.io/parameters/statement_params/</guid>
       <description>Statement parameters apply to the defined operations for an activity. Statement parameters are always configurable as part of a params block in YAML, for activities that use the Standard YAML format.
@@ -137,7 +136,7 @@ Determines the frequency of the affected statements in the operational sequence.
     <item>
       <title>Activity Internals</title>
       <link>http://docs.engineblock.io/dev-guide/activity_internals/</link>
-      <pubDate>Fri, 19 May 2017 22:09:53 +0000</pubDate>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>http://docs.engineblock.io/dev-guide/activity_internals/</guid>
       <description>Activities are a generalization of some type of client work that needs to occur to generate work against a test target. However, a purely abstract interface for activities would be so open-ended that it would provide no common scaffolding. On the contrary, we do want some sense of isomorphism between activity types in terms of how they are implemented and reasoned about. After reading this document, you should know what it means to implement an activity properly&amp;ndash; building on the core machinery while adding in activity-type behavior appropriately.</description>
@@ -146,7 +145,7 @@ Determines the frequency of the affected statements in the operational sequence.
     <item>
       <title>Building ActivityTypes</title>
       <link>http://docs.engineblock.io/dev-guide/building_activities/</link>
-      <pubDate>Fri, 19 May 2017 22:09:53 +0000</pubDate>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>http://docs.engineblock.io/dev-guide/building_activities/</guid>
       <description>Requirements  Java 8 Maven  Building new Activity Types  Add the engineblock API to your project via Maven:  &amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;io.engineblock&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;eb-api&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;1.0.17&amp;lt;/version&amp;gt; &amp;lt;type&amp;gt;pom&amp;lt;/type&amp;gt; &amp;lt;/dependency&amp;gt;   Implement the ActivityType interface. Use the [Annotated Diag ActivityType] as a reference point as needed. Add your new ActivityType implementation to the EngineBlock classpath. File Issues against the EngineBlock Project for any doc or API enhancements that you need.  Working directly on engineblock You can download and locally build EngineBlock.</description>
@@ -155,7 +154,7 @@ Determines the frequency of the affected statements in the operational sequence.
     <item>
       <title>CLI Scripting</title>
       <link>http://docs.engineblock.io/user-guide/cli_scripting/</link>
-      <pubDate>Fri, 19 May 2017 22:09:53 +0000</pubDate>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>http://docs.engineblock.io/user-guide/cli_scripting/</guid>
       <description>Sometimes you want to to run a set of workloads in a particular order, or call other specific test setup logic in between phases or workloads. While the full scripting environment allows you to do this and more, it is not necessary to write javascript for every scenario.
@@ -165,7 +164,7 @@ For more basic setup and sequencing needs, you can achive a fair degree of flexi
     <item>
       <title>Contributing</title>
       <link>http://docs.engineblock.io/dev-guide/contributing/</link>
-      <pubDate>Fri, 19 May 2017 22:09:53 +0000</pubDate>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>http://docs.engineblock.io/dev-guide/contributing/</guid>
       <description>Conduct It&amp;rsquo;s simple really. Everything in the Open Code of Conduct applies here. If, after reading that, you are unclear, then please pick another project to work on. The maintainers will not hesitate to enforce a code of conduct.
@@ -175,7 +174,7 @@ License EngineBlock is licensed under the Apache License, version 2.0. If you wi
     <item>
       <title>Diag ActivityType</title>
       <link>http://docs.engineblock.io/dev-guide/annotated_diag/</link>
-      <pubDate>Fri, 19 May 2017 22:09:53 +0000</pubDate>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>http://docs.engineblock.io/dev-guide/annotated_diag/</guid>
       <description>If you take all the code chunks from this document and concatenate them together, you&amp;rsquo;ll have &amp;lsquo;diag&amp;rsquo;, one of the in-build activity types for EngineBlock.
@@ -186,7 +185,7 @@ First, we annotate our ActivityType implementation, name DiagActivityType, with 
     <item>
       <title>Project Structure</title>
       <link>http://docs.engineblock.io/dev-guide/project_structure/</link>
-      <pubDate>Fri, 19 May 2017 22:09:53 +0000</pubDate>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>http://docs.engineblock.io/dev-guide/project_structure/</guid>
       <description>EngineBlock is packaged as a Maven Reactor project.
@@ -197,7 +196,7 @@ Firstly, there is a parent for each of the modules. In Maven parlance, you can t
     <item>
       <title>Scripting Extensions</title>
       <link>http://docs.engineblock.io/dev-guide/scripting_extensions/</link>
-      <pubDate>Fri, 19 May 2017 22:09:53 +0000</pubDate>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>http://docs.engineblock.io/dev-guide/scripting_extensions/</guid>
       <description>Requirements  Java 8 Maven dependency:  Scripting Extensions When a new scripting environment is initialized in EngineBlock, a new instance of each scripting extension is published into it as a variable. This variable acts as a named service endpoint within the scripting environment. For example, an extension for saving a JSON map to disk could be published into the scripting environment as &amp;ldquo;savejson&amp;rdquo;, and you might invoke it as &amp;ldquo;savejson.</description>
@@ -206,7 +205,7 @@ Firstly, there is a parent for each of the modules. In Maven parlance, you can t
     <item>
       <title>Slot Assembly</title>
       <link>http://docs.engineblock.io/historic/internals_slot_assembly/</link>
-      <pubDate>Fri, 19 May 2017 22:09:53 +0000</pubDate>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>http://docs.engineblock.io/historic/internals_slot_assembly/</guid>
       <description>This is superceded with recent changes and needs to be rewritten It is currently inaccurate and will be rewritten shortly Understanding Slot Assembly If you are building new ActionType implementations for EngineBlock, it can help to understand the creational patterns used for slot assembly.
@@ -216,7 +215,7 @@ What is Slot Assembly? Slot assembly in this context simply refers the logic tha
     <item>
       <title>YAML Config</title>
       <link>http://docs.engineblock.io/user-guide/standard_yaml/</link>
-      <pubDate>Tue, 24 Oct 2017 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>http://docs.engineblock.io/user-guide/standard_yaml/</guid>
       <description>In the EngineBlock 2.* and newer versions, a standard YAML configuration format is provided that makes it easy to use for any activity that requires statements, tags, parameters and data bindings. In practice, any useful activity types have needed these. This section describes the standard YAML format and how to use it.
@@ -226,7 +225,7 @@ A valid config file for an activity consists of statements, parameters for those
     <item>
       <title>Design Guidelines</title>
       <link>http://docs.engineblock.io/dev-guide/implementors_guide/</link>
-      <pubDate>Fri, 19 May 2017 22:09:53 +0000</pubDate>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>http://docs.engineblock.io/dev-guide/implementors_guide/</guid>
       <description>ActivityType Naming Each activity type should be named with a single lowercase name that is accurate and stable. Any activity type implementations submitted to the engineblock project may be changed by the project maintainers to ensure this.
@@ -236,7 +235,7 @@ ActivityType Documentation Each activity type should have a file which provides 
     <item>
       <title>Async Operations</title>
       <link>http://docs.engineblock.io/dev-guide/async_operations/</link>
-      <pubDate>Fri, 19 May 2017 22:09:53 +0000</pubDate>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>http://docs.engineblock.io/dev-guide/async_operations/</guid>
       <description>Introduction In EngineBlock, two types of activities are supported: sync or async. Going forward, the async interface will be refined and hardened, and then the sync interface will be deprecated. This is simply a matter of simplifying the API over time, and the async interface is the essential one. If you want synchronous behavior with the async interface, you can easily achieve that, but not the other way around.</description>
@@ -245,7 +244,7 @@ ActivityType Documentation Each activity type should have a file which provides 
     <item>
       <title>Error Mapping</title>
       <link>http://docs.engineblock.io/dev-guide/error_mapping/</link>
-      <pubDate>Fri, 19 May 2017 22:09:53 +0000</pubDate>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>http://docs.engineblock.io/dev-guide/error_mapping/</guid>
       <description>Each activity type should provide its own mapping between thrown errors and the error codes assigned to them.

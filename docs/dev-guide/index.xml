@@ -6,7 +6,6 @@
     <description>Recent content in EngineBlock Dev Guide on EngineBlock</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 19 May 2017 21:52:39 +0000</lastBuildDate>
     
 	<atom:link href="http://docs.engineblock.io/dev-guide/index.xml" rel="self" type="application/rss+xml" />
     
@@ -14,7 +13,7 @@
     <item>
       <title>YAML Config API</title>
       <link>http://docs.engineblock.io/dev-guide/standard_yam_devl/</link>
-      <pubDate>Tue, 24 Oct 2017 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>http://docs.engineblock.io/dev-guide/standard_yam_devl/</guid>
       <description>In the EngineBlock 2.* and newer versions, a standard YAML configuration format is provided that makes it easy to use for any activity that requires statements, tags, parameters and data bindings. This section describes how to use it as a developer*. Developers should already be familiar with the user guide for the YAML config format first.
@@ -24,7 +23,7 @@ Simple Usage StrInterpolater interpolator = new StrInterpolater(activityDef); St
     <item>
       <title>Activity Internals</title>
       <link>http://docs.engineblock.io/dev-guide/activity_internals/</link>
-      <pubDate>Fri, 19 May 2017 22:09:53 +0000</pubDate>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>http://docs.engineblock.io/dev-guide/activity_internals/</guid>
       <description>Activities are a generalization of some type of client work that needs to occur to generate work against a test target. However, a purely abstract interface for activities would be so open-ended that it would provide no common scaffolding. On the contrary, we do want some sense of isomorphism between activity types in terms of how they are implemented and reasoned about. After reading this document, you should know what it means to implement an activity properly&amp;ndash; building on the core machinery while adding in activity-type behavior appropriately.</description>
@@ -33,7 +32,7 @@ Simple Usage StrInterpolater interpolator = new StrInterpolater(activityDef); St
     <item>
       <title>Building ActivityTypes</title>
       <link>http://docs.engineblock.io/dev-guide/building_activities/</link>
-      <pubDate>Fri, 19 May 2017 22:09:53 +0000</pubDate>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>http://docs.engineblock.io/dev-guide/building_activities/</guid>
       <description>Requirements  Java 8 Maven  Building new Activity Types  Add the engineblock API to your project via Maven:  &amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;io.engineblock&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;eb-api&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;1.0.17&amp;lt;/version&amp;gt; &amp;lt;type&amp;gt;pom&amp;lt;/type&amp;gt; &amp;lt;/dependency&amp;gt;   Implement the ActivityType interface. Use the [Annotated Diag ActivityType] as a reference point as needed. Add your new ActivityType implementation to the EngineBlock classpath. File Issues against the EngineBlock Project for any doc or API enhancements that you need.  Working directly on engineblock You can download and locally build EngineBlock.</description>
@@ -42,7 +41,7 @@ Simple Usage StrInterpolater interpolator = new StrInterpolater(activityDef); St
     <item>
       <title>Contributing</title>
       <link>http://docs.engineblock.io/dev-guide/contributing/</link>
-      <pubDate>Fri, 19 May 2017 22:09:53 +0000</pubDate>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>http://docs.engineblock.io/dev-guide/contributing/</guid>
       <description>Conduct It&amp;rsquo;s simple really. Everything in the Open Code of Conduct applies here. If, after reading that, you are unclear, then please pick another project to work on. The maintainers will not hesitate to enforce a code of conduct.
@@ -52,7 +51,7 @@ License EngineBlock is licensed under the Apache License, version 2.0. If you wi
     <item>
       <title>Diag ActivityType</title>
       <link>http://docs.engineblock.io/dev-guide/annotated_diag/</link>
-      <pubDate>Fri, 19 May 2017 22:09:53 +0000</pubDate>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>http://docs.engineblock.io/dev-guide/annotated_diag/</guid>
       <description>If you take all the code chunks from this document and concatenate them together, you&amp;rsquo;ll have &amp;lsquo;diag&amp;rsquo;, one of the in-build activity types for EngineBlock.
@@ -63,7 +62,7 @@ First, we annotate our ActivityType implementation, name DiagActivityType, with 
     <item>
       <title>Project Structure</title>
       <link>http://docs.engineblock.io/dev-guide/project_structure/</link>
-      <pubDate>Fri, 19 May 2017 22:09:53 +0000</pubDate>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>http://docs.engineblock.io/dev-guide/project_structure/</guid>
       <description>EngineBlock is packaged as a Maven Reactor project.
@@ -74,7 +73,7 @@ Firstly, there is a parent for each of the modules. In Maven parlance, you can t
     <item>
       <title>Scripting Extensions</title>
       <link>http://docs.engineblock.io/dev-guide/scripting_extensions/</link>
-      <pubDate>Fri, 19 May 2017 22:09:53 +0000</pubDate>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>http://docs.engineblock.io/dev-guide/scripting_extensions/</guid>
       <description>Requirements  Java 8 Maven dependency:  Scripting Extensions When a new scripting environment is initialized in EngineBlock, a new instance of each scripting extension is published into it as a variable. This variable acts as a named service endpoint within the scripting environment. For example, an extension for saving a JSON map to disk could be published into the scripting environment as &amp;ldquo;savejson&amp;rdquo;, and you might invoke it as &amp;ldquo;savejson.</description>
@@ -83,7 +82,7 @@ Firstly, there is a parent for each of the modules. In Maven parlance, you can t
     <item>
       <title>Design Guidelines</title>
       <link>http://docs.engineblock.io/dev-guide/implementors_guide/</link>
-      <pubDate>Fri, 19 May 2017 22:09:53 +0000</pubDate>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>http://docs.engineblock.io/dev-guide/implementors_guide/</guid>
       <description>ActivityType Naming Each activity type should be named with a single lowercase name that is accurate and stable. Any activity type implementations submitted to the engineblock project may be changed by the project maintainers to ensure this.
@@ -93,7 +92,7 @@ ActivityType Documentation Each activity type should have a file which provides 
     <item>
       <title>Async Operations</title>
       <link>http://docs.engineblock.io/dev-guide/async_operations/</link>
-      <pubDate>Fri, 19 May 2017 22:09:53 +0000</pubDate>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>http://docs.engineblock.io/dev-guide/async_operations/</guid>
       <description>Introduction In EngineBlock, two types of activities are supported: sync or async. Going forward, the async interface will be refined and hardened, and then the sync interface will be deprecated. This is simply a matter of simplifying the API over time, and the async interface is the essential one. If you want synchronous behavior with the async interface, you can easily achieve that, but not the other way around.</description>
@@ -102,7 +101,7 @@ ActivityType Documentation Each activity type should have a file which provides 
     <item>
       <title>Error Mapping</title>
       <link>http://docs.engineblock.io/dev-guide/error_mapping/</link>
-      <pubDate>Fri, 19 May 2017 22:09:53 +0000</pubDate>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>http://docs.engineblock.io/dev-guide/error_mapping/</guid>
       <description>Each activity type should provide its own mapping between thrown errors and the error codes assigned to them.
