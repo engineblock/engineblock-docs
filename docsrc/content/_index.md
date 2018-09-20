@@ -1,5 +1,4 @@
 ---
-date: 2017-05-19T21:52:39
 title: EngineBlock Users Guide
 type: index
 layout: single

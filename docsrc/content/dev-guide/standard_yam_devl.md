@@ -1,5 +1,4 @@
 ---
-date: 2017-10-24T00:00:00
 title: YAML Config API
 weight: 12
 menu:
