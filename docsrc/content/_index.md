@@ -18,10 +18,10 @@ The design goals:
    [simple and tangible core concepts](/user-guide/concepts/).
 2. Reduce testing time of complex scenarios with many variables. This is
    achieved by controlling tests from an
-   [open javascript sandbox](/user-guide/scripting/).
+   [open javascript sandbox](/user-guide/scenario_scripting/).
    This makes more sophisticated scenarios possible when needed. 
 3. Minimize the amount of effort required to get empirical results from a 
-   test cycle. For this, [metrics reporting](/user-guide/metrics/) is baked in.
+   test cycle. For this, [metrics reporting](/user-guide/using_metrics/) is baked in.
 
 In short, EngineBlock wishes to be a programmable power tool for performance
 testing. However, it is somewhat generic. It doesn't know directly about a

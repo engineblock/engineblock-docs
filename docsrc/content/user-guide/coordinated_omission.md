@@ -16,6 +16,14 @@ the term doesn't cover all important aspects of scale and performance testing,
 it does put a focus on a particularly troublesome problem that often occurs with
 testing methods where effective concurrency is a meaningful limitation.
 
+Scheduling constraints are pervasive in distributed systems. _Coordinated Omission_ 
+is simply a focal point from the much broader topic
+[Queueing Theory](https://en.wikipedia.org/wiki/Queueing_theory).
+Still, it is appropriate to focus on the coordinated omission scenario as an object
+lesson. It can provide common ground for discussion and understanding of more common
+operational goals, without requiring that users do a costly bulk-import of other
+theory. 
+
 EngineBlock has specific features to help shed a light on the effects of
 coordinated omission. This section explains some of them, how they work, and how
 to use them.
@@ -28,11 +36,38 @@ As EngineBlock is a client-side tool, only the first two are directly
 observable: *wait time* and *latency*. The most important, *response* is 
 calculated separately per operation. The reason for this will be made clearer below.
 
+## Coordinated Omission and Async Clients
+
+The effects of coordinated omission can happen with synchronous as well as asynchronous
+clients and servers. This follows from a maxim: All systems have finite capacity.
+It is true that asynchronous clients can usually manage higher concurrency with lower
+operational cost. This is not the same as saying async clients avoid problems with
+coordinated omission suffered by synchronous clients. This is simply not true, and
+in practice is simply a matter of moving the measurement of scheduling constraints
+to a different limiting resource. The idea that asynchronous clients may somehow
+avoid these issues is based a common fallacy: Async clients that are practical do not
+generally delegate *all* responsibility for a message to external systems. This is
+not practical, as every pending operation needs to be tracked by a client at some
+level in order to ensure robustness in behavior. For example, such a client would
+have no definition of a timeout, and this is not practical in robust system design.
+Thus, no asynchronous mechanism that is robust can totally offload work to the
+surrounding system, and thus must have a finite capacity. For asynchronous clients
+this tends to manifest in internal work queues and timers as well as in-memory
+state associated with pending requests.
+
+To be clear, asynchronous clients can't avoid coordinated omission. They may simply
+defer it to another level of activity, but it is still there when scheduling constraints
+occur.
+
 ## C.O. Rate Controls
 
 When rate limiting is enabled, the rate limiter is responsible for both limiting
 the start time of each operation as well as tracking how far the operations lag
-behind the ideal schedule. This is retained as a scheduling delay specific to
+behind the ideal schedule. 
+
+### In Current EngineBlock versions
+
+In the current version of EngineBlock, this is retained as a scheduling delay specific to
 each operation and added to any measurements of latency in order to arrive at an
 overall response time for each operation. The phrase *scheduling delay* here
 is a specific form of wait time that is imposed upon the client in order to simulate
@@ -57,6 +92,13 @@ are doing. All systems have concurrency limitations and critical resource
 constraints. Also, systems are comprised of clients *and* servers with various
 concurrency models. Sometimes it is useful to see system behavior through a more
 conventional lens.
+
+### In Future EngineBlock versions
+
+The metrics for latency, wait time, and response time will all be calculated
+consistently. Only latency will be provided as a standard metric, but when
+rate limiting is enabled, additional metrics for wait time and response time
+will be provided.
 
 ## Using C.O. metrics
 

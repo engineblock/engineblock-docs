@@ -37,7 +37,8 @@ the command line. Parameters can have various useful properties as described bel
 Universal activity parameters are understood by all activities because they are
 part of the core API. Universal params include type*, *alias*, and *threads*,
 for example. Parameters that are universal should be documented as such anywhere
-they are mentioned. These parameters are explained individually in the [Parameter Index](/user-guide/parameter_index/)
+they are mentioned.
+These parameters are explained individually in the [Activity Params](../activity_params)
 
 ### Dynamic Params
  
@@ -79,7 +80,7 @@ resolved in the following order:
 1. The `type` parameter tells EngineBlock which activity type implementation to load.
 2. The activity type implementation creates an activity.
 3. The activity is initialized with the parameters provided.
-4. If the activity uses the [Standard YAML](user-guide/standard_yaml) as a config
+4. If the activity uses the [Standard YAML](/user-guide/standard_yaml) as a config
    file, then tye `yaml` parameter is used to locate and load that file.
 5. Any template parameters in the file in `<<varname:default value>>` form
    are resolved, taking override values from the provided params.

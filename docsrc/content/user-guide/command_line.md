@@ -64,7 +64,7 @@ simple activity definition will allow.
 No matter how you start an EngineBlock scenario, a control script is always the
 outer-most level of logic. The scripting runtime is simply Java 8's Nashorn. You
 can do anything in your script that it allows. Furthermore, elements of the
-[core runtime](concepts.md) are wired into the scripting sandbox.
+[core runtime](/user-guide/concepts) are wired into the scripting sandbox.
 
 You can combine script and activity related command options in the same command
 line:

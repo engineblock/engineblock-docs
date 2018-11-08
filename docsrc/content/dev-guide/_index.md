@@ -7,17 +7,19 @@ weight: 0
 
 ## Conduct
 
-It's simple really. Everything in the [Open Code of
-Conduct](http://todogroup.org/opencodeofconduct/) applies here. If, after
-reading that, you are unclear, then please pick another project to work on. The
-maintainers will not hesitate to enforce a code of conduct.
+It's simple really. Everything in the 
+[Contributor Covenant](https://www.contributor-covenant.org/version/1/4/code-of-conduct)
+applies here. If, after reading that, you are unclear, then please pick another project to work on.
+The maintainers will not hesitate to enforce a code of conduct.
 
 ## License
 
 EngineBlock is licensed under the [Apache License, version
 2.0](https://www.apache.org/licenses/LICENSE-2.0). If you wish to contribute
 your code to this project, you must be willing to use this license. All code
-contributed here is presumed to be licensed automatically as such.
+contributed here is presumed to be licensed as such, and the maintainers
+may add licenses to contributed files or add commit-level requirements for
+clear licensing headers.
 
 ## How to Contribute
 
@@ -31,9 +33,10 @@ pick** in the spirit of encouragement.
 
 ### Project Site
 
-The project site at engineblock.io could use some help as well. This is in the
-codebase under the gh-pages branch. Consider this as part of the codebase in
-general. You can file issues against it, or submit pull requests.
+The project site at engineblock.io could use some help as well. This is in a
+separate repository adjacent to the main project as 'engineblock-docs'. 
+Consider this as part of the codebase in general. You can file issues against 
+it, or submit pull requests.
 
 ### Pull Request
 
@@ -53,6 +56,13 @@ or opaque for a single coding and testing effort. Think of these as *epic*
 ideas, which will, by their nature, be required to have some design and usage
 documentation submitted before they are merged.
 
+### Project Maturity
+
+As engineblock matures, a more stringent set of code management practices will
+be adopted. The maintainers are leaning towards the 
+[Git Flow](https://nvie.com/posts/a-successful-git-branching-model/)
+model. A stricter releas and branching model *will* be imposed as part of the next
+major release.
 
 
 

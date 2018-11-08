@@ -46,7 +46,7 @@ before any specific activity behavior has control. It stops timing once the
 logical cycle is complete. This includes and additional phases that are executed
 by multi-phase actions.
 
-### phases
+### phases (*deprecated*)
 
 Some activity types can support multiple phases. Each time a cycle is executed
 within an activity thread, it executes at least one phase. For activity types
@@ -66,6 +66,12 @@ your activity.
 The phase timer starts just before the cycle action is called within each thread,
 and ends immediately after it returns. It also measures the "full cycle" of a
 single cycle when multi-phase actions are not part of an activity.
+
+{{< note >}}
+The phases feature will be deprecated in a future version of EngineBlock. Activity types that
+need this feature will be responsible for implementing something equivalent. This
+change is necessary to simplify the API for developers.
+{{< /note >}}
 
 ## Metrics Visually
 
