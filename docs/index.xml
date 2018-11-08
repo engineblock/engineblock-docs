@@ -177,9 +177,9 @@ License EngineBlock is licensed under the Apache License, version 2.0. If you wi
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>http://docs.engineblock.io/dev-guide/annotated_diag/</guid>
-      <description>If you take all the code chunks from this document and concatenate them together, you&amp;rsquo;ll have &amp;lsquo;diag&amp;rsquo;, one of the in-build activity types for EngineBlock.
-First, we annotate our ActivityType implementation, name DiagActivityType, with the @AutoService annotation. This is a simple way to manage your ServiceLoader configurations. For more information, see AutoService.
-@AutoService(ActivityType.class)  DiagActivityType is an ActivityType Let&amp;rsquo;s implement an ActivityType. Actually, let&amp;rsquo;s make it useful for something besides default behavior.</description>
+      <description>This section is out of date, and will be updated after the next major release with details on building async activity types.
+ If you take all the code chunks from this document and concatenate them together, you&amp;rsquo;ll have &amp;lsquo;diag&amp;rsquo;, one of the in-build activity types for EngineBlock.
+All activity types are annotated for inclusion in META-INF/services/ActivityType to be found at runtime by the ServiceLoader API. This is done by an upstream annotation io.</description>
     </item>
     
     <item>
@@ -224,12 +224,13 @@ A valid config file for an activity consists of statements, parameters for those
     
     <item>
       <title>Design Guidelines</title>
-      <link>http://docs.engineblock.io/dev-guide/implementors_guide/</link>
+      <link>http://docs.engineblock.io/dev-guide/design_guidelines/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://docs.engineblock.io/dev-guide/implementors_guide/</guid>
-      <description>ActivityType Naming Each activity type should be named with a single lowercase name that is accurate and stable. Any activity type implementations submitted to the engineblock project may be changed by the project maintainers to ensure this.
-ActivityType Documentation Each activity type should have a file which provides markdown-formatted documentation for the user. This documentation should be in a markdown format that is clean for terminal rendering for when users have only a terminal to read with.</description>
+      <guid>http://docs.engineblock.io/dev-guide/design_guidelines/</guid>
+      <description>These guidelines are partially aspirational. As the project evolves, attempts will be made to codify these guidelines and measure them on a per-release basis.
+ActivityType Naming Each activity type should be named with a single lowercase name that is accurate and stable. Any activity type implementations submitted to the engineblock project may be changed by the project maintainers to ensure this.
+ActivityType Documentation Each activity type should have a file which provides markdown-formatted documentation for the user.</description>
     </item>
     
     <item>
@@ -238,7 +239,8 @@ ActivityType Documentation Each activity type should have a file which provides 
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>http://docs.engineblock.io/dev-guide/async_operations/</guid>
-      <description>Introduction In EngineBlock, two types of activities are supported: sync or async. Going forward, the async interface will be refined and hardened, and then the sync interface will be deprecated. This is simply a matter of simplifying the API over time, and the async interface is the essential one. If you want synchronous behavior with the async interface, you can easily achieve that, but not the other way around.</description>
+      <description>This section is out of date, and will be updated after the next major release with details on building async activity types.
+ Introduction In EngineBlock, two types of activities are supported: sync or async. Going forward, the async interface will be refined and hardened, and then the sync interface will be deprecated. This is simply a matter of simplifying the API over time, and the async interface is the essential one.</description>
     </item>
     
     <item>

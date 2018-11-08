@@ -542,7 +542,7 @@
 
 
 
-<a  title="Design Guidelines" href="../../dev-guide/implementors_guide/">
+<a  title="Design Guidelines" href="../../dev-guide/design_guidelines/">
 	
 	Design Guidelines
 </a>
@@ -703,8 +703,9 @@ enable modularity.</p>
 <p><img src="../../static/diagrams/project_structure.png" alt="Project Structure" /></p>
 
 <p>Modularity at runtime is enabled via the
-<a href="https://docs.oracle.com/javase/8/docs/api/java/util/ServiceLoader.html">ServiceLoader</a>.
-The eb-core module uses the eb-api module to know the loadable activity types.
+<a href="https://docs.oracle.com/javase/8/docs/api/java/util/ServiceLoader.html">ServiceLoader</a> API.</p>
+
+<p>The eb-core module uses the eb-api module to know the loadable activity types.
 ActivityType implementations use the eb-api module to implement the loadable
 activity types. In this way, they both depend on the eb-api module to provide
 the common types needed for this to work.</p>
