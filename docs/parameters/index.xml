@@ -6,7 +6,6 @@
     <description>Recent content in Parameters on EngineBlock</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 19 May 2017 21:52:57 +0000</lastBuildDate>
     
 	<atom:link href="http://docs.engineblock.io/parameters/index.xml" rel="self" type="application/rss+xml" />
     
@@ -14,7 +13,7 @@
     <item>
       <title>Parameter Usage</title>
       <link>http://docs.engineblock.io/parameters/parameter_usage/</link>
-      <pubDate>Fri, 19 May 2017 21:52:57 +0000</pubDate>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>http://docs.engineblock.io/parameters/parameter_usage/</guid>
       <description>To configure an EngineBlock activity to do something meaningful, you have to provide parameters to it. This can occur in one of several ways. This section is a guide on EngineBlock parameters, how they layer together, and when to use one form over another.
@@ -24,7 +23,7 @@ Command Line The command line is used to configure both the overall EngineBlock 
     <item>
       <title>Example Command</title>
       <link>http://docs.engineblock.io/parameters/example_command/</link>
-      <pubDate>Fri, 19 May 2017 21:52:57 +0000</pubDate>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>http://docs.engineblock.io/parameters/example_command/</guid>
       <description>Most new users will be interested in a command line pattern that looks very much like this:
@@ -34,7 +33,7 @@ Command Line The command line is used to configure both the overall EngineBlock 
     <item>
       <title>Activity Params</title>
       <link>http://docs.engineblock.io/parameters/activity_params/</link>
-      <pubDate>Fri, 19 May 2017 21:52:57 +0000</pubDate>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>http://docs.engineblock.io/parameters/activity_params/</guid>
       <description>Activity parameters are passed as named arguments for an activity, either on the command line or via a scenario script. On the command line, these take the form of
@@ -44,7 +43,7 @@ Command Line The command line is used to configure both the overall EngineBlock 
     <item>
       <title>Statement Params</title>
       <link>http://docs.engineblock.io/parameters/statement_params/</link>
-      <pubDate>Fri, 19 May 2017 21:52:57 +0000</pubDate>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>http://docs.engineblock.io/parameters/statement_params/</guid>
       <description>Statement parameters apply to the defined operations for an activity. Statement parameters are always configurable as part of a params block in YAML, for activities that use the Standard YAML format.

@@ -4,142 +4,102 @@
   
   <url>
     <loc>http://docs.engineblock.io/user-guide/concepts/</loc>
-    <lastmod>2017-05-19T21:52:57+00:00</lastmod>
   </url>
   
   <url>
     <loc>http://docs.engineblock.io/user-guide/coordinated_omission/</loc>
-    <lastmod>2017-05-19T21:52:57+00:00</lastmod>
   </url>
   
   <url>
     <loc>http://docs.engineblock.io/user-guide/latency_terms/</loc>
-    <lastmod>2017-05-19T21:52:57+00:00</lastmod>
   </url>
   
   <url>
     <loc>http://docs.engineblock.io/user-guide/scenario_scripting/</loc>
-    <lastmod>2017-05-19T21:52:57+00:00</lastmod>
   </url>
   
   <url>
     <loc>http://docs.engineblock.io/user-guide/standard_metrics/</loc>
-    <lastmod>2017-05-19T21:52:57+00:00</lastmod>
   </url>
   
   <url>
     <loc>http://docs.engineblock.io/user-guide/using_metrics/</loc>
-    <lastmod>2017-05-19T21:52:57+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://docs.engineblock.io/dev-guide/standard_yam_devl/</loc>
-    <lastmod>2017-10-24T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>http://docs.engineblock.io/parameters/parameter_usage/</loc>
-    <lastmod>2017-05-19T21:52:57+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://docs.engineblock.io/dev-guide/standard_yam_devl/</loc>
   </url>
   
   <url>
     <loc>http://docs.engineblock.io/user-guide/command_line/</loc>
-    <lastmod>2017-05-19T22:09:53+00:00</lastmod>
   </url>
   
   <url>
     <loc>http://docs.engineblock.io/parameters/example_command/</loc>
-    <lastmod>2017-05-19T21:52:57+00:00</lastmod>
   </url>
   
   <url>
     <loc>http://docs.engineblock.io/parameters/activity_params/</loc>
-    <lastmod>2017-05-19T21:52:57+00:00</lastmod>
   </url>
   
   <url>
     <loc>http://docs.engineblock.io/parameters/statement_params/</loc>
-    <lastmod>2017-05-19T21:52:57+00:00</lastmod>
   </url>
   
   <url>
     <loc>http://docs.engineblock.io/user-guide/</loc>
-    <lastmod>2017-05-19T22:00:36+00:00</lastmod>
   </url>
   
   <url>
     <loc>http://docs.engineblock.io/dev-guide/activity_internals/</loc>
-    <lastmod>2017-05-19T22:09:53+00:00</lastmod>
   </url>
   
   <url>
     <loc>http://docs.engineblock.io/dev-guide/building_activities/</loc>
-    <lastmod>2017-05-19T22:09:53+00:00</lastmod>
   </url>
   
   <url>
     <loc>http://docs.engineblock.io/user-guide/cli_scripting/</loc>
-    <lastmod>2017-05-19T22:09:53+00:00</lastmod>
   </url>
   
   <url>
     <loc>http://docs.engineblock.io/dev-guide/contributing/</loc>
-    <lastmod>2017-05-19T22:09:53+00:00</lastmod>
   </url>
   
   <url>
     <loc>http://docs.engineblock.io/dev-guide/annotated_diag/</loc>
-    <lastmod>2017-05-19T22:09:53+00:00</lastmod>
   </url>
   
   <url>
     <loc>http://docs.engineblock.io/dev-guide/project_structure/</loc>
-    <lastmod>2017-05-19T22:09:53+00:00</lastmod>
   </url>
   
   <url>
     <loc>http://docs.engineblock.io/dev-guide/scripting_extensions/</loc>
-    <lastmod>2017-05-19T22:09:53+00:00</lastmod>
   </url>
   
   <url>
     <loc>http://docs.engineblock.io/historic/internals_slot_assembly/</loc>
-    <lastmod>2017-05-19T22:09:53+00:00</lastmod>
   </url>
   
   <url>
     <loc>http://docs.engineblock.io/user-guide/standard_yaml/</loc>
-    <lastmod>2017-10-24T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>http://docs.engineblock.io/dev-guide/implementors_guide/</loc>
-    <lastmod>2017-05-19T22:09:53+00:00</lastmod>
   </url>
   
   <url>
     <loc>http://docs.engineblock.io/dev-guide/async_operations/</loc>
-    <lastmod>2017-05-19T22:09:53+00:00</lastmod>
   </url>
   
   <url>
     <loc>http://docs.engineblock.io/dev-guide/error_mapping/</loc>
-    <lastmod>2017-05-19T22:09:53+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://docs.engineblock.io/dev-guide/</loc>
-    <lastmod>2017-05-19T21:52:39+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://docs.engineblock.io/</loc>
-    <lastmod>2017-05-19T21:52:39+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://docs.engineblock.io/quickstart/</loc>
-    <lastmod>2017-05-19T21:51:26+00:00</lastmod>
   </url>
   
   <url>
@@ -148,14 +108,24 @@
   </url>
   
   <url>
+    <loc>http://docs.engineblock.io/dev-guide/</loc>
+  </url>
+  
+  <url>
+    <loc>http://docs.engineblock.io/</loc>
+  </url>
+  
+  <url>
+    <loc>http://docs.engineblock.io/quickstart/</loc>
+  </url>
+  
+  <url>
     <loc>http://docs.engineblock.io/historic/</loc>
-    <lastmod>2017-05-19T22:09:53+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>http://docs.engineblock.io/parameters/</loc>
-    <lastmod>2017-05-19T21:52:57+00:00</lastmod>
     <priority>0</priority>
   </url>
   

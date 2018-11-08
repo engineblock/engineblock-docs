@@ -1,5 +1,4 @@
 ---
-date: 2017-05-19T21:52:57
 title: Example Command
 weight: 13
 menu:

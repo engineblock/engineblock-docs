@@ -6,7 +6,6 @@
     <description>Recent content in Historics on EngineBlock</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 19 May 2017 22:09:53 +0000</lastBuildDate>
     
 	<atom:link href="http://docs.engineblock.io/historic/index.xml" rel="self" type="application/rss+xml" />
     
@@ -14,7 +13,7 @@
     <item>
       <title>Slot Assembly</title>
       <link>http://docs.engineblock.io/historic/internals_slot_assembly/</link>
-      <pubDate>Fri, 19 May 2017 22:09:53 +0000</pubDate>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>http://docs.engineblock.io/historic/internals_slot_assembly/</guid>
       <description>This is superceded with recent changes and needs to be rewritten It is currently inaccurate and will be rewritten shortly Understanding Slot Assembly If you are building new ActionType implementations for EngineBlock, it can help to understand the creational patterns used for slot assembly.

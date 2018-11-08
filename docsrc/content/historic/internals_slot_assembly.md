@@ -1,5 +1,4 @@
 ---
-date: 2017-05-19T22:09:53
 title: Slot Assembly    
 weight: 32
 ---

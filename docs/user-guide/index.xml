@@ -6,7 +6,6 @@
     <description>Recent content in User Guide on EngineBlock</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 19 May 2017 22:00:36 +0000</lastBuildDate>
     
 	<atom:link href="http://docs.engineblock.io/user-guide/index.xml" rel="self" type="application/rss+xml" />
     
@@ -14,7 +13,7 @@
     <item>
       <title>Concepts</title>
       <link>http://docs.engineblock.io/user-guide/concepts/</link>
-      <pubDate>Fri, 19 May 2017 21:52:57 +0000</pubDate>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>http://docs.engineblock.io/user-guide/concepts/</guid>
       <description>EngineBlock is a machine pattern for test design and execution. This guide is intended to illustrate the moving parts and how they work together.
@@ -25,7 +24,7 @@ Activity A scenario can have multiple activities. Each activity runs independent
     <item>
       <title>Coordinated Omission</title>
       <link>http://docs.engineblock.io/user-guide/coordinated_omission/</link>
-      <pubDate>Fri, 19 May 2017 21:52:57 +0000</pubDate>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>http://docs.engineblock.io/user-guide/coordinated_omission/</guid>
       <description>Coordinated omission is a term of art coined by Gil Tene. In practice, coordinated omission follows from the fact that all systems have finite concurrency and scheduling capacity, including the clients that test them. While the term doesn&amp;rsquo;t cover all important aspects of scale and performance testing, it does put a focus on a particularly troublesome problem that often occurs with testing methods where effective concurrency is a meaningful limitation.</description>
@@ -34,7 +33,7 @@ Activity A scenario can have multiple activities. Each activity runs independent
     <item>
       <title>Latency Terms</title>
       <link>http://docs.engineblock.io/user-guide/latency_terms/</link>
-      <pubDate>Fri, 19 May 2017 21:52:57 +0000</pubDate>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>http://docs.engineblock.io/user-guide/latency_terms/</guid>
       <description>Often, terms used to describe latency can create confusion. In fact, the term latency is so overloaded in practice that it is not useful by itself. Because of this, EngineBlock will avoid using the term latency except in a specific way. Instead, the terms described in this section will be used.
@@ -44,7 +43,7 @@ EngineBlock is a client-centric testing tool. The measurement of operations occu
     <item>
       <title>Scenario Scripting</title>
       <link>http://docs.engineblock.io/user-guide/scenario_scripting/</link>
-      <pubDate>Fri, 19 May 2017 21:52:57 +0000</pubDate>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>http://docs.engineblock.io/user-guide/scenario_scripting/</guid>
       <description>Motive The EngineBlock runtime is a combination of a scripting sandbox and a workload execution machine. This is not accidental. With this particular arrangement, it should be possible to build sophisticated tests across a variety of scenarios. In particular, logic which can observe and react to the system under test can be powerful. With this approach, it becomes possible to break away from the conventional run-interpret-adjust cycle which is all too often done by human hands.</description>
@@ -53,7 +52,7 @@ EngineBlock is a client-centric testing tool. The measurement of operations occu
     <item>
       <title>Standard Metrics</title>
       <link>http://docs.engineblock.io/user-guide/standard_metrics/</link>
-      <pubDate>Fri, 19 May 2017 21:52:57 +0000</pubDate>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>http://docs.engineblock.io/user-guide/standard_metrics/</guid>
       <description>Engineblock comes with a set of standard metrics that will be part of every activity type. Each activity type enhances the metrics available by adding their own metrics with the engineblock APIs. This section explains what the standard metrics are, and how to interpret them.
@@ -63,7 +62,7 @@ read-input Within engineblock, a data stream provider called an Input is respons
     <item>
       <title>Using Metrics</title>
       <link>http://docs.engineblock.io/user-guide/using_metrics/</link>
-      <pubDate>Fri, 19 May 2017 21:52:57 +0000</pubDate>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>http://docs.engineblock.io/user-guide/using_metrics/</guid>
       <description>Unit of Measure All metrics collected from activities are recorded in nanoseconds and ops per second. All histograms are recorded with 4 digits of precision using HDR histograms.
@@ -74,7 +73,7 @@ Metric Outputs Metrics from a scenario run can be gathered in multiple ways:
     <item>
       <title>Command Line</title>
       <link>http://docs.engineblock.io/user-guide/command_line/</link>
-      <pubDate>Fri, 19 May 2017 22:09:53 +0000</pubDate>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>http://docs.engineblock.io/user-guide/command_line/</guid>
       <description>To get built-in help on the available command line options, run
@@ -85,7 +84,7 @@ There is more than one way to invoke EngineBlock. The sections below explain mor
     <item>
       <title>CLI Scripting</title>
       <link>http://docs.engineblock.io/user-guide/cli_scripting/</link>
-      <pubDate>Fri, 19 May 2017 22:09:53 +0000</pubDate>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>http://docs.engineblock.io/user-guide/cli_scripting/</guid>
       <description>Sometimes you want to to run a set of workloads in a particular order, or call other specific test setup logic in between phases or workloads. While the full scripting environment allows you to do this and more, it is not necessary to write javascript for every scenario.
@@ -95,7 +94,7 @@ For more basic setup and sequencing needs, you can achive a fair degree of flexi
     <item>
       <title>YAML Config</title>
       <link>http://docs.engineblock.io/user-guide/standard_yaml/</link>
-      <pubDate>Tue, 24 Oct 2017 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>http://docs.engineblock.io/user-guide/standard_yaml/</guid>
       <description>In the EngineBlock 2.* and newer versions, a standard YAML configuration format is provided that makes it easy to use for any activity that requires statements, tags, parameters and data bindings. In practice, any useful activity types have needed these. This section describes the standard YAML format and how to use it.
