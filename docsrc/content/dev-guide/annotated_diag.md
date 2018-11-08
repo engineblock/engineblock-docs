@@ -8,17 +8,22 @@ menu:
     weight: 12
 ---
 
+{{< warning >}}
+This section is out of date, and will be updated after the next major release
+with details on building async activity types.
+{{< /warning >}}
+
 If you take all the code chunks from this document and concatenate them
 together, you'll have 'diag', one of the in-build activity types for
 EngineBlock.
 
-First, we annotate our ActivityType implementation, name DiagActivityType, with
-the @AutoService annotation. This is a simple way to manage your ServiceLoader
-configurations. For more information, see
-[AutoService](https://github.com/google/auto/tree/master/servicehttps://github.com/google/auto/tree/master/service).
+All activity types are annotated for inclusion in META-INF/services/ActivityType
+to be found at runtime by the ServiceLoader API. This is done by an
+upstream annotation _io.virtdata.annotations.Service_, since this avoids hoisting
+in the popular but overly heavy AutoServer (it has a dependency on Guava).
 
 ~~~
-@AutoService(ActivityType.class)
+@Service(ActivityType.class)
 ~~~
 
 ### DiagActivityType is an ActivityType

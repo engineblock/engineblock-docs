@@ -8,6 +8,9 @@ menu:
     weight: 12
 ---
 
+These guidelines are partially aspirational. As the project evolves, attempts will be made to
+codify these guidelines and measure them on a per-release basis.
+
 ## ActivityType Naming
 
 Each activity type should be named with a single lowercase name that is accurate and stable. Any activity type

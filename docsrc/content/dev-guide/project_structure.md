@@ -62,8 +62,9 @@ enable modularity.
 
 ![Project Structure](../../static/diagrams/project_structure.png)
 
-Modularity at runtime is enabled via the
-[ServiceLoader](https://docs.oracle.com/javase/8/docs/api/java/util/ServiceLoader.html).
+Modularity at runtime is enabled via the 
+[ServiceLoader](https://docs.oracle.com/javase/8/docs/api/java/util/ServiceLoader.html) API.
+
 The eb-core module uses the eb-api module to know the loadable activity types.
 ActivityType implementations use the eb-api module to implement the loadable
 activity types. In this way, they both depend on the eb-api module to provide

@@ -8,6 +8,12 @@ menu:
     weight: 12
 ---
 
+{{< warning >}}
+This section is out of date, and will be updated after the next major release
+with details on building async activity types.
+{{< /warning >}}
+
+
 ## Introduction
 
 In EngineBlock, two types of activities are supported: sync or async. Going forward, the async interface will be
