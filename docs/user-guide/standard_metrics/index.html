@@ -325,9 +325,9 @@
 
 
 
-<a  title="Latency Terms" href="../../user-guide/latency_terms/">
+<a  title="Timing Terms" href="../../user-guide/timing_terms/">
 	
-	Latency Terms
+	Timing Terms
 </a>
 
 
@@ -686,7 +686,7 @@ before any specific activity behavior has control. It stops timing once the
 logical cycle is complete. This includes and additional phases that are executed
 by multi-phase actions.</p>
 
-<h3 id="phases">phases</h3>
+<h3 id="phases-deprecated">phases (<em>deprecated</em>)</h3>
 
 <p>Some activity types can support multiple phases. Each time a cycle is executed
 within an activity thread, it executes at least one phase. For activity types
@@ -708,6 +708,13 @@ your activity.</p>
 <p>The phase timer starts just before the cycle action is called within each thread,
 and ends immediately after it returns. It also measures the &ldquo;full cycle&rdquo; of a
 single cycle when multi-phase actions are not part of an activity.</p>
+
+<div class="admonition note">
+<p class="admonition-title"></p>
+<p>The phases feature will be deprecated in a future version of EngineBlock. Activity types that
+need this feature will be responsible for implementing something equivalent. This
+change is necessary to simplify the API for developers.</p>
+</div>
 
 <h2 id="metrics-visually">Metrics Visually</h2>
 
@@ -744,7 +751,7 @@ The initial phase is called as runCycle(), and additional phases are called as r
 <nav class="pagination" aria-label="Footer">
   <div class="previous">
   
-      <a href="http://docs.engineblock.io/user-guide/using_metrics/" title="Using Metrics">
+      <a href="http://docs.engineblock.io/user-guide/timing_terms/" title="Timing Terms">
         <span class="direction">
           Previous
         </span>
@@ -754,7 +761,7 @@ The initial phase is called as runCycle(), and additional phases are called as r
           </div>
           <div class="stretch">
             <div class="title">
-              Using Metrics
+              Timing Terms
             </div>
           </div>
         </div>

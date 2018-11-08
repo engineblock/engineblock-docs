@@ -31,16 +31,6 @@ Activity A scenario can have multiple activities. Each activity runs independent
     </item>
     
     <item>
-      <title>Latency Terms</title>
-      <link>http://docs.engineblock.io/user-guide/latency_terms/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>http://docs.engineblock.io/user-guide/latency_terms/</guid>
-      <description>Often, terms used to describe latency can create confusion. In fact, the term latency is so overloaded in practice that it is not useful by itself. Because of this, EngineBlock will avoid using the term latency except in a specific way. Instead, the terms described in this section will be used.
-EngineBlock is a client-centric testing tool. The measurement of operations occurs on the client, without visibility to what happens in transport or on the server.</description>
-    </item>
-    
-    <item>
       <title>Scenario Scripting</title>
       <link>http://docs.engineblock.io/user-guide/scenario_scripting/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
@@ -57,6 +47,16 @@ EngineBlock is a client-centric testing tool. The measurement of operations occu
       <guid>http://docs.engineblock.io/user-guide/standard_metrics/</guid>
       <description>Engineblock comes with a set of standard metrics that will be part of every activity type. Each activity type enhances the metrics available by adding their own metrics with the engineblock APIs. This section explains what the standard metrics are, and how to interpret them.
 read-input Within engineblock, a data stream provider called an Input is responsible for providing the actual cycle number that will be used by consumer threads.</description>
+    </item>
+    
+    <item>
+      <title>Timing Terms</title>
+      <link>http://docs.engineblock.io/user-guide/timing_terms/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://docs.engineblock.io/user-guide/timing_terms/</guid>
+      <description>Often, terms used to describe latency can create confusion. In fact, the term latency is so overloaded in practice that it is not useful by itself. Because of this, EngineBlock will avoid using the term latency except in a specific way. Instead, the terms described in this section will be used.
+EngineBlock is a client-centric testing tool. The measurement of operations occurs on the client, without visibility to what happens in transport or on the server.</description>
     </item>
     
     <item>
@@ -167,8 +167,8 @@ For more basic setup and sequencing needs, you can achive a fair degree of flexi
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>http://docs.engineblock.io/dev-guide/contributing/</guid>
-      <description>Conduct It&amp;rsquo;s simple really. Everything in the Open Code of Conduct applies here. If, after reading that, you are unclear, then please pick another project to work on. The maintainers will not hesitate to enforce a code of conduct.
-License EngineBlock is licensed under the Apache License, version 2.0. If you wish to contribute your code to this project, you must be willing to use this license. All code contributed here is presumed to be licensed automatically as such.</description>
+      <description>Conduct It&amp;rsquo;s simple really. Everything in the Contributor Covenant applies here. If, after reading that, you are unclear, then please pick another project to work on. The maintainers will not hesitate to enforce a code of conduct.
+License EngineBlock is licensed under the Apache License, version 2.0. If you wish to contribute your code to this project, you must be willing to use this license. All code contributed here is presumed to be licensed as such, and the maintainers may add licenses to contributed files or add commit-level requirements for clear licensing headers.</description>
     </item>
     
     <item>

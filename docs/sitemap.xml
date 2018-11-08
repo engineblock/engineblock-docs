@@ -11,15 +11,15 @@
   </url>
   
   <url>
-    <loc>http://docs.engineblock.io/user-guide/latency_terms/</loc>
-  </url>
-  
-  <url>
     <loc>http://docs.engineblock.io/user-guide/scenario_scripting/</loc>
   </url>
   
   <url>
     <loc>http://docs.engineblock.io/user-guide/standard_metrics/</loc>
+  </url>
+  
+  <url>
+    <loc>http://docs.engineblock.io/user-guide/timing_terms/</loc>
   </url>
   
   <url>

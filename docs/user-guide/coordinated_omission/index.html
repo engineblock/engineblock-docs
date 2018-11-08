@@ -325,9 +325,9 @@
 
 
 
-<a  title="Latency Terms" href="../../user-guide/latency_terms/">
+<a  title="Timing Terms" href="../../user-guide/timing_terms/">
 	
-	Latency Terms
+	Timing Terms
 </a>
 
 
@@ -656,6 +656,14 @@ the term doesn&rsquo;t cover all important aspects of scale and performance test
 it does put a focus on a particularly troublesome problem that often occurs with
 testing methods where effective concurrency is a meaningful limitation.</p>
 
+<p>Scheduling constraints are pervasive in distributed systems. <em>Coordinated Omission</em>
+is simply a focal point from the much broader topic
+<a href="https://en.wikipedia.org/wiki/Queueing_theory">Queueing Theory</a>.
+Still, it is appropriate to focus on the coordinated omission scenario as an object
+lesson. It can provide common ground for discussion and understanding of more common
+operational goals, without requiring that users do a costly bulk-import of other
+theory.</p>
+
 <p>EngineBlock has specific features to help shed a light on the effects of
 coordinated omission. This section explains some of them, how they work, and how
 to use them.</p>
@@ -668,11 +676,38 @@ how timing terms are used with EngineBlock, see <a href="../timing_terms">timing
 observable: <em>wait time</em> and <em>latency</em>. The most important, <em>response</em> is
 calculated separately per operation. The reason for this will be made clearer below.</p>
 
+<h2 id="coordinated-omission-and-async-clients">Coordinated Omission and Async Clients</h2>
+
+<p>The effects of coordinated omission can happen with synchronous as well as asynchronous
+clients and servers. This follows from a maxim: All systems have finite capacity.
+It is true that asynchronous clients can usually manage higher concurrency with lower
+operational cost. This is not the same as saying async clients avoid problems with
+coordinated omission suffered by synchronous clients. This is simply not true, and
+in practice is simply a matter of moving the measurement of scheduling constraints
+to a different limiting resource. The idea that asynchronous clients may somehow
+avoid these issues is based a common fallacy: Async clients that are practical do not
+generally delegate <em>all</em> responsibility for a message to external systems. This is
+not practical, as every pending operation needs to be tracked by a client at some
+level in order to ensure robustness in behavior. For example, such a client would
+have no definition of a timeout, and this is not practical in robust system design.
+Thus, no asynchronous mechanism that is robust can totally offload work to the
+surrounding system, and thus must have a finite capacity. For asynchronous clients
+this tends to manifest in internal work queues and timers as well as in-memory
+state associated with pending requests.</p>
+
+<p>To be clear, asynchronous clients can&rsquo;t avoid coordinated omission. They may simply
+defer it to another level of activity, but it is still there when scheduling constraints
+occur.</p>
+
 <h2 id="c-o-rate-controls">C.O. Rate Controls</h2>
 
 <p>When rate limiting is enabled, the rate limiter is responsible for both limiting
 the start time of each operation as well as tracking how far the operations lag
-behind the ideal schedule. This is retained as a scheduling delay specific to
+behind the ideal schedule.</p>
+
+<h3 id="in-current-engineblock-versions">In Current EngineBlock versions</h3>
+
+<p>In the current version of EngineBlock, this is retained as a scheduling delay specific to
 each operation and added to any measurements of latency in order to arrive at an
 overall response time for each operation. The phrase <em>scheduling delay</em> here
 is a specific form of wait time that is imposed upon the client in order to simulate
@@ -697,6 +732,13 @@ are doing. All systems have concurrency limitations and critical resource
 constraints. Also, systems are comprised of clients <em>and</em> servers with various
 concurrency models. Sometimes it is useful to see system behavior through a more
 conventional lens.</p>
+
+<h3 id="in-future-engineblock-versions">In Future EngineBlock versions</h3>
+
+<p>The metrics for latency, wait time, and response time will all be calculated
+consistently. Only latency will be provided as a standard metric, but when
+rate limiting is enabled, additional metrics for wait time and response time
+will be provided.</p>
 
 <h2 id="using-c-o-metrics">Using C.O. metrics</h2>
 
@@ -789,7 +831,7 @@ in the respective activity type documentation.</p>
 <nav class="pagination" aria-label="Footer">
   <div class="previous">
   
-      <a href="http://docs.engineblock.io/user-guide/latency_terms/" title="Latency Terms">
+      <a href="http://docs.engineblock.io/user-guide/scenario_scripting/" title="Scenario Scripting">
         <span class="direction">
           Previous
         </span>
@@ -799,7 +841,7 @@ in the respective activity type documentation.</p>
           </div>
           <div class="stretch">
             <div class="title">
-              Latency Terms
+              Scenario Scripting
             </div>
           </div>
         </div>

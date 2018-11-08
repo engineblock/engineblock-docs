@@ -325,9 +325,9 @@
 
 
 
-<a  title="Latency Terms" href="../../user-guide/latency_terms/">
+<a  title="Timing Terms" href="../../user-guide/timing_terms/">
 	
-	Latency Terms
+	Timing Terms
 </a>
 
 
@@ -677,7 +677,8 @@ the command line. Parameters can have various useful properties as described bel
 <p>Universal activity parameters are understood by all activities because they are
 part of the core API. Universal params include type*, <em>alias</em>, and <em>threads</em>,
 for example. Parameters that are universal should be documented as such anywhere
-they are mentioned. These parameters are explained individually in the <a href="../../user-guide/parameter_index/">Parameter Index</a></p>
+they are mentioned.
+These parameters are explained individually in the <a href="../activity_params">Activity Params</a></p>
 
 <h3 id="dynamic-params">Dynamic Params</h3>
 
@@ -720,7 +721,7 @@ resolved in the following order:</p>
 <li>The <code>type</code> parameter tells EngineBlock which activity type implementation to load.</li>
 <li>The activity type implementation creates an activity.</li>
 <li>The activity is initialized with the parameters provided.</li>
-<li>If the activity uses the <a href="user-guide/standard_yaml">Standard YAML</a> as a config
+<li>If the activity uses the <a href="../../user-guide/standard_yaml">Standard YAML</a> as a config
 file, then tye <code>yaml</code> parameter is used to locate and load that file.</li>
 <li>Any template parameters in the file in <code>&lt;&lt;varname:default value&gt;&gt;</code> form
 are resolved, taking override values from the provided params.</li>

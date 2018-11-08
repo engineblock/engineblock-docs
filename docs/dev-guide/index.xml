@@ -44,8 +44,8 @@ Simple Usage StrInterpolater interpolator = new StrInterpolater(activityDef); St
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>http://docs.engineblock.io/dev-guide/contributing/</guid>
-      <description>Conduct It&amp;rsquo;s simple really. Everything in the Open Code of Conduct applies here. If, after reading that, you are unclear, then please pick another project to work on. The maintainers will not hesitate to enforce a code of conduct.
-License EngineBlock is licensed under the Apache License, version 2.0. If you wish to contribute your code to this project, you must be willing to use this license. All code contributed here is presumed to be licensed automatically as such.</description>
+      <description>Conduct It&amp;rsquo;s simple really. Everything in the Contributor Covenant applies here. If, after reading that, you are unclear, then please pick another project to work on. The maintainers will not hesitate to enforce a code of conduct.
+License EngineBlock is licensed under the Apache License, version 2.0. If you wish to contribute your code to this project, you must be willing to use this license. All code contributed here is presumed to be licensed as such, and the maintainers may add licenses to contributed files or add commit-level requirements for clear licensing headers.</description>
     </item>
     
     <item>
